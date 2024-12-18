@@ -10,10 +10,10 @@ import SwiftUI
 
 struct RecordView: View {
     var fields: [FieldProperty]
-    var onSubmitHandler: () -> Void
+    var onSubmitHandler: ([RecordField]) -> Void
     @State private var fieldValues: [String: RecordFieldValue]
 
-    init(fields: [FieldProperty], onSubmitHandler: @escaping () -> Void) {
+    init(fields: [FieldProperty], onSubmitHandler: @escaping ([RecordField]) -> Void) {
         self.fields = fields
         self.onSubmitHandler = onSubmitHandler
         self.fieldValues = fields.reduce(into: [String: RecordFieldValue]()) {
@@ -180,13 +180,16 @@ struct RecordView: View {
             Section {
                 LabeledContent {
                     Button {
-                        onSubmitHandler()
+                        let array = fieldValues.map { (key, value) in
+                            RecordField(code: key, value: value)
+                        }
+                        onSubmitHandler(array)
                     } label: {
                         Text("Submit")
                     }
                     .buttonStyle(.borderedProminent)
                 } label: {
-                    Image(systemName: "paperplane")
+                    EmptyView()
                 }
             }
         }

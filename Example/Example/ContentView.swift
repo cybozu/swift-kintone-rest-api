@@ -9,24 +9,45 @@ import KintoneAPI
 import Observation
 import SwiftUI
 
+enum TabCategory {
+    case apps
+    case formLayout
+    case fields
+    case record
+}
+
 @MainActor @Observable final class ContentViewModel {
-    private let domain = ""
-    private let credentials = Credentials(loginName: "", password: "")
-    private let appID = 55
-    private let kintoneAPI: KintoneAPI
+    var domain: String
+    var loginName: String
+    var password = ""
+    var appID: Int
+    var isPresented = false
     var tabCategory = TabCategory.apps
     var apps = [KintoneApp]()
     var layout = [FormLayout]()
     var fields = [FieldProperty]()
 
-    init() {
-        kintoneAPI = KintoneAPI(
+    var kintoneAPI: KintoneAPI {
+        .init(
             domain: .absolute(domain),
-            authenticationMethod: .cybozuAuthorization(credentials),
+            authenticationMethod: .cybozuAuthorization(.init(loginName: loginName, password: password)),
             dataRequestHandler: { request in
                 try await URLSession.shared.data(for: request)
             }
         )
+    }
+
+    init() {
+        domain = UserDefaults.standard.string(forKey: "domain") ?? ""
+        loginName = UserDefaults.standard.string(forKey: "loginName") ?? ""
+        appID = UserDefaults.standard.integer(forKey: "appID")
+    }
+
+    func onNext() {
+        UserDefaults.standard.set(domain, forKey: "domain")
+        UserDefaults.standard.set(loginName, forKey: "loginName")
+        UserDefaults.standard.set(appID, forKey: "appID")
+        isPresented = true
     }
 
     func onTask() async {
@@ -39,27 +60,8 @@ import SwiftUI
         }
     }
 
-    func onTapSubmitButton() async {
+    func onSubmit(fields: [RecordField]) async {
         do {
-            let fields: [RecordField] = [
-                .init(code: "リッチエディター", value: .richText("<h1>hello world</h1>")),
-                .init(code: "文字列_複数行", value: .richText("Hello\nWorld\nTuru")),
-                .init(code: "文字列_1行", value: .singleLineText("お腹すいた")),
-                .init(code: "数値", value: .number("123456789")),
-                .init(code: "リンク_URL", value: .link("http://hoge")),
-                .init(code: "リンク_電話番号", value: .link("hoge")),
-                .init(code: "リンク_メール", value: .link("a@b")),
-                .init(code: "ラジオボタン", value: .radioButton("sample2")),
-                .init(code: "チェックボックス", value: .checkBox(["sample1"])),
-                .init(code: "ドロップダウン", value: .dropDown("sample2")),
-                .init(code: "複数選択", value: .multiSelect(["sample2", "sample4"])),
-                .init(code: "ユーザー選択", value: .userSelect([CodeObject(code: "cybozu")])),
-                .init(code: "組織選択", value: .organizationSelect([CodeObject(code: "SecretSociety")])),
-                .init(code: "グループ選択", value: .groupSelect([CodeObject(code: "everyone")])),
-                .init(code: "日付", value: .date(Date.now)),
-                .init(code: "時刻", value: .time(Date.now)),
-                .init(code: "日時", value: .dateTime(Date.now)),
-            ]
             try await kintoneAPI.submitRecord(appID: appID, fields: fields)
         } catch {
             print(error.localizedDescription)
@@ -69,44 +71,87 @@ import SwiftUI
 
 @MainActor struct ContentView: View {
     @State private var viewModel = ContentViewModel()
-    @State private var date: Date = .now
 
     var body: some View {
-        TabView(selection: $viewModel.tabCategory) {
-            AppsView(apps: viewModel.apps)
-                .tabItem {
-                    Label("アプリ一覧", systemImage: "app.fill")
+        NavigationStack {
+            Form {
+                Section {
+                    LabeledContent {
+                        TextField("subdomain.cybozu.com", text: $viewModel.domain)
+                            .multilineTextAlignment(.trailing)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                    } label: {
+                        Text("Domain:")
+                    }
+                    LabeledContent {
+                        TextField("user", text: $viewModel.loginName)
+                            .multilineTextAlignment(.trailing)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                    } label: {
+                        Text("Login Name:")
+                    }
+                    LabeledContent {
+                        SecureField("password", text: $viewModel.password)
+                            .multilineTextAlignment(.trailing)
+                    } label: {
+                        Text("Password:")
+                    }
+                    LabeledContent {
+                        TextField("1", value: $viewModel.appID, format: .number)
+                            .multilineTextAlignment(.trailing)
+                    } label: {
+                        Text("App ID:")
+                    }
                 }
-                .tag(TabCategory.apps)
-            FormLayoutView(layout: viewModel.layout)
-                .tabItem {
-                    Label("フォームレイアウト", systemImage: "square.grid.2x2")
-                }
-                .tag(TabCategory.formLayout)
-            FieldsView(fields: viewModel.fields)
-                .tabItem {
-                    Label("フィールド一覧", systemImage: "square.3.layers.3d.down.left")
-                }
-                .tag(TabCategory.fields)
-            RecordView(fields: viewModel.fields) {
-                Task {
-                    await viewModel.onTapSubmitButton()
+                Section {
+                    LabeledContent {
+                        Button {
+                            viewModel.onNext()
+                        } label: {
+                            Text("Next")
+                        }
+                        .buttonStyle(.borderedProminent)
+                    } label: {
+                        EmptyView()
+                    }
                 }
             }
-            .tabItem {
-                Label("レコード登録", systemImage: "paperplane")
+            .navigationTitle("Entrance")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $viewModel.isPresented) {
+                TabView(selection: $viewModel.tabCategory) {
+                    AppsView(apps: viewModel.apps)
+                        .tabItem {
+                            Label("Apps", systemImage: "app.fill")
+                        }
+                        .tag(TabCategory.apps)
+                    FormLayoutView(layout: viewModel.layout)
+                        .tabItem {
+                            Label("Form Layout", systemImage: "square.grid.2x2")
+                        }
+                        .tag(TabCategory.formLayout)
+                    FieldsView(fields: viewModel.fields)
+                        .tabItem {
+                            Label("Fields", systemImage: "square.3.layers.3d.down.left")
+                        }
+                        .tag(TabCategory.fields)
+                    RecordView(fields: viewModel.fields) { fields in
+                        Task {
+                            await viewModel.onSubmit(fields: fields)
+                        }
+                    }
+                    .tabItem {
+                        Label("Submit Record", systemImage: "paperplane")
+                    }
+                    .tag(TabCategory.record)
+                }
+                .navigationTitle("kintone API")
+                .task {
+                    await viewModel.onTask()
+                }
             }
-            .tag(TabCategory.record)
-        }
-        .task {
-            await viewModel.onTask()
         }
     }
-}
-
-enum TabCategory {
-    case apps
-    case formLayout
-    case fields
-    case record
 }
