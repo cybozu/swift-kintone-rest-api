@@ -15,7 +15,9 @@ public struct KintoneAPI: Sendable {
     public init(
         domain: KintoneDomain,
         authenticationMethod: AuthenticationMethod,
-        dataRequestHandler: @escaping @Sendable (URLRequest) async throws -> (Data, URLResponse)
+        dataRequestHandler: @escaping @Sendable (URLRequest) async throws -> (Data, URLResponse) = {
+            try await URLSession.shared.data(for: $0)
+        }
     ) {
         self.domain = domain
         self.authenticationMethod = authenticationMethod
