@@ -15,6 +15,12 @@ Providing kintone REST API with Swift interface.
 - `fetchFormFields` ([GET - /k/v1/app/form/fields.json](https://cybozu.dev/ja/kintone/docs/rest-api/apps/form/get-form-fields/))
 - `submitRecord` ([POST - /k/v1/record.json](https://cybozu.dev/ja/kintone/docs/rest-api/records/add-record/))
 
+## Supported Authentication Method
+
+- Cybozu Authorization (`X-Cybozu-Authorization`)
+- Cybozu API Token (`X-Cybozu-API-Token`)
+- Cybozu Session (`X-Requested-With`)
+
 ## Usage
 
 ```swift
@@ -25,6 +31,20 @@ func fetchAllApps() async throws {
         authenticationMethod: .cybozuAuthorization(credentials)
     )
     let apps = try await kintoneAPI.fetchApps()
+}
+
+func submitRecord() async throws {
+    let credentials = Credentials(loginName: "user", password: "*****")
+    let kintoneAPI = KintoneAPI(
+        domain: .absolute("subdomain.cybozu.com"),
+        authenticationMethod: .cybozuAuthorization(credentials)
+    )
+    let fields: [RecordField] = [
+        RecordField(code: "Number", value: .number("12345")),
+        RecordField(code: "SingleLineText", value: .singleLineText("Hello World!")),
+        RecordField(code: "CheckBox", value: .checkBox(["Apple", "Banana"])),
+    ]
+    try await kintoneAPI.submitRecord(appID: 1, fields: fields)
 }
 ```
 
