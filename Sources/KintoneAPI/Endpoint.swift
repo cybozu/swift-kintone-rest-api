@@ -10,11 +10,4 @@ enum Endpoint: String {
     case formLayout = "/k/v1/app/form/layout.json"
     case fields = "/k/v1/app/form/fields.json"
     case record = "/k/v1/record.json"
-
-    var httpMethod: String {
-        switch self {
-        case .apps, .formLayout, .fields: "GET"
-        case .record: "POST"
-        }
-    }
 }
