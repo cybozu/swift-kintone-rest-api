@@ -1,4 +1,4 @@
-# kintone REST API for iOS
+# kintone REST API with Swift
 
 Providing kintone REST API with Swift interface.
 
@@ -6,8 +6,7 @@ Providing kintone REST API with Swift interface.
 
 - Development with Xcode 15.4+
 - Written in Swift 5.10
-- Compatible with iOS 17+
-- Compatible with macOS 14+
+- Compatible with iOS 17+, macOS 14+
 
 ## Supported API
 
