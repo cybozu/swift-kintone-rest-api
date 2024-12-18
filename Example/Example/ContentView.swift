@@ -12,7 +12,7 @@ import SwiftUI
 @MainActor @Observable final class ContentViewModel {
     private let domain = ""
     private let credentials = Credentials(loginName: "", password: "")
-    private let appID = 1
+    private let appID = 55
     private let kintoneAPI: KintoneAPI
     var tabCategory = TabCategory.apps
     var apps = [KintoneApp]()
@@ -57,8 +57,8 @@ import SwiftUI
                 .init(code: "組織選択", value: .organizationSelect([CodeObject(code: "SecretSociety")])),
                 .init(code: "グループ選択", value: .groupSelect([CodeObject(code: "everyone")])),
                 .init(code: "日付", value: .date(Date.now)),
-                .init(code: "時刻", value: .time(Time(hour: 10, minute: 30))),
-                .init(code: "日時", value: .dateTime(Date())),
+                .init(code: "時刻", value: .time(Date.now)),
+                .init(code: "日時", value: .dateTime(Date.now)),
             ]
             try await kintoneAPI.submitRecord(appID: appID, fields: fields)
         } catch {
@@ -69,6 +69,7 @@ import SwiftUI
 
 @MainActor struct ContentView: View {
     @State private var viewModel = ContentViewModel()
+    @State private var date: Date = .now
 
     var body: some View {
         TabView(selection: $viewModel.tabCategory) {
@@ -87,7 +88,7 @@ import SwiftUI
                     Label("フィールド一覧", systemImage: "square.3.layers.3d.down.left")
                 }
                 .tag(TabCategory.fields)
-            RecordView {
+            RecordView(fields: viewModel.fields) {
                 Task {
                     await viewModel.onTapSubmitButton()
                 }

@@ -18,4 +18,12 @@ extension String {
             options: .regularExpression
         )
     }
+
+    var normalizedTime: String {
+        replacingOccurrences(
+            of: ":\\d\\d.\\d\\d\\d$",
+            with: "",
+            options: .regularExpression
+        )
+    }
 }

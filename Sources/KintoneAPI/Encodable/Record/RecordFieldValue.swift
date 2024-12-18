@@ -22,6 +22,6 @@ public enum RecordFieldValue: Encodable, Sendable {
     case radioButton(String)
     case richText(String)
     case singleLineText(String)
-    case time(Time)
+    case time(Date)
     case userSelect([CodeObject])
 }

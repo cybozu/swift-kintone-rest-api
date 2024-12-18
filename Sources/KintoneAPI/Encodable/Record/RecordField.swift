@@ -53,8 +53,9 @@ public struct RecordField: Encodable, Sendable {
             try container.encode(string, forKey: .value)
         case let .singleLineText(string):
             try container.encode(string, forKey: .value)
-        case let .time(time):
-            try container.encode(time, forKey: .value)
+        case let .time(date):
+            let dateString = DateFormatter.kintoneTime.string(from: date)
+            try container.encode(dateString, forKey: .value)
         case let .userSelect(codeArray):
             try container.encode(codeArray, forKey: .value)
         }

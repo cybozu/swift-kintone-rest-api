@@ -12,7 +12,7 @@ public struct DateTimeData: Decodable, Sendable {
     public var required: Bool
     public var unique: Bool
     public var defaultNowValue: Bool
-    public var defaultValue: Date?
+    public var defaultValue: Date
 
     enum CodingKeys: CodingKey {
         case noLabel
@@ -28,11 +28,7 @@ public struct DateTimeData: Decodable, Sendable {
         required = try container.decode(Bool.self, forKey: .required)
         unique = try container.decode(Bool.self, forKey: .unique)
         defaultNowValue = try container.decode(Bool.self, forKey: .defaultNowValue)
-        let _defaultValue = try container.decodeIfPresent(String.self, forKey: .defaultValue)
-        defaultValue = if let _defaultValue {
-            DateFormatter.kintoneDateTime.date(from: _defaultValue.normalizedDateTime)
-        } else {
-            nil
-        }
+        let _defaultValue = try container.decode(String.self, forKey: .defaultValue)
+        defaultValue = DateFormatter.kintoneDateTime.date(from: _defaultValue.normalizedDateTime) ?? Date.now
     }
 }
