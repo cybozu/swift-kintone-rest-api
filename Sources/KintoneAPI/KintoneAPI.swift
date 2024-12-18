@@ -8,13 +8,16 @@
 import Foundation
 
 public struct KintoneAPI: Sendable {
+    var domain: KintoneDomain
     var authenticationMethod: AuthenticationMethod
     var dataRequestHandler: @Sendable (URLRequest) async throws -> (Data, URLResponse)
 
     public init(
+        domain: KintoneDomain,
         authenticationMethod: AuthenticationMethod,
         dataRequestHandler: @escaping @Sendable (URLRequest) async throws -> (Data, URLResponse)
     ) {
+        self.domain = domain
         self.authenticationMethod = authenticationMethod
         self.dataRequestHandler = dataRequestHandler
     }
@@ -25,7 +28,12 @@ public struct KintoneAPI: Sendable {
         queryItems: [URLQueryItem] = [],
         httpBody: Data? = nil
     ) -> URLRequest {
-        var url = URL(string: "\(endpoint.rawValue)")!
+        var url = switch domain {
+        case let .absolute(domain):
+            URL(string: "https://\(domain)\(endpoint.rawValue)")!
+        case .relative:
+            URL(string: "\(endpoint.rawValue)")!
+        }
         if !queryItems.isEmpty {
             url.append(queryItems: queryItems)
         }

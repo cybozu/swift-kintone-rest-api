@@ -22,7 +22,7 @@ public struct Time: Codable, Sendable, CustomStringConvertible, Equatable {
         let container = try decoder.singleValueContainer()
         let rawValue = try container.decode(String.self)
         let array = rawValue.components(separatedBy: ":")
-        guard array.count == 2, let hour = Int(array[0]), let minute = Int(array[1]) else {
+        guard array.count >= 2, let hour = Int(array[0]), let minute = Int(array[1]) else {
             throw DecodingError.typeMismatch(Time.self, .init(
                 codingPath: decoder.codingPath,
                 debugDescription: "Failed to decode Time"
