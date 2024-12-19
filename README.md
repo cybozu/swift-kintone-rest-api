@@ -1,4 +1,4 @@
-# kintone REST API with Swift
+# swift-kintone-rest-api
 
 Providing kintone REST API with Swift interface.
 

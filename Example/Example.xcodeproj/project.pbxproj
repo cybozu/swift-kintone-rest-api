@@ -10,13 +10,13 @@
 		1889BC0F2D128790002FF803 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC0E2D128790002FF803 /* ExampleApp.swift */; };
 		1889BC112D128790002FF803 /* AppsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC102D128790002FF803 /* AppsView.swift */; };
 		1889BC132D128797002FF803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1889BC122D128797002FF803 /* Assets.xcassets */; };
-		1889BC202D12882F002FF803 /* KintoneAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 1889BC1F2D12882F002FF803 /* KintoneAPI */; };
 		1889BC222D1288B9002FF803 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC212D1288B9002FF803 /* View+Extension.swift */; };
 		1889BC242D12890A002FF803 /* FieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC232D12890A002FF803 /* FieldsView.swift */; };
 		1889BC262D128965002FF803 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC252D128965002FF803 /* String+Extension.swift */; };
 		1889BC282D1289AF002FF803 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC272D1289AF002FF803 /* RecordView.swift */; };
 		1889BC2A2D1289C9002FF803 /* FormLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC292D1289C9002FF803 /* FormLayoutView.swift */; };
 		1889BC2C2D128A22002FF803 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC2B2D128A22002FF803 /* ContentView.swift */; };
+		18FB53F62D13B160004AB6F0 /* KintoneAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 18FB53F52D13B160004AB6F0 /* KintoneAPI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,7 +24,6 @@
 		1889BC0E2D128790002FF803 /* ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
 		1889BC102D128790002FF803 /* AppsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsView.swift; sourceTree = "<group>"; };
 		1889BC122D128797002FF803 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1889BC1C2D12881D002FF803 /* kintone-rest-api-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "kintone-rest-api-swift"; path = ..; sourceTree = "<group>"; };
 		1889BC1D2D128829002FF803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1889BC212D1288B9002FF803 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		1889BC232D12890A002FF803 /* FieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsView.swift; sourceTree = "<group>"; };
@@ -32,6 +31,7 @@
 		1889BC272D1289AF002FF803 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		1889BC292D1289C9002FF803 /* FormLayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLayoutView.swift; sourceTree = "<group>"; };
 		1889BC2B2D128A22002FF803 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		18FB53F42D13B152004AB6F0 /* swift-kintone-rest-api */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "swift-kintone-rest-api"; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,7 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1889BC202D12882F002FF803 /* KintoneAPI in Frameworks */,
+				18FB53F62D13B160004AB6F0 /* KintoneAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,7 +49,7 @@
 		1889BC022D128790002FF803 = {
 			isa = PBXGroup;
 			children = (
-				1889BC1C2D12881D002FF803 /* kintone-rest-api-swift */,
+				18FB53F42D13B152004AB6F0 /* swift-kintone-rest-api */,
 				1889BC0D2D128790002FF803 /* Example */,
 				1889BC0C2D128790002FF803 /* Products */,
 				1889BC1E2D12882F002FF803 /* Frameworks */,
@@ -105,7 +105,7 @@
 			);
 			name = Example;
 			packageProductDependencies = (
-				1889BC1F2D12882F002FF803 /* KintoneAPI */,
+				18FB53F52D13B160004AB6F0 /* KintoneAPI */,
 			);
 			productName = Example;
 			productReference = 1889BC0B2D128790002FF803 /* Example.app */;
@@ -383,7 +383,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1889BC1F2D12882F002FF803 /* KintoneAPI */ = {
+		18FB53F52D13B160004AB6F0 /* KintoneAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = KintoneAPI;
 		};
