@@ -24,6 +24,7 @@ struct FieldOptions: Decodable, Sendable {
             values = try optionsContainer.allKeys.compactMap { key in
                 try optionsContainer.decodeIfPresent(FieldOption.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
             }
+            .sorted(by: { $0.index < $1.index })
         } else {
             values = []
         }

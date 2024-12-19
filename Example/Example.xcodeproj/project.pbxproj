@@ -17,6 +17,7 @@
 		1889BC2A2D1289C9002FF803 /* FormLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC292D1289C9002FF803 /* FormLayoutView.swift */; };
 		1889BC2C2D128A22002FF803 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC2B2D128A22002FF803 /* ContentView.swift */; };
 		18FB53F62D13B160004AB6F0 /* KintoneAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 18FB53F52D13B160004AB6F0 /* KintoneAPI */; };
+		18FB53F82D140870004AB6F0 /* Checkboxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FB53F72D140870004AB6F0 /* Checkboxes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		1889BC292D1289C9002FF803 /* FormLayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLayoutView.swift; sourceTree = "<group>"; };
 		1889BC2B2D128A22002FF803 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		18FB53F42D13B152004AB6F0 /* swift-kintone-rest-api */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "swift-kintone-rest-api"; path = ..; sourceTree = "<group>"; };
+		18FB53F72D140870004AB6F0 /* Checkboxes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkboxes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				1889BC272D1289AF002FF803 /* RecordView.swift */,
 				1889BC212D1288B9002FF803 /* View+Extension.swift */,
 				1889BC252D128965002FF803 /* String+Extension.swift */,
+				18FB53F72D140870004AB6F0 /* Checkboxes.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 				1889BC2C2D128A22002FF803 /* ContentView.swift in Sources */,
 				1889BC242D12890A002FF803 /* FieldsView.swift in Sources */,
 				1889BC222D1288B9002FF803 /* View+Extension.swift in Sources */,
+				18FB53F82D140870004AB6F0 /* Checkboxes.swift in Sources */,
 				1889BC2A2D1289C9002FF803 /* FormLayoutView.swift in Sources */,
 				1889BC262D128965002FF803 /* String+Extension.swift in Sources */,
 				1889BC0F2D128790002FF803 /* ExampleApp.swift in Sources */,
