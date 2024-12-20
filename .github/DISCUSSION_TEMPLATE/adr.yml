@@ -1,0 +1,79 @@
+body:
+  - type: dropdown
+    attributes:
+      label: Status
+      description: この文書のステータスを選択してください。
+      options:
+        - "提案済み"
+        - "承認済み"
+        - "破棄"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Context
+      description: |
+        この決定を行った状況について書いてください。
+        どのような状況で決定 (デシジョン) を迫られているかを明確にします。
+
+        このセクションには、技術的、政治的、社会的、およびプロダクトの現場を含む、プレイ中の原動力について記述します。
+        これらの力はおそらく引っ張り合っているので、そのように登場させる必要があります。
+
+        このセクションの言語は、価値中立的です。単に事実を記述するだけです。
+      placeholder: この決定を行った状況について書いてください。
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Decision
+      description: |
+        決定は、受動的にではなく、非常に肯定的かつ命令的に記述します。
+        アーキテクトの意見が述べられるだけになるような記述は避けます。
+      placeholder: サービス間に非同期メッセージを使用する
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Basis of the Decision
+      description: |
+        決定の根拠を記入します。
+        これにより、ある決定がなされた理由を理解するのに役立ちます。
+      placeholder: |
+        ADRのテンプレートには以下の選択肢があった。
+
+        1. フォーマットのみ記述する
+        2. フォーマットと記述例を記述する
+        3. フォーマット、記述例、セクションに期待することを記述する
+        ADRの記述を促進し、より良い決定とその記録をサポートするため、各セクションに期待することまで含めて記述することとした。（記入例）
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Consequences
+      description: |
+        決定による影響や、比較・検討した内容について書いてください。
+        アーキテクチャ決定の影響を明らかにすることで、その影響が決定の利点を上回っていないかどうかを見極めることができます。
+        また、アーキテクチャ決定のトレードオフ分析を文書化することにも役立ちます。
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Compliance
+      description: |
+        この決定が順守されていることを確認方法について書いてください。
+        コンプライアンスのセクションでは、決定したアーキテクチャの評価、管理のためのテスト内容、テストする場所、テストの実行方法などを記述します。
+        例えば、Java を使用したレイヤードアーキテクチャの場合に、あるレイヤーのアーキテクチャを決定した場合は、ArchUnit をどのように使用して評価するのかというようなことになります。
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Note
+      description: ADR に関するさまざまなメタデータを記述します。
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Original Author
+      description: ADR を最初に執筆した人を記入します。
+    validations:
+      required: true
