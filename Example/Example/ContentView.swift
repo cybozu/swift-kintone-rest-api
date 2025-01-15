@@ -29,8 +29,10 @@ enum TabCategory {
 
     var kintoneAPI: KintoneAPI {
         .init(
-            domain: .absolute(domain),
-            authenticationMethod: .cybozuAuthorization(.init(loginName: loginName, password: password))
+            authenticationMethod: .cybozuAuthorization(.init(loginName: loginName, password: password)),
+            dataRequestHandler: { [domain] request in
+                try await URLSession.shared.data(for: request.inserted(domain: domain))
+            }
         )
     }
 
