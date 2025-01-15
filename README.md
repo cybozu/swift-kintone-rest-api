@@ -4,8 +4,8 @@ Providing kintone REST API with Swift interface.
 
 ## Requirements
 
-- Development with Xcode 15.4+
-- Written in Swift 5.10
+- Development with Xcode 16.0+
+- Written in Swift 6.0
 - Compatible with iOS 17+, macOS 14+
 
 ## Supported API
