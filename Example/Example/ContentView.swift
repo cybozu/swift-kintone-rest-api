@@ -31,7 +31,10 @@ enum TabCategory {
         .init(
             authenticationMethod: .cybozuAuthorization(.init(loginName: loginName, password: password)),
             dataRequestHandler: { [domain] request in
-                try await URLSession.shared.data(for: request.inserted(domain: domain))
+                guard let url = request.url else { throw URLError(.badURL) }
+                var request = request
+                request.url = URL(string: "https://\(domain)\(url.relativeString)")
+                return try await URLSession.shared.data(for: request)
             }
         )
     }
