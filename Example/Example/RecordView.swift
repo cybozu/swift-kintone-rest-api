@@ -242,6 +242,6 @@ struct RecordView: View {
         }
     }
 }
-extension FieldProperty: Identifiable {
+extension FieldProperty: @retroactive Identifiable {
     public var id: String { code }
 }
