@@ -77,6 +77,10 @@ struct FieldsView: View {
                                 CornerRadiusText("Required: \(data.required)")
                                 CornerRadiusText("Thumbnail Size: \(data.thumbnailSize)")
 
+                            case let .group(data):
+                                CornerRadiusText("No Label: \(data.noLabel)")
+                                CornerRadiusText("Open Group: \(data.openGroup)")
+
                             case let .groupSelect(data):
                                 CornerRadiusText("No Label: \(data.noLabel)")
                                 CornerRadiusText("Required: \(data.required)")

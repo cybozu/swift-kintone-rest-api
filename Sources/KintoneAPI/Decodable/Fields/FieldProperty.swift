@@ -46,6 +46,8 @@ public struct FieldProperty: Decodable, Sendable {
                 try FieldData.dropDown(DropDownData(from: decoder))
             case .file:
                 try FieldData.file(FileData(from: decoder))
+            case .group:
+                try FieldData.group(GroupData(from: decoder))
             case .groupSelect:
                 try FieldData.groupSelect(GroupSelectData(from: decoder))
             case .link:

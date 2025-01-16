@@ -28,53 +28,78 @@ struct RecordView: View {
                     switch field.type {
                     case .richText:
                         if case let .richText(data) = field.data {
-                            TextField(
-                                text: Binding<String>(
-                                    get: { fieldValues[field.code]?.string ?? data.defaultValue },
-                                    set: { fieldValues[field.code] = .richText($0) }
-                                ),
-                                label: { Text(field.label) }
-                            )
+                            LabeledContent {
+                                TextField(
+                                    text: Binding<String>(
+                                        get: { fieldValues[field.code]?.string ?? data.defaultValue },
+                                        set: { fieldValues[field.code] = .richText($0) }
+                                    ),
+                                    label: { Text(data.defaultValue) }
+                                )
+                                .multilineTextAlignment(.trailing)
+                            } label: {
+                                Text(field.label)
+                            }
                         }
                     case .multiLineText:
                         if case let .multiLineText(data) = field.data {
-                            TextField(
-                                text: Binding<String>(
-                                    get: { fieldValues[field.code]?.string ?? data.defaultValue },
-                                    set: { fieldValues[field.code] = .multiLineText($0) }
-                                ),
-                                label: { Text(field.label) }
-                            )
+                            LabeledContent {
+                                TextField(
+                                    text: Binding<String>(
+                                        get: { fieldValues[field.code]?.string ?? data.defaultValue },
+                                        set: { fieldValues[field.code] = .multiLineText($0) }
+                                    ),
+                                    label: { Text(data.defaultValue) }
+                                )
+                                .multilineTextAlignment(.trailing)
+                            } label: {
+                                Text(field.label)
+                            }
                         }
                     case .singleLineText:
                         if case let .singleLineText(data) = field.data {
-                            TextField(
-                                text: Binding<String>(
-                                    get: { fieldValues[field.code]?.string ?? data.defaultValue },
-                                    set: { fieldValues[field.code] = .singleLineText($0) }
-                                ),
-                                label: { Text(field.label) }
-                            )
+                            LabeledContent {
+                                TextField(
+                                    text: Binding<String>(
+                                        get: { fieldValues[field.code]?.string ?? data.defaultValue },
+                                        set: { fieldValues[field.code] = .singleLineText($0) }
+                                    ),
+                                    label: { Text(data.defaultValue) }
+                                )
+                                .multilineTextAlignment(.trailing)
+                            } label: {
+                                Text(field.label)
+                            }
                         }
                     case .number:
                         if case let .number(data) = field.data {
-                            TextField(
-                                text: Binding<String>(
-                                    get: { fieldValues[field.code]?.string ?? data.defaultValue },
-                                    set: { fieldValues[field.code] = .number($0.description) }
-                                ),
-                                label: { Text(field.label) }
-                            )
+                            LabeledContent {
+                                TextField(
+                                    text: Binding<String>(
+                                        get: { fieldValues[field.code]?.string ?? data.defaultValue },
+                                        set: { fieldValues[field.code] = .number($0.description) }
+                                    ),
+                                    label: { Text(data.defaultValue) }
+                                )
+                                .multilineTextAlignment(.trailing)
+                            } label: {
+                                Text(field.label)
+                            }
                         }
                     case .link:
                         if case let .link(data) = field.data {
-                            TextField(
-                                text: Binding<String>(
-                                    get: { fieldValues[field.code]?.string ?? data.defaultValue },
-                                    set: { fieldValues[field.code] = .link($0) }
-                                ),
-                                label: { Text(field.label) }
-                            )
+                            LabeledContent {
+                                TextField(
+                                    text: Binding<String>(
+                                        get: { fieldValues[field.code]?.string ?? data.defaultValue },
+                                        set: { fieldValues[field.code] = .link($0) }
+                                    ),
+                                    label: { Text(data.defaultValue) }
+                                )
+                                .multilineTextAlignment(.trailing)
+                            } label: {
+                                Text(field.label)
+                            }
                         }
                     case .radioButton:
                         if case let .radioButton(data) = field.data {
