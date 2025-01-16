@@ -92,9 +92,6 @@ public struct KintoneAPI: Sendable {
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .fields, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        if let str = String(data: data, encoding: .utf8) {
-            print(str)
-        }
         try check(response: response)
         let fieldsResponse = try JSONDecoder().decode(FieldsResponse.self, from: data)
         return fieldsResponse.properties
@@ -106,10 +103,7 @@ public struct KintoneAPI: Sendable {
     ) async throws {
         let httpBody = try JSONEncoder().encode(RecordRequest(appID: appID, fields: fields))
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
-        let (data, response) = try await dataRequestHandler(request)
-        if let str = String(data: data, encoding: .utf8) {
-            print(str)
-        }
+        let (_, response) = try await dataRequestHandler(request)
         try check(response: response)
     }
 }
