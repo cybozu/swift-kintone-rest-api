@@ -7,5 +7,4 @@
 
 public enum KintoneAPIError: Error {
     case invalidResponse
-    case unresolvedRequestURL
 }
