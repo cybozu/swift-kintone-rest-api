@@ -27,8 +27,13 @@ Providing kintone REST API with Swift interface.
 func fetchAllApps() async throws {
     let credentials = Credentials(loginName: "user", password: "*****")
     let kintoneAPI = KintoneAPI(
-        domain: .absolute("subdomain.cybozu.com"),
-        authenticationMethod: .cybozuAuthorization(credentials)
+        authenticationMethod: .cybozuAuthorization(credentials),
+        dataRequestHandler: { request in
+            guard let url = request.url else { throw URLError(.badURL) }
+            var request = request
+            request.url = URL(string: "https://subdomain.cybozu.com\(url.relativeString)")
+            return try await URLSession.shared.data(for: request)
+        }
     )
     let apps = try await kintoneAPI.fetchApps()
 }
@@ -36,8 +41,13 @@ func fetchAllApps() async throws {
 func submitRecord() async throws {
     let credentials = Credentials(loginName: "user", password: "*****")
     let kintoneAPI = KintoneAPI(
-        domain: .absolute("subdomain.cybozu.com"),
-        authenticationMethod: .cybozuAuthorization(credentials)
+        authenticationMethod: .cybozuAuthorization(credentials),
+        dataRequestHandler: { request in
+            guard let url = request.url else { throw URLError(.badURL) }
+            var request = request
+            request.url = URL(string: "https://subdomain.cybozu.com\(url.relativeString)")
+            return try await URLSession.shared.data(for: request)
+        }
     )
     let fields: [RecordField] = [
         RecordField(code: "Number", value: .number("12345")),
