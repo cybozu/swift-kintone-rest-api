@@ -11,7 +11,6 @@ public struct FormLayout: Decodable, Sendable {
     public var fields: [FormField]
     public var layout: [FormLayout]
 
-
     enum CodingKeys: CodingKey {
         case type
         case code
