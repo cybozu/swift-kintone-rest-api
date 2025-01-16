@@ -15,6 +15,7 @@ public enum FieldData: Sendable {
     case dateTime(DateTimeData)
     case dropDown(DropDownData)
     case file(FileData)
+    case group(GroupData)
     case groupSelect(GroupSelectData)
     case link(LinkData)
     case lookup(LookupData)
