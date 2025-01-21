@@ -30,6 +30,7 @@ public enum FieldData: Sendable {
     case singleLineText(SingleLineTextData)
     case status(StatusData)
     case statusAssignee(StatusAssigneeData)
+    case subtable(SubtableData)
     case time(TimeData)
     case updatedTime(UpdatedTimeData)
     case userSelect(UserSelectData)

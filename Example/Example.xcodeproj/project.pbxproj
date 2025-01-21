@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18572FB22D3F644F00A3E628 /* KintoneAPI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18572FB12D3F644F00A3E628 /* KintoneAPI+Extension.swift */; };
 		1889BC0F2D128790002FF803 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC0E2D128790002FF803 /* ExampleApp.swift */; };
 		1889BC112D128790002FF803 /* AppsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1889BC102D128790002FF803 /* AppsView.swift */; };
 		1889BC132D128797002FF803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1889BC122D128797002FF803 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18572FB12D3F644F00A3E628 /* KintoneAPI+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KintoneAPI+Extension.swift"; sourceTree = "<group>"; };
 		1889BC0B2D128790002FF803 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1889BC0E2D128790002FF803 /* ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
 		1889BC102D128790002FF803 /* AppsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsView.swift; sourceTree = "<group>"; };
@@ -77,9 +79,10 @@
 				1889BC292D1289C9002FF803 /* FormLayoutView.swift */,
 				1889BC232D12890A002FF803 /* FieldsView.swift */,
 				1889BC272D1289AF002FF803 /* RecordView.swift */,
+				18FB53F72D140870004AB6F0 /* Checkboxes.swift */,
 				1889BC212D1288B9002FF803 /* View+Extension.swift */,
 				1889BC252D128965002FF803 /* String+Extension.swift */,
-				18FB53F72D140870004AB6F0 /* Checkboxes.swift */,
+				18572FB12D3F644F00A3E628 /* KintoneAPI+Extension.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 				1889BC222D1288B9002FF803 /* View+Extension.swift in Sources */,
 				18FB53F82D140870004AB6F0 /* Checkboxes.swift in Sources */,
 				1889BC2A2D1289C9002FF803 /* FormLayoutView.swift in Sources */,
+				18572FB22D3F644F00A3E628 /* KintoneAPI+Extension.swift in Sources */,
 				1889BC262D128965002FF803 /* String+Extension.swift in Sources */,
 				1889BC0F2D128790002FF803 /* ExampleApp.swift in Sources */,
 			);

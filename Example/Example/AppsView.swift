@@ -49,7 +49,3 @@ struct AppsView: View {
         }
     }
 }
-
-extension KintoneApp: @retroactive Identifiable {
-    public var id: Int { appID }
-}
