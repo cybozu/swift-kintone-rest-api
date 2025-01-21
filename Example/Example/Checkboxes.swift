@@ -71,7 +71,7 @@ struct Checkboxes<Label, SelectionValue, Content>: View where Label: View, Selec
     }
 }
 
-struct CheckboxToggleStyle: ToggleStyle {
+private struct CheckboxToggleStyle: ToggleStyle {
     @Environment(\.isEnabled) private var isEnabled
 
     func makeBody(configuration: Configuration) -> some View {

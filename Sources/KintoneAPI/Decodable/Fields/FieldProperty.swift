@@ -74,6 +74,8 @@ public struct FieldProperty: Decodable, Sendable {
                 try FieldData.status(StatusData(from: decoder))
             case .statusAssignee:
                 try FieldData.statusAssignee(StatusAssigneeData(from: decoder))
+            case .subtable:
+                try FieldData.subtable(SubtableData(from: decoder))
             case .time:
                 try FieldData.time(TimeData(from: decoder))
             case .updatedTime:

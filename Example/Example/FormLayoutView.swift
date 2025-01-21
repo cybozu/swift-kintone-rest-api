@@ -23,7 +23,7 @@ struct FormLayoutView: View {
     }
 }
 
-struct FormLayoutDetailView: View {
+private struct FormLayoutDetailView: View {
     var layout: FormLayout
 
     var body: some View {
