@@ -14,6 +14,7 @@ Providing kintone REST API with Swift interface.
 - `fetchFormLayout` ([GET - /k/v1/app/form/layout.json](https://cybozu.dev/ja/kintone/docs/rest-api/apps/form/get-form-layout/))
 - `fetchFormFields` ([GET - /k/v1/app/form/fields.json](https://cybozu.dev/ja/kintone/docs/rest-api/apps/form/get-form-fields/))
 - `submitRecord` ([POST - /k/v1/record.json](https://cybozu.dev/ja/kintone/docs/rest-api/records/add-record/))
+- `uploadFile` ([POST - /k/v1/file.json](https://cybozu.dev/ja/kintone/docs/rest-api/files/upload-file/))
 
 ## Supported Authentication Method
 

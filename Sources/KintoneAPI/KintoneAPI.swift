@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UniformTypeIdentifiers
 
 public struct KintoneAPI: Sendable {
     var authenticationMethod: AuthenticationMethod
@@ -23,7 +24,8 @@ public struct KintoneAPI: Sendable {
         httpMethod: HTTPMethod,
         endpoint: Endpoint,
         queryItems: [URLQueryItem] = [],
-        httpBody: Data? = nil
+        httpBody: Data? = nil,
+        contentType: ContentType = .applicationJSON
     ) -> URLRequest {
         var url = URL(string: "\(endpoint.rawValue)")!
         if !queryItems.isEmpty {
@@ -36,7 +38,7 @@ public struct KintoneAPI: Sendable {
             forHTTPHeaderField: authenticationMethod.headerField
         )
         if let httpBody {
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue(contentType.value, forHTTPHeaderField: "Content-Type")
             request.httpBody = httpBody
         }
         return request
@@ -105,5 +107,28 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
         let (_, response) = try await dataRequestHandler(request)
         try check(response: response)
+    }
+    
+    public func uploadFile(
+        appID: Int,
+        fileName: String,
+        type: UTType,
+        data: Data
+    ) async throws -> String {
+        let boundary = "---------\(UUID().uuidString)"
+        let mimeType = type.preferredMIMEType ?? "application/octet-stream"
+        var httpBody = Data()
+        httpBody.append("--\(boundary)\r\n".data(using: .utf8)!)
+        httpBody.append("Content-Disposition: form-data; name=\"file\";".data(using: .utf8)!)
+        httpBody.append("filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+        httpBody.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
+        httpBody.append(data)
+        httpBody.append("\r\n".data(using: .utf8)!)
+        httpBody.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        let request = makeRequest(httpMethod: .post, endpoint: .file, httpBody: httpBody, contentType: .multipartFormData(boundary))
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response)
+        let fileResponse = try JSONDecoder().decode(FileResponse.self, from: data)
+        return fileResponse.fileKey
     }
 }
