@@ -50,12 +50,13 @@ func submitRecord() async throws {
             return try await URLSession.shared.data(for: request)
         }
     )
-    let fields: [RecordField] = [
-        RecordField(code: "Number", value: .number("12345")),
-        RecordField(code: "SingleLineText", value: .singleLineText("Hello World!")),
-        RecordField(code: "CheckBox", value: .checkBox(["Apple", "Banana"])),
+    let fields: [RecordField.Write] = [
+        RecordField.Write(code: "Number", value: .number("12345")),
+        RecordField.Write(code: "SingleLineText", value: .singleLineText("Hello World!")),
+        RecordField.Write(code: "CheckBox", value: .checkBox(["Apple", "Banana"])),
     ]
-    try await kintoneAPI.submitRecord(appID: 1, fields: fields)
+    let record = Record.Write(fields: fields)
+    try await kintoneAPI.submitRecord(appID: 1, record: record)
 }
 ```
 
