@@ -24,6 +24,7 @@ struct RecordInputFieldView: View {
                         ),
                         label: { Text(attribute.defaultValue) }
                     )
+                    .textFieldStyle(.roundedBorder)
                     .multilineTextAlignment(.trailing)
                 } label: {
                     Text(field.label)
@@ -39,6 +40,7 @@ struct RecordInputFieldView: View {
                         ),
                         label: { Text(attribute.defaultValue) }
                     )
+                    .textFieldStyle(.roundedBorder)
                     .multilineTextAlignment(.trailing)
                 } label: {
                     Text(field.label)
@@ -54,6 +56,7 @@ struct RecordInputFieldView: View {
                         ),
                         label: { Text(attribute.defaultValue) }
                     )
+                    .textFieldStyle(.roundedBorder)
                     .multilineTextAlignment(.trailing)
                 } label: {
                     Text(field.label)
@@ -69,6 +72,7 @@ struct RecordInputFieldView: View {
                         ),
                         label: { Text(attribute.defaultValue) }
                     )
+                    .textFieldStyle(.roundedBorder)
                     .multilineTextAlignment(.trailing)
                 } label: {
                     Text(field.label)
@@ -84,6 +88,7 @@ struct RecordInputFieldView: View {
                         ),
                         label: { Text(attribute.defaultValue) }
                     )
+                    .textFieldStyle(.roundedBorder)
                     .multilineTextAlignment(.trailing)
                 } label: {
                     Text(field.label)
