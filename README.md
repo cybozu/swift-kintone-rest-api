@@ -10,11 +10,12 @@ Providing kintone REST API with Swift interface.
 
 ## Supported API
 
-- `fetchApps` ([GET - /k/v1/apps.json](https://cybozu.dev/ja/kintone/docs/rest-api/apps/get-apps/))
-- `fetchFormLayout` ([GET - /k/v1/app/form/layout.json](https://cybozu.dev/ja/kintone/docs/rest-api/apps/form/get-form-layout/))
-- `fetchFormFields` ([GET - /k/v1/app/form/fields.json](https://cybozu.dev/ja/kintone/docs/rest-api/apps/form/get-form-fields/))
-- `submitRecord` ([POST - /k/v1/record.json](https://cybozu.dev/ja/kintone/docs/rest-api/records/add-record/))
-- `uploadFile` ([POST - /k/v1/file.json](https://cybozu.dev/ja/kintone/docs/rest-api/files/upload-file/))
+- `fetchApps` ([GET - /k/v1/apps.json](https://kintone.dev/en/docs/kintone/rest-api/apps/get-apps/))
+- `fetchFormLayout` ([GET - /k/v1/app/form/layout.json](https://kintone.dev/en/docs/kintone/rest-api/apps/get-form-layout/))
+- `fetchFormFields` ([GET - /k/v1/app/form/fields.json](https://kintone.dev/en/docs/kintone/rest-api/apps/get-form-fields/))
+- `fetchRecords` ([GET - /k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/get-records/))
+- `submitRecord` ([POST - /k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/add-record/))
+- `uploadFile` ([POST - /k/v1/file.json](https://kintone.dev/en/docs/kintone/rest-api/files/upload-file/))
 
 ## Supported Authentication Method
 
@@ -51,9 +52,9 @@ func submitRecord() async throws {
         }
     )
     let fields: [RecordField.Write] = [
-        RecordField.Write(code: "Number", value: .number("12345")),
-        RecordField.Write(code: "SingleLineText", value: .singleLineText("Hello World!")),
-        RecordField.Write(code: "CheckBox", value: .checkBox(["Apple", "Banana"])),
+        RecordField.Write(code: "User Number", value: .number("12345")),
+        RecordField.Write(code: "Comment", value: .singleLineText("Hello World!")),
+        RecordField.Write(code: "Favorites", value: .checkBox(["Apple", "Banana"])),
     ]
     let record = Record.Write(fields: fields)
     try await kintoneAPI.submitRecord(appID: 1, record: record)
