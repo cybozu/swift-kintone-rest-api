@@ -26,3 +26,7 @@ extension Entity.Read: @retroactive Identifiable {
 extension RecordField.Read: @retroactive Identifiable {
     public var id: String { code }
 }
+
+extension File.Read: @retroactive Identifiable {
+    public var id: String { fileKey }
+}

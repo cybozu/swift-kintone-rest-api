@@ -15,7 +15,7 @@ struct FetchAppsView: View {
         ScrollView {
             VStack(spacing: 8) {
                 ForEach(apps) { app in
-                    HStack {
+                    HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("App ID: \(app.appID)")
                             Text("Code: \(app.code)")

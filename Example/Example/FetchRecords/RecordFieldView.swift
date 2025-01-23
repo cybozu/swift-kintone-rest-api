@@ -12,8 +12,9 @@ struct RecordFieldView: View {
     var recordField: RecordField.Read
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        HStack(alignment: .top) {
             Text("Code: \(recordField.code)")
+            Divider()
             switch recordField.value {
             case let .calc(string),
                 let .id(string),
@@ -25,53 +26,50 @@ struct RecordFieldView: View {
                 let .richText(string),
                 let .singleLineText(string),
                 let .status(string):
-                Text("Value: \(string)")
+                CornerRadiusText("Value: \(string)")
                 
             case let .dropDown(string),
                 let .radioButton(string):
-                Text("Value: \(String(optional: string))")
+                CornerRadiusText("Value: \(String(optional: string))")
 
             case let .category(stringArray),
                 let .checkBox(stringArray),
                 let .multiSelect(stringArray):
-                Text("Value: \(stringArray)")
+                ArrayValueView(stringArray.indices, id: \.self) { i in
+                    CornerRadiusText(stringArray[i])
+                }
 
             case let .createdTime(date),
                 let .updatedTime(date):
-                Text("Value: \(date)")
+                CornerRadiusText("Value: \(date)")
                 
             case let .date(date),
                 let .dateTime(date),
                 let .time(date):
-                Text("Value: \(String(optional: date))")
+                CornerRadiusText("Value: \(String(optional: date))")
                 
             case let .creator(entity),
                 let .modifier(entity),
                 let .statusAssignee(entity):
-                HStack(alignment: .top) {
-                    Text("Value:")
-                    Divider()
-                    VStack(alignment: .leading, spacing: 4) {
-                        CornerRadiusText("Type: \(entity.type.rawValue)")
-                        CornerRadiusText("Code: \(entity.code)")
-                        CornerRadiusText("Name: \(String(optional: entity.name))")
-                    }
-                }
-                .cornerRadiusBorder()
+                EntityView(entity: entity)
                 
-            case let .file(file):
-                Text("Value: \(file)")
+            case let .file(files):
+                ArrayValueView(files) { file in
+                    FileView(file: file)
+                }
                 
             case let .groupSelect(entityArray),
                 let .organizationSelect(entityArray),
                 let .userSelect(entityArray):
-                Text("Value: \(entityArray)")
+                ArrayValueView(entityArray) { entity in
+                    EntityView(entity: entity)
+                }
                 
             case let .subTable(subtableValueArray):
-                ForEach(subtableValueArray.indices, id: \.self) { j in
+                ArrayValueView(subtableValueArray.indices, id: \.self) { i in
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("ID: \(subtableValueArray[j].id)")
-                        ForEach(subtableValueArray[j].value) { recordField in
+                        Text("ID: \(subtableValueArray[i].id)")
+                        ForEach(subtableValueArray[i].value) { recordField in
                             RecordFieldView(recordField: recordField)
                         }
                     }
