@@ -6,7 +6,7 @@
 //
 
 public struct FormField: Decodable, Sendable {
-    public var type: FieldType
+    public var type: FormFieldType
     public var code: String?
     public var label: String?
     public var elementID: String?

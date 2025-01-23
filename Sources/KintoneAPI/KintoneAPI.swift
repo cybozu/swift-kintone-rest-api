@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UniformTypeIdentifiers
 
 public struct KintoneAPI: Sendable {
     var authenticationMethod: AuthenticationMethod
@@ -101,22 +100,37 @@ public struct KintoneAPI: Sendable {
 
     public func submitRecord(
         appID: Int,
-        fields: [RecordField]
+        record: Record.Write
     ) async throws {
-        let httpBody = try JSONEncoder().encode(RecordRequest(appID: appID, fields: fields))
+        let httpBody = try JSONEncoder().encode(RecordRequest(appID: appID, record: record))
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
         let (_, response) = try await dataRequestHandler(request)
         try check(response: response)
     }
     
+    public func fetchRecords(
+        appID: Int,
+        fields: [String]? = nil,
+        query: String? = nil
+    ) async throws -> [Record.Read] {
+        var queryItems = [URLQueryItem]()
+        queryItems.appendQueryItem(name: "app", value: appID.description)
+        queryItems.appendQueryItem(name: "fields", value: fields?.arrayString)
+        queryItems.appendQueryItem(name: "query", value: query)
+        let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response)
+        let recordsResponse = try JSONDecoder().decode(RecordsResponse.self, from: data)
+        return recordsResponse.records
+    }
+    
     public func uploadFile(
         appID: Int,
         fileName: String,
-        type: UTType,
+        mimeType: String,
         data: Data
     ) async throws -> String {
         let boundary = "---------\(UUID().uuidString)"
-        let mimeType = type.preferredMIMEType ?? "application/octet-stream"
         var httpBody = Data()
         httpBody.append("--\(boundary)\r\n".data(using: .utf8)!)
         httpBody.append("Content-Disposition: form-data; name=\"file\";".data(using: .utf8)!)

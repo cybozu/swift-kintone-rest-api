@@ -10,10 +10,11 @@ import Observation
 import SwiftUI
 
 enum TabCategory {
-    case apps
-    case formLayout
-    case fields
-    case record
+    case fetchApps
+    case fetchFormLayout
+    case fetchFields
+    case fetchRecords
+    case submitRecord
 }
 
 @MainActor @Observable final class ContentViewModel {
@@ -22,10 +23,11 @@ enum TabCategory {
     var password = ""
     var appID: Int
     var isPresented = false
-    var tabCategory = TabCategory.apps
+    var tabCategory = TabCategory.fetchApps
     var apps = [KintoneApp]()
     var layout = [FormLayout]()
     var fields = [FieldProperty]()
+    var records = [Record.Read]()
 
     var kintoneAPI: KintoneAPI {
         .init(
@@ -57,14 +59,17 @@ enum TabCategory {
             apps = try await kintoneAPI.fetchApps()
             layout = try await kintoneAPI.fetchFormLayout(appID: appID)
             fields = try await kintoneAPI.fetchFields(appID: appID)
+            records = try await kintoneAPI.fetchRecords(appID: appID)
         } catch {
             print(error.localizedDescription)
         }
     }
 
-    func onSubmit(fields: [RecordField]) async {
+    func onSubmit(fields: [String: RecordFieldValue.Write]) async {
         do {
-            try await kintoneAPI.submitRecord(appID: appID, fields: fields)
+            let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
+            let record = Record.Write(fields: fields)
+            try await kintoneAPI.submitRecord(appID: appID, record: record)
         } catch {
             print(error.localizedDescription)
         }
@@ -124,22 +129,27 @@ enum TabCategory {
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $viewModel.isPresented) {
                 TabView(selection: $viewModel.tabCategory) {
-                    AppsView(apps: viewModel.apps)
+                    FetchAppsView(apps: viewModel.apps)
                         .tabItem {
                             Label("Apps", systemImage: "app.fill")
                         }
-                        .tag(TabCategory.apps)
-                    FormLayoutView(layout: viewModel.layout)
+                        .tag(TabCategory.fetchApps)
+                    FetchFormLayoutView(layout: viewModel.layout)
                         .tabItem {
                             Label("Form Layout", systemImage: "square.grid.2x2")
                         }
-                        .tag(TabCategory.formLayout)
-                    FieldsView(fields: viewModel.fields)
+                        .tag(TabCategory.fetchFormLayout)
+                    FetchFieldsView(fields: viewModel.fields)
                         .tabItem {
                             Label("Fields", systemImage: "square.3.layers.3d.down.left")
                         }
-                        .tag(TabCategory.fields)
-                    RecordView(fields: viewModel.fields) { fields in
+                        .tag(TabCategory.fetchFields)
+                    FetchRecordsView(records: viewModel.records)
+                        .tabItem {
+                            Label("Records", systemImage: "document.on.document")
+                        }
+                        .tag(TabCategory.fetchRecords)
+                    SubmitRecordView(fields: viewModel.fields) { fields in
                         Task {
                             await viewModel.onSubmit(fields: fields)
                         }
@@ -147,7 +157,7 @@ enum TabCategory {
                     .tabItem {
                         Label("Submit Record", systemImage: "paperplane")
                     }
-                    .tag(TabCategory.record)
+                    .tag(TabCategory.submitRecord)
                 }
                 .navigationTitle("kintone API")
                 .task {
