@@ -5,8 +5,6 @@
 //  Created by ky0me22 on 2024/12/09.
 //
 
-import Foundation
-
 extension RecordField {
     public struct Write: Encodable, Sendable {
         public var code: String

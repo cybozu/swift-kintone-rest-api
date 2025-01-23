@@ -1,29 +1,14 @@
 //
-//  FetchFieldsView.swift
+//  FieldDetailView.swift
 //  Example
 //
-//  Created by ky0me22 on 2024/12/18.
+//  Created by ky0me22 on 2025/01/23.
 //
 
 import KintoneAPI
 import SwiftUI
 
-struct FetchFieldsView: View {
-    var fields: [FieldProperty]
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                ForEach(fields) { field in
-                    FieldsDetailView(field: field)
-                }
-            }
-            .padding()
-        }
-    }
-}
-
-private struct FieldsDetailView: View {
+struct FieldDetailView: View {
     var field: FieldProperty
     
     var body: some View {
@@ -185,7 +170,7 @@ private struct FieldsDetailView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         CornerRadiusText("No Label: \(attribute.noLabel)")
                         ForEach(attribute.fields) { field in
-                            FieldsDetailView(field: field)
+                            FieldDetailView(field: field)
                         }
                     }
                     
@@ -204,83 +189,6 @@ private struct FieldsDetailView: View {
                     EntitiesView(label: "Entities:", entities: attribute.entities)
                     EntitiesView(label: "Default Value:", entities: attribute.defaultValue)
                 }
-            }
-        }
-        .cornerRadiusBorder()
-    }
-}
-
-private struct OptionsView: View {
-    var options: [FieldOption]
-
-    var body: some View {
-        HStack(alignment: .top) {
-            Text("Options:")
-            Divider()
-            VStack(alignment: .leading, spacing: 4) {
-                ForEach(options) { option in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Label: \(option.label)")
-                        Text("Index: \(option.index)")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .cornerRadiusBorder()
-                }
-            }
-            if options.isEmpty {
-                Spacer().frame(maxWidth: .infinity)
-            }
-        }
-        .cornerRadiusBorder()
-    }
-}
-
-private struct EntitiesView: View {
-    var label: String
-    var entities: [Entity.Read]
-
-    var body: some View {
-        HStack(alignment: .top) {
-            Text(label)
-            Divider()
-            VStack(alignment: .leading, spacing: 4) {
-                ForEach(entities) { entity in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Code: \(entity.code)")
-                        Text("Type: \(entity.type)")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .cornerRadiusBorder()
-                }
-            }
-            if entities.isEmpty {
-                Spacer().frame(maxWidth: .infinity)
-            }
-        }
-        .cornerRadiusBorder()
-    }
-}
-
-private struct FieldMappingsView: View {
-    var fieldMappings: [FieldMapping]
-
-    var body: some View {
-        HStack(alignment: .top) {
-            Text("FieldMappings:")
-            Divider()
-            VStack(alignment: .leading, spacing: 4) {
-                ForEach(fieldMappings.indices, id: \.self) { j in
-                    let fieldMapping = fieldMappings[j]
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Field: \(fieldMapping.field)")
-                        Text("Related Field: \(fieldMapping.relatedField)")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .cornerRadiusBorder()
-                }
-            }
-            if fieldMappings.isEmpty {
-                Spacer().frame(maxWidth: .infinity)
             }
         }
         .cornerRadiusBorder()

@@ -1,29 +1,14 @@
 //
-//  FetchFormLayoutView.swift
+//  FormLayoutDetailView.swift
 //  Example
 //
-//  Created by ky0me22 on 2024/12/18.
+//  Created by ky0me22 on 2025/01/23.
 //
 
 import KintoneAPI
 import SwiftUI
 
-struct FetchFormLayoutView: View {
-    var layout: [FormLayout]
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                ForEach(layout.indices, id: \.self) { i in
-                    FormLayoutDetailView(layout: layout[i])
-                }
-            }
-            .padding()
-        }
-    }
-}
-
-private struct FormLayoutDetailView: View {
+struct FormLayoutDetailView: View {
     var layout: FormLayout
 
     var body: some View {

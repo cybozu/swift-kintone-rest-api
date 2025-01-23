@@ -27,7 +27,7 @@ struct FetchAppsView: View {
                         Divider()
                         VStack(alignment: .leading, spacing: 4) {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Created At: \(String(optional: app.createdAt?.description))")
+                                Text("Created At: \(String(optional: app.createdAt))")
                                 Text("Code: \(app.creator.code)")
                                 Text("Name: \(String(optional: app.creator.name))")
                             }

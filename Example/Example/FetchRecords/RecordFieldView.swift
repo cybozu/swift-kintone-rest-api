@@ -1,5 +1,5 @@
 //
-//  FetchRecordsView.swift
+//  RecordFieldView.swift
 //  Example
 //
 //  Created by ky0me22 on 2025/01/23.
@@ -8,35 +8,7 @@
 import KintoneAPI
 import SwiftUI
 
-struct FetchRecordsView: View {
-    var records: [Record.Read]
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                ForEach(records.indices, id: \.self) { i in
-                    RecordsDetailView(record: records[i])
-                }
-            }
-            .padding()
-        }
-    }
-}
-
-private struct RecordsDetailView: View {
-    var record: Record.Read
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            ForEach(record.fields) { recordField in
-                RecordFieldView(recordField: recordField)
-            }
-        }
-        .cornerRadiusBorder()
-    }
-}
-
-private struct RecordFieldView: View {
+struct RecordFieldView: View {
     var recordField: RecordField.Read
     
     var body: some View {
