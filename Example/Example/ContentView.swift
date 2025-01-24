@@ -8,7 +8,6 @@
 import KintoneAPI
 import Observation
 import SwiftUI
-import UniformTypeIdentifiers
 
 enum TabCategory {
     case fetchApps
