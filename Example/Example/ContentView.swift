@@ -8,6 +8,7 @@
 import KintoneAPI
 import Observation
 import SwiftUI
+import UniformTypeIdentifiers
 
 enum TabCategory {
     case fetchApps
@@ -15,6 +16,13 @@ enum TabCategory {
     case fetchFields
     case fetchRecords
     case submitRecord
+    case uploadFile
+}
+
+struct FileArguments {
+    var fileName: String
+    var mimeType: String
+    var data: Data
 }
 
 @MainActor @Observable final class ContentViewModel {
@@ -81,6 +89,20 @@ enum TabCategory {
             try await kintoneAPI.submitRecord(appID: appID, record: record)
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    func uploadFile(fileArguments: FileArguments?) async -> String? {
+        guard let fileArguments else { return nil }
+        do {
+            return try await kintoneAPI.uploadFile(
+                fileName: fileArguments.fileName,
+                mimeType: fileArguments.mimeType,
+                data: fileArguments.data
+            )
+        } catch {
+            print(error.localizedDescription)
+            return nil
         }
     }
 }
@@ -161,14 +183,19 @@ enum TabCategory {
                     }
                     .tag(TabCategory.fetchRecords)
                     SubmitRecordView(fields: viewModel.fields) { fields in
-                        Task {
-                            await viewModel.onSubmit(fields: fields)
-                        }
+                        await viewModel.onSubmit(fields: fields)
                     }
                     .tabItem {
                         Label("Submit Record", systemImage: "paperplane")
                     }
                     .tag(TabCategory.submitRecord)
+                    UploadFileView { fileArguments in
+                        await viewModel.uploadFile(fileArguments: fileArguments)
+                    }
+                    .tabItem {
+                        Label("Upload File", systemImage: "square.and.arrow.up")
+                    }
+                    .tag(TabCategory.uploadFile)
                 }
                 .navigationTitle("kintone API")
                 .task {
