@@ -10,10 +10,10 @@ import SwiftUI
 
 struct SubmitRecordView: View {
     var fields: [FieldProperty]
-    var onSubmitHandler: ([String: RecordFieldValue.Write]) -> Void
+    var onSubmitHandler: ([String: RecordFieldValue.Write]) async -> Void
     @State private var fieldValues: [String: RecordFieldValue.Write]
 
-    init(fields: [FieldProperty], onSubmitHandler: @escaping ([String: RecordFieldValue.Write]) -> Void) {
+    init(fields: [FieldProperty], onSubmitHandler: @escaping ([String: RecordFieldValue.Write]) async -> Void) {
         self.fields = fields
         self.onSubmitHandler = onSubmitHandler
         self.fieldValues = fields.reduce(into: [String: RecordFieldValue.Write]()) {
@@ -64,7 +64,9 @@ struct SubmitRecordView: View {
             Section {
                 LabeledContent {
                     Button {
-                        onSubmitHandler(fieldValues)
+                        Task {
+                            await onSubmitHandler(fieldValues)
+                        }
                     } label: {
                         Text("Submit")
                     }
