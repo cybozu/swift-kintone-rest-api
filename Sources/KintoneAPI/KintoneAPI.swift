@@ -68,8 +68,8 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .apps, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let kintoneAppsResponse = try JSONDecoder().decode(KintoneAppsResponse.self, from: data)
-        return kintoneAppsResponse.apps
+        let fetchAppsResponse = try JSONDecoder().decode(FetchAppsResponse.self, from: data)
+        return fetchAppsResponse.apps
     }
 
     public func fetchFormLayout(
