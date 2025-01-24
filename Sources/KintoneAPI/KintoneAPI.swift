@@ -120,8 +120,8 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let recordsResponse = try JSONDecoder().decode(RecordsResponse.self, from: data)
-        return recordsResponse.records
+        let fetchRecordsResponse = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
+        return fetchRecordsResponse.records
     }
     
     public func uploadFile(
