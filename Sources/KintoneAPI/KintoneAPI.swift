@@ -102,7 +102,7 @@ public struct KintoneAPI: Sendable {
         appID: Int,
         record: Record.Write
     ) async throws {
-        let httpBody = try JSONEncoder().encode(RecordRequest(appID: appID, record: record))
+        let httpBody = try JSONEncoder().encode(SubmitRecordRequest(appID: appID, record: record))
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
         let (_, response) = try await dataRequestHandler(request)
         try check(response: response)
