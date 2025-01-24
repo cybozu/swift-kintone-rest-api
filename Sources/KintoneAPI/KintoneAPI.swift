@@ -79,8 +79,8 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .formLayout, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let formLayoutResponse = try JSONDecoder().decode(FormLayoutResponse.self, from: data)
-        return formLayoutResponse.layout
+        let fetchFormLayoutResponse = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
+        return fetchFormLayoutResponse.layout
     }
 
     public func fetchFields(
