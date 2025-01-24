@@ -64,6 +64,15 @@ enum TabCategory {
             print(error.localizedDescription)
         }
     }
+    
+    func downloadFile(fileKey: String) async -> Data? {
+        do {
+            return try await kintoneAPI.downloadFile(fileKey: fileKey)
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
 
     func onSubmit(fields: [String: RecordFieldValue.Write]) async {
         do {
@@ -144,11 +153,13 @@ enum TabCategory {
                             Label("Fields", systemImage: "square.3.layers.3d.down.left")
                         }
                         .tag(TabCategory.fetchFields)
-                    FetchRecordsView(records: viewModel.records)
-                        .tabItem {
-                            Label("Records", systemImage: "document.on.document")
-                        }
-                        .tag(TabCategory.fetchRecords)
+                    FetchRecordsView(records: viewModel.records) { fileKey in
+                        await viewModel.downloadFile(fileKey: fileKey)
+                    }
+                    .tabItem {
+                        Label("Records", systemImage: "document.on.document")
+                    }
+                    .tag(TabCategory.fetchRecords)
                     SubmitRecordView(fields: viewModel.fields) { fields in
                         Task {
                             await viewModel.onSubmit(fields: fields)

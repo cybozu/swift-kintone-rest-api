@@ -10,11 +10,12 @@ import SwiftUI
 
 struct RecordDetailView: View {
     var record: Record.Read
+    var downloadFileHandler: (String) async -> Data?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             ForEach(record.fields) { recordField in
-                RecordFieldView(recordField: recordField)
+                RecordFieldView(recordField: recordField, downloadFileHandler: downloadFileHandler)
             }
         }
         .cornerRadiusBorder()
