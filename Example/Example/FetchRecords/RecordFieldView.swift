@@ -10,6 +10,7 @@ import SwiftUI
 
 struct RecordFieldView: View {
     var recordField: RecordField.Read
+    var downloadFileHandler: (String) async -> Data?
     
     var body: some View {
         HStack(alignment: .top) {
@@ -55,7 +56,7 @@ struct RecordFieldView: View {
                 
             case let .file(files):
                 ArrayValueView(files) { file in
-                    FileView(file: file)
+                    FileView(file: file, downloadFileHandler: downloadFileHandler)
                 }
                 
             case let .groupSelect(entityArray),
@@ -70,7 +71,7 @@ struct RecordFieldView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("ID: \(subtableValueArray[i].id)")
                         ForEach(subtableValueArray[i].value) { recordField in
-                            RecordFieldView(recordField: recordField)
+                            RecordFieldView(recordField: recordField, downloadFileHandler: downloadFileHandler)
                         }
                     }
                     .cornerRadiusBorder()

@@ -125,7 +125,6 @@ public struct KintoneAPI: Sendable {
     }
     
     public func uploadFile(
-        appID: Int,
         fileName: String,
         mimeType: String,
         data: Data
@@ -142,7 +141,17 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .post, endpoint: .file, httpBody: httpBody, contentType: .multipartFormData(boundary))
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fileResponse = try JSONDecoder().decode(FileResponse.self, from: data)
-        return fileResponse.fileKey
+        let uploadFileResponse = try JSONDecoder().decode(UploadFileResponse.self, from: data)
+        return uploadFileResponse.fileKey
+    }
+    
+    public func downloadFile(
+        fileKey: String
+    ) async throws -> Data {
+        let queryItems = [URLQueryItem(name: "fileKey", value: fileKey)]
+        let request = makeRequest(httpMethod: .get, endpoint: .file, queryItems: queryItems)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response)
+        return data
     }
 }

@@ -9,7 +9,9 @@ import KintoneAPI
 import SwiftUI
 
 struct FileView: View {
+    @State private var isPresented = false
     var file: File.Read
+    var downloadFileHandler: (String) async -> Data?
     
     var body: some View {
         HStack(alignment: .top) {
@@ -20,9 +22,19 @@ struct FileView: View {
                 CornerRadiusText("MIME Type: \(file.mimeType)")
                 CornerRadiusText("File Name: \(file.fileName)")
                 CornerRadiusText("File Size: \(file.fileSize)")
+                Button {
+                    isPresented = true
+                } label: {
+                    Text("Preview")
+                }
             }
         }
         .cornerRadiusBorder()
+        .sheet(isPresented: $isPresented) {
+            FilePreviewView {
+                await downloadFileHandler(file.fileKey)
+            }
+        }
     }
 }
 

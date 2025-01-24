@@ -167,7 +167,7 @@ extension RecordFieldValue {
             }
         }
 
-        public var file: [File.Read]? {
+        public var files: [File.Read]? {
             switch self {
             case let .file(value): value
             default: nil
