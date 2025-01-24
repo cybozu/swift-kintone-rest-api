@@ -1,11 +1,11 @@
 //
-//  RecordRequest.swift
+//  SubmitRecordRequest.swift
 //
 //
 //  Created by ky0me22 on 2024/12/09.
 //
 
-struct RecordRequest: Encodable {
+struct SubmitRecordRequest: Encodable {
     var appID: Int
     var record: Record.Write
 

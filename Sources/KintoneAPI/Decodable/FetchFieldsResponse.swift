@@ -1,11 +1,11 @@
 //
-//  FieldsResponse.swift
+//  FetchFieldsResponse.swift
 //
 //
 //  Created by ky0me22 on 2024/12/04.
 //
 
-struct FieldsResponse: Decodable {
+struct FetchFieldsResponse: Decodable {
     var properties: [FieldProperty]
 
     enum CodingKeys: String, CodingKey {

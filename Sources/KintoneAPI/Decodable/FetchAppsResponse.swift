@@ -1,10 +1,10 @@
 //
-//  KintoneAppsResponse.swift
+//  FetchAppsResponse.swift
 //
 //
 //  Created by ky0me22 on 2024/12/06.
 //
 
-struct KintoneAppsResponse: Decodable {
+struct FetchAppsResponse: Decodable {
     var apps: [KintoneApp]
 }

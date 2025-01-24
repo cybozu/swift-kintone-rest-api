@@ -68,8 +68,8 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .apps, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let kintoneAppsResponse = try JSONDecoder().decode(KintoneAppsResponse.self, from: data)
-        return kintoneAppsResponse.apps
+        let fetchAppsResponse = try JSONDecoder().decode(FetchAppsResponse.self, from: data)
+        return fetchAppsResponse.apps
     }
 
     public func fetchFormLayout(
@@ -79,8 +79,8 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .formLayout, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let formLayoutResponse = try JSONDecoder().decode(FormLayoutResponse.self, from: data)
-        return formLayoutResponse.layout
+        let fetchFormLayoutResponse = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
+        return fetchFormLayoutResponse.layout
     }
 
     public func fetchFields(
@@ -94,15 +94,15 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .fields, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fieldsResponse = try JSONDecoder().decode(FieldsResponse.self, from: data)
-        return fieldsResponse.properties
+        let fetchFieldsResponse = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
+        return fetchFieldsResponse.properties
     }
 
     public func submitRecord(
         appID: Int,
         record: Record.Write
     ) async throws {
-        let httpBody = try JSONEncoder().encode(RecordRequest(appID: appID, record: record))
+        let httpBody = try JSONEncoder().encode(SubmitRecordRequest(appID: appID, record: record))
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
         let (_, response) = try await dataRequestHandler(request)
         try check(response: response)
@@ -120,8 +120,8 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let recordsResponse = try JSONDecoder().decode(RecordsResponse.self, from: data)
-        return recordsResponse.records
+        let fetchRecordsResponse = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
+        return fetchRecordsResponse.records
     }
     
     public func uploadFile(
