@@ -17,42 +17,51 @@ struct UploadFileView: View {
     var uploadFileHandler: (FileArguments?) async -> String?
 
     var body: some View {
-        VStack {
-            Button {
-                isPresented = true
-            } label: {
-                Text("Select File")
+        Form {
+            Section {
+                Text("File Name: \(fileArguments?.fileName ?? "nil")")
+                Text("MEME Type: \(fileArguments?.mimeType ?? "nil")")
+                Text("File Key: \(fileKey ?? "nil")")
             }
-            .fileImporter(
-                isPresented: $isPresented,
-                allowedContentTypes: [.image],
-                onCompletion: { result in
-                    switch result {
-                    case let .success(url):
-                        onCompletion(url: url)
-                    case let .failure(error):
-                        print(error.localizedDescription)
+            Section {
+                LabeledContent {
+                    HStack {
+                        Button {
+                            isPresented = true
+                        } label: {
+                            Text("Select File")
+                        }
+                        PhotosPicker(selection: $pickerItem, matching: .images) {
+                            Text("Select Image")
+                        }
+                        Button {
+                            Task {
+                                fileKey = await uploadFileHandler(fileArguments)
+                            }
+                        } label: {
+                            Text("Upload")
+                        }
                     }
+                    .buttonStyle(.borderedProminent)
+                } label: {
+                    EmptyView()
                 }
-            )
-            Text("or")
-            PhotosPicker(selection: $pickerItem, matching: .images) {
-                Text("Select Image")
             }
-            .onChange(of: pickerItem) { _, newValue in
-                onChange(pickerItem: newValue)
-            }
-            Button {
-                Task {
-                    fileKey = await uploadFileHandler(fileArguments)
+        }
+        .fileImporter(
+            isPresented: $isPresented,
+            allowedContentTypes: [.text],
+            onCompletion: { result in
+                switch result {
+                case let .success(url):
+                    onCompletion(url: url)
+                case let .failure(error):
+                    print(error.localizedDescription)
                 }
-            } label: {
-                Text("Upload")
             }
-            .buttonStyle(.borderedProminent)
-            Text("File Name: \(fileArguments?.fileName ?? "nil")")
-            Text("MEME Type: \(fileArguments?.mimeType ?? "nil")")
-            Text("File Key: \(fileKey ?? "nil")")
+        )
+        .onChange(of: pickerItem) { _, newValue in
+            onChange(pickerItem: newValue)
         }
     }
     
@@ -79,18 +88,6 @@ struct UploadFileView: View {
                 return
             }
             fileArguments = FileArguments(fileName: fileName, mimeType: mimeType, data: data)
-        }
-    }
-}
-
-struct DataURL: Transferable {
-    var url: URL
-
-    static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(contentType: .data) { data in
-            SentTransferredFile(data.url)
-        } importing: { received in
-            Self(url: received.file)
         }
     }
 }

@@ -19,12 +19,6 @@ enum TabCategory {
     case uploadFile
 }
 
-struct FileArguments {
-    var fileName: String
-    var mimeType: String
-    var data: Data
-}
-
 @MainActor @Observable final class ContentViewModel {
     var domain: String
     var loginName: String
