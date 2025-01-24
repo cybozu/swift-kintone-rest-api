@@ -94,8 +94,8 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .fields, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fieldsResponse = try JSONDecoder().decode(FieldsResponse.self, from: data)
-        return fieldsResponse.properties
+        let fetchFieldsResponse = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
+        return fetchFieldsResponse.properties
     }
 
     public func submitRecord(
