@@ -98,14 +98,30 @@ public struct KintoneAPI: Sendable {
         return fetchFieldsResponse.properties
     }
 
+    @discardableResult
     public func submitRecord(
         appID: Int,
         record: Record.Write
-    ) async throws {
+    ) async throws -> SubmitRecordResponse {
         let httpBody = try JSONEncoder().encode(SubmitRecordRequest(appID: appID, record: record))
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
-        let (_, response) = try await dataRequestHandler(request)
+        let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
+        return try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
+    }
+    
+    @discardableResult
+    public func updateRecord(
+        appID: Int,
+        recordID: Int,
+        revision: Int? = nil,
+        record: Record.Write
+    ) async throws -> UpdateRecordResponse {
+        let httpBody = try JSONEncoder().encode(UpdateRecordRequest(appID: appID, recordID: recordID, revision: revision, record: record))
+        let request = makeRequest(httpMethod: .put, endpoint: .record, httpBody: httpBody)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response)
+        return try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
     }
     
     public func fetchRecords(

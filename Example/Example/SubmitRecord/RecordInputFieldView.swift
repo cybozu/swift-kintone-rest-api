@@ -133,6 +133,7 @@ struct RecordInputFieldView: View {
                         set: { fieldValues[field.code] = .dropDown($0) }
                     ),
                     content: {
+                        Text("-").tag("")
                         ForEach(attribute.options) { option in
                             Text(option.label).tag(option.label)
                         }

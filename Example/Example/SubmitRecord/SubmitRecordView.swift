@@ -10,12 +10,19 @@ import SwiftUI
 
 struct SubmitRecordView: View {
     var fields: [FieldProperty]
-    var onSubmitHandler: ([String: RecordFieldValue.Write]) async -> Void
+    var onSubmitRecordHandler: ([String: RecordFieldValue.Write]) async -> Int?
+    var onUpdateRecordHandler: (Int, [String: RecordFieldValue.Write]) async -> Void
+    @State private var recordID: Int?
     @State private var fieldValues: [String: RecordFieldValue.Write]
 
-    init(fields: [FieldProperty], onSubmitHandler: @escaping ([String: RecordFieldValue.Write]) async -> Void) {
+    init(
+        fields: [FieldProperty],
+        onSubmitRecordHandler: @escaping ([String: RecordFieldValue.Write]) async -> Int?,
+        onUpdateRecordHandler: @escaping (Int, [String: RecordFieldValue.Write]) async -> Void
+    ) {
         self.fields = fields
-        self.onSubmitHandler = onSubmitHandler
+        self.onSubmitRecordHandler = onSubmitRecordHandler
+        self.onUpdateRecordHandler = onUpdateRecordHandler
         self.fieldValues = fields.reduce(into: [String: RecordFieldValue.Write]()) {
             $0[$1.code] = switch $1.attribute {
             case let .checkBox(value):
@@ -65,7 +72,9 @@ struct SubmitRecordView: View {
                 LabeledContent {
                     Button {
                         Task {
-                            await onSubmitHandler(fieldValues)
+                            if let recordID = await onSubmitRecordHandler(fieldValues) {
+                                self.recordID = recordID
+                            }
                         }
                     } label: {
                         Text("Submit")
@@ -73,6 +82,20 @@ struct SubmitRecordView: View {
                     .buttonStyle(.borderedProminent)
                 } label: {
                     EmptyView()
+                }
+                LabeledContent {
+                    Button {
+                        Task {
+                            guard let recordID else { return }
+                            await onUpdateRecordHandler(recordID, fieldValues)
+                        }
+                    } label: {
+                        Text("Update")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(recordID == nil)
+                } label: {
+                    Text("Record ID: \(String(optional: recordID))")
                 }
             }
         }

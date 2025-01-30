@@ -75,11 +75,22 @@ enum TabCategory {
         }
     }
 
-    func onSubmit(fields: [String: RecordFieldValue.Write]) async {
+    func onSubmitRecord(fields: [String: RecordFieldValue.Write]) async -> Int? {
         do {
             let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
             let record = Record.Write(fields: fields)
-            try await kintoneAPI.submitRecord(appID: appID, record: record)
+            return try await kintoneAPI.submitRecord(appID: appID, record: record).recordID
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async {
+        do {
+            let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
+            let record = Record.Write(fields: fields)
+            try await kintoneAPI.updateRecord(appID: appID, recordID: recordID, record: record)
         } catch {
             print(error.localizedDescription)
         }
@@ -175,9 +186,15 @@ enum TabCategory {
                         Label("Records", systemImage: "document.on.document")
                     }
                     .tag(TabCategory.fetchRecords)
-                    SubmitRecordView(fields: viewModel.fields) { fields in
-                        await viewModel.onSubmit(fields: fields)
-                    }
+                    SubmitRecordView(
+                        fields: viewModel.fields,
+                        onSubmitRecordHandler: { fields in
+                            await viewModel.onSubmitRecord(fields: fields)
+                        },
+                        onUpdateRecordHandler: { recordID, fields in
+                            await viewModel.onUpdateRecord(recordID: recordID, fields: fields)
+                        }
+                    )
                     .tabItem {
                         Label("Submit Record", systemImage: "paperplane")
                     }
