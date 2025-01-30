@@ -14,7 +14,7 @@ Providing kintone REST API with Swift interface.
 - `fetchFormLayout` (GET - [/k/v1/app/form/layout.json](https://kintone.dev/en/docs/kintone/rest-api/apps/get-form-layout/))
 - `fetchFormFields` (GET - [/k/v1/app/form/fields.json](https://kintone.dev/en/docs/kintone/rest-api/apps/get-form-fields/))
 - `fetchRecords` (GET - [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/get-records/))
-- `deleteRecords` (DELETE - [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/delete-records/)) 
+- `removeRecords` (DELETE - [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/delete-records/)) 
 - `submitRecord` (POST - [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/add-record/))
 - `updateRecord` (PUT - [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/update-record/))
 - `downloadFile` (GET - [/k/v1/file.json](https://kintone.dev/en/docs/kintone/rest-api/files/download-file/))
