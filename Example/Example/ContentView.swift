@@ -75,22 +75,33 @@ enum TabCategory {
         }
     }
 
-    func onSubmitRecord(fields: [String: RecordFieldValue.Write]) async -> Int? {
+    func onSubmitRecord(fields: [String: RecordFieldValue.Write]) async -> RecordIdentity.Read? {
         do {
             let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
             let record = Record.Write(fields: fields)
-            return try await kintoneAPI.submitRecord(appID: appID, record: record).recordID
+            return try await kintoneAPI.submitRecord(appID: appID, record: record)
         } catch {
             print(error.localizedDescription)
             return nil
         }
     }
     
-    func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async {
+    func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async -> RecordIdentity.Read? {
         do {
+            let recordIdentity = RecordIdentity.Write(id: recordID)
             let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
             let record = Record.Write(fields: fields)
-            try await kintoneAPI.updateRecord(appID: appID, recordID: recordID, record: record)
+            return try await kintoneAPI.updateRecord(appID: appID, recordIdentity: recordIdentity, record: record)
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    func onDeleteRecord(recordID: Int) async {
+        do {
+            let recordIdentity = RecordIdentity.Write(id: recordID)
+            try await kintoneAPI.deleteRecords(appID: appID, recordIdentities: [recordIdentity])
         } catch {
             print(error.localizedDescription)
         }
@@ -193,6 +204,9 @@ enum TabCategory {
                         },
                         onUpdateRecordHandler: { recordID, fields in
                             await viewModel.onUpdateRecord(recordID: recordID, fields: fields)
+                        },
+                        onDeleteRecordHandler: { recordID in
+                            await viewModel.onDeleteRecord(recordID: recordID)
                         }
                     )
                     .tabItem {

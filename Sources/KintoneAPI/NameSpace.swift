@@ -11,6 +11,8 @@ public enum File {}
 
 public enum Record {}
 
+public enum RecordIdentity {}
+
 public enum RecordField {}
 
 public enum RecordFieldValue {}

@@ -9,8 +9,7 @@ import Foundation
 
 struct UpdateRecordRequest: Encodable {
     var appID: Int
-    var recordID: Int
-    var revision: Int?
+    var recordIdentity: RecordIdentity.Write
     var record: Record.Write
 
     enum CodingKeys: String, CodingKey {
@@ -18,5 +17,13 @@ struct UpdateRecordRequest: Encodable {
         case recordID = "id"
         case revision
         case record
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(appID, forKey: .appID)
+        try container.encode(recordIdentity.id, forKey: .recordID)
+        try container.encodeIfPresent(recordIdentity.revision, forKey: .revision)
+        try container.encode(record, forKey: .record)
     }
 }

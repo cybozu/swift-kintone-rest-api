@@ -5,18 +5,10 @@
 //  Created by ky0me22 on 2025/01/30.
 //
 
-public struct SubmitRecordResponse: Decodable, Sendable {
-    public var recordID: Int
-    public var revision: Int
+struct SubmitRecordResponse: Decodable, Sendable {
+    var recordIdentity: RecordIdentity.Read
     
-    enum CodingKeys: String, CodingKey {
-        case recordID = "id"
-        case revision
-    }
-    
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.recordID = try container.customDecode(String.self, forKey: .recordID) { Int($0) }
-        self.revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
+    init(from decoder: any Decoder) throws {
+        recordIdentity = try RecordIdentity.Read(from: decoder)
     }
 }
