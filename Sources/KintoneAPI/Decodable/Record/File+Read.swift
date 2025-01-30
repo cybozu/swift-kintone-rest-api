@@ -18,7 +18,7 @@ extension File {
             case fileName = "name"
             case fileSize = "size"
         }
-        
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             fileKey = try container.decode(String.self, forKey: .fileKey)

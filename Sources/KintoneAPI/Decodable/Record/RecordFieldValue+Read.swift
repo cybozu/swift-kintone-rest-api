@@ -37,12 +37,12 @@ extension RecordFieldValue {
         case time(Date?)
         case updatedTime(Date)
         case userSelect([Entity.Read])
-        
+
         enum CodingKeys: CodingKey {
             case type
             case value
         }
-        
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let type = try container.decode(RecordFieldType.self, forKey: .type)
@@ -128,7 +128,7 @@ extension RecordFieldValue {
                 self = .userSelect(entities)
             }
         }
-        
+
         public var integer: Int? {
             switch self {
             case let .id(value): value
@@ -136,7 +136,7 @@ extension RecordFieldValue {
             default: nil
             }
         }
-        
+
         public var string: String? {
             switch self {
             case let .calc(value): value
@@ -179,7 +179,7 @@ extension RecordFieldValue {
             default: nil
             }
         }
-        
+
         public var entity: Entity.Read? {
             switch self {
             case let .creator(value): value

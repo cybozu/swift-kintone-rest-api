@@ -9,7 +9,7 @@ import Foundation
 
 public struct KintoneAPI: Sendable {
     public typealias FileKey = String
-    
+
     var authenticationMethod: AuthenticationMethod
     var dataRequestHandler: @Sendable (URLRequest) async throws -> (Data, URLResponse)
 
@@ -112,7 +112,7 @@ public struct KintoneAPI: Sendable {
         let submitRecordResponse = try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
         return submitRecordResponse.recordIdentity
     }
-    
+
     @discardableResult
     public func updateRecord(
         appID: Int,
@@ -126,7 +126,22 @@ public struct KintoneAPI: Sendable {
         let updateRecordResponse = try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
         return RecordIdentity.Read(id: recordIdentity.id, revision: updateRecordResponse.revision)
     }
-    
+
+    public func updateStatus(
+        appID: Int,
+        recordIdentity: RecordIdentity.Write,
+        action: String,
+        assignee: String?
+    ) async throws {
+        let httpBody = try JSONEncoder().encode(UpdateStatusRequest(appID: appID, recordIdentity: recordIdentity, action: action, assignee: assignee))
+        let request = makeRequest(httpMethod: .put, endpoint: .status, httpBody: httpBody)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response)
+        if let str = String(data: data, encoding: .utf8) {
+            print(str)
+        }
+    }
+
     public func fetchRecords(
         appID: Int,
         fields: [String]? = nil,
@@ -142,7 +157,7 @@ public struct KintoneAPI: Sendable {
         let fetchRecordsResponse = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
         return fetchRecordsResponse.records
     }
-    
+
     public func removeRecords(
         appID: Int,
         recordIdentities: [RecordIdentity.Write]
@@ -152,7 +167,7 @@ public struct KintoneAPI: Sendable {
         let (_, response) = try await dataRequestHandler(request)
         try check(response: response)
     }
-    
+
     public func uploadFile(
         fileName: String,
         mimeType: String,
@@ -173,7 +188,7 @@ public struct KintoneAPI: Sendable {
         let uploadFileResponse = try JSONDecoder().decode(UploadFileResponse.self, from: data)
         return uploadFileResponse.fileKey
     }
-    
+
     public func downloadFile(
         fileKey: String
     ) async throws -> Data {

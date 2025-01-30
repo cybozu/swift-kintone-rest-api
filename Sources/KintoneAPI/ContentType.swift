@@ -8,7 +8,7 @@
 enum ContentType {
     case applicationJSON
     case multipartFormData(String)
-    
+
     var value: String {
         switch self {
         case .applicationJSON:

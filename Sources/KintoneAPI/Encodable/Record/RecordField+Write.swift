@@ -9,7 +9,7 @@ extension RecordField {
     public struct Write: Encodable, Sendable {
         public var code: String
         public var value: RecordFieldValue.Write
-        
+
         public init(code: String, value: RecordFieldValue.Write) {
             self.code = code
             self.value = value

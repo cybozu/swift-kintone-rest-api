@@ -7,7 +7,7 @@
 
 struct SubmitRecordResponse: Decodable, Sendable {
     var recordIdentity: RecordIdentity.Read
-    
+
     init(from decoder: any Decoder) throws {
         recordIdentity = try RecordIdentity.Read(from: decoder)
     }

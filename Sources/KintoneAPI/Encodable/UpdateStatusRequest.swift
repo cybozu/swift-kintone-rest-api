@@ -1,20 +1,22 @@
 //
-//  UpdateRecordRequest.swift
+//  UpdateStatusRequest.swift
 //
 //
 //  Created by ky0me22 on 2025/01/30.
 //
 
-struct UpdateRecordRequest: Encodable {
+struct UpdateStatusRequest: Encodable {
     var appID: Int
     var recordIdentity: RecordIdentity.Write
-    var record: Record.Write
+    var action: String
+    var assignee: String?
 
     enum CodingKeys: String, CodingKey {
         case appID = "app"
         case recordID = "id"
         case revision
-        case record
+        case action
+        case assignee
     }
 
     func encode(to encoder: any Encoder) throws {
@@ -22,6 +24,7 @@ struct UpdateRecordRequest: Encodable {
         try container.encode(appID, forKey: .appID)
         try container.encode(recordIdentity.id, forKey: .recordID)
         try container.encodeIfPresent(recordIdentity.revision, forKey: .revision)
-        try container.encode(record, forKey: .record)
+        try container.encode(action, forKey: .action)
+        try container.encodeIfPresent(assignee, forKey: .assignee)
     }
 }
