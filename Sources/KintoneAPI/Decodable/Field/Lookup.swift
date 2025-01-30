@@ -21,14 +21,4 @@ public struct Lookup: Decodable, Sendable {
         case filterCondition = "filterCond"
         case sort
     }
-
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        relatedApp = try container.decode(RelatedApp.self, forKey: .relatedApp)
-        relatedKeyField = try container.decode(String.self, forKey: .relatedKeyField)
-        fieldMappings = (try? container.decode([FieldMapping].self, forKey: .fieldMappings)) ?? []
-        lookupPickerFields = (try? container.decode([String].self, forKey: .lookupPickerFields)) ?? []
-        filterCondition = try container.decode(String.self, forKey: .filterCondition)
-        sort = try container.decode(String.self, forKey: .sort)
-    }
 }

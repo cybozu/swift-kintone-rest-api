@@ -17,13 +17,15 @@ struct RecordFieldView: View {
             Text("Code: \(recordField.code)")
             Divider()
             switch recordField.value {
+            case let .id(integer),
+                let .revision(integer):
+                CornerRadiusText("Value: \(integer)")
+                
             case let .calc(string),
-                let .id(string),
                 let .link(string),
                 let .multiLineText(string),
                 let .number(string),
                 let .recordNumber(string),
-                let .revision(string),
                 let .richText(string),
                 let .singleLineText(string),
                 let .status(string):

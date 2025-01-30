@@ -19,7 +19,7 @@ extension RecordFieldValue {
         case dropDown(String?)
         case file([File.Read])
         case groupSelect([Entity.Read])
-        case id(String)
+        case id(Int)
         case link(String)
         case modifier(Entity.Read)
         case multiLineText(String)
@@ -28,7 +28,7 @@ extension RecordFieldValue {
         case organizationSelect([Entity.Read])
         case radioButton(String?)
         case recordNumber(String)
-        case revision(String)
+        case revision(Int)
         case richText(String)
         case singleLineText(String)
         case status(String)
@@ -77,7 +77,7 @@ extension RecordFieldValue {
                 }
                 self = .userSelect(entities)
             case .id:
-                self = .id(try container.decode(String.self, forKey: .value))
+                self = .id(try container.customDecode(String.self, forKey: .value, initializer: { Int($0) }))
             case .link:
                 self = .link(try container.decode(String.self, forKey: .value))
             case .modifier:
@@ -101,7 +101,7 @@ extension RecordFieldValue {
             case .recordNumber:
                 self = .recordNumber(try container.decode(String.self, forKey: .value))
             case .revision:
-                self = .revision(try container.decode(String.self, forKey: .value))
+                self = .revision(try container.customDecode(String.self, forKey: .value, initializer: { Int($0) }))
             case .richText:
                 self = .richText(try container.decode(String.self, forKey: .value))
             case .singleLineText:
@@ -129,17 +129,23 @@ extension RecordFieldValue {
             }
         }
         
+        public var integer: Int? {
+            switch self {
+            case let .id(value): value
+            case let .revision(value): value
+            default: nil
+            }
+        }
+        
         public var string: String? {
             switch self {
             case let .calc(value): value
             case let .dropDown(value): value
-            case let .id(value): value
             case let .link(value): value
             case let .multiLineText(value): value
             case let .number(value): value
             case let .radioButton(value): value
             case let .recordNumber(value): value
-            case let .revision(value): value
             case let .richText(value): value
             case let .singleLineText(value): value
             case let .status(value): value

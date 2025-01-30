@@ -95,11 +95,11 @@ struct FieldDetailView: View {
                 case let .lookup(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
-                    CornerRadiusText("RelatedApp/App: \(attribute.lookup.relatedApp.app)")
-                    CornerRadiusText("RelatedApp/Code: \(attribute.lookup.relatedApp.code)")
-                    CornerRadiusText("RelatedKeyField: \(attribute.lookup.relatedKeyField)")
+                    CornerRadiusText("Related App/App: \(attribute.lookup.relatedApp.app)")
+                    CornerRadiusText("Related App/Code: \(attribute.lookup.relatedApp.code)")
+                    CornerRadiusText("Related Key Field: \(attribute.lookup.relatedKeyField)")
                     FieldMappingsView(fieldMappings: attribute.lookup.fieldMappings)
-                    CornerRadiusText("LookupPickerFields: \(attribute.lookup.lookupPickerFields.joined(separator: ","))")
+                    CornerRadiusText("Lookup Picker Fields: \(attribute.lookup.lookupPickerFields.joined(separator: ","))")
                     CornerRadiusText("Filter Condition: \(attribute.lookup.filterCondition)")
                     CornerRadiusText("Sort: \(attribute.lookup.sort)")
 

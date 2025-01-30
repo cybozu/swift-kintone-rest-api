@@ -13,7 +13,7 @@ struct FieldMappingsView: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            Text("FieldMappings:")
+            Text("Field Mappings:")
             Divider()
             VStack(alignment: .leading, spacing: 4) {
                 ForEach(fieldMappings.indices, id: \.self) { j in
