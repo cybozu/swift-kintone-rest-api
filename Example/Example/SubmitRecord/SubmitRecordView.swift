@@ -12,7 +12,7 @@ struct SubmitRecordView: View {
     var fields: [FieldProperty]
     var onSubmitRecordHandler: ([String: RecordFieldValue.Write]) async -> RecordIdentity.Read?
     var onUpdateRecordHandler: (Int, [String: RecordFieldValue.Write]) async -> RecordIdentity.Read?
-    var onDeleteRecordHandler: (Int) async -> Void
+    var onRemoveRecordHandler: (Int) async -> Void
     @State private var recordID: Int?
     @State private var revision: Int?
     @State private var fieldValues: [String: RecordFieldValue.Write]
@@ -21,12 +21,12 @@ struct SubmitRecordView: View {
         fields: [FieldProperty],
         onSubmitRecordHandler: @escaping ([String: RecordFieldValue.Write]) async -> RecordIdentity.Read?,
         onUpdateRecordHandler: @escaping (Int, [String: RecordFieldValue.Write]) async -> RecordIdentity.Read?,
-        onDeleteRecordHandler: @escaping (Int) async -> Void
+        onRemoveRecordHandler: @escaping (Int) async -> Void
     ) {
         self.fields = fields
         self.onSubmitRecordHandler = onSubmitRecordHandler
         self.onUpdateRecordHandler = onUpdateRecordHandler
-        self.onDeleteRecordHandler = onDeleteRecordHandler
+        self.onRemoveRecordHandler = onRemoveRecordHandler
         self.fieldValues = fields.reduce(into: [String: RecordFieldValue.Write]()) {
             $0[$1.code] = switch $1.attribute {
             case let .checkBox(value):
@@ -103,12 +103,12 @@ struct SubmitRecordView: View {
                         Button {
                             Task {
                                 guard let recordID else { return }
-                                await onDeleteRecordHandler(recordID)
+                                await onRemoveRecordHandler(recordID)
                                 self.recordID = nil
                                 self.revision = nil
                             }
                         } label: {
-                            Text("Delete")
+                            Text("Remove")
                         }
                     }
                     .buttonStyle(.borderedProminent)

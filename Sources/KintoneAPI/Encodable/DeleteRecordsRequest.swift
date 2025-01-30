@@ -1,11 +1,11 @@
 //
-//  DeleteRecordsRequest.swift
+//  RemoveRecordsRequest.swift
 //
 //
 //  Created by ky0me22 on 2025/01/30.
 //
 
-struct DeleteRecordsRequest: Encodable {
+struct RemoveRecordsRequest: Encodable {
     var appID: Int
     var recordIdentities: [RecordIdentity.Write]
 

@@ -98,10 +98,10 @@ enum TabCategory {
         }
     }
     
-    func onDeleteRecord(recordID: Int) async {
+    func onRemoveRecord(recordID: Int) async {
         do {
             let recordIdentity = RecordIdentity.Write(id: recordID)
-            try await kintoneAPI.deleteRecords(appID: appID, recordIdentities: [recordIdentity])
+            try await kintoneAPI.removeRecords(appID: appID, recordIdentities: [recordIdentity])
         } catch {
             print(error.localizedDescription)
         }
@@ -205,8 +205,8 @@ enum TabCategory {
                         onUpdateRecordHandler: { recordID, fields in
                             await viewModel.onUpdateRecord(recordID: recordID, fields: fields)
                         },
-                        onDeleteRecordHandler: { recordID in
-                            await viewModel.onDeleteRecord(recordID: recordID)
+                        onRemoveRecordHandler: { recordID in
+                            await viewModel.onRemoveRecord(recordID: recordID)
                         }
                     )
                     .tabItem {

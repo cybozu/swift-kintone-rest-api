@@ -143,11 +143,11 @@ public struct KintoneAPI: Sendable {
         return fetchRecordsResponse.records
     }
     
-    public func deleteRecords(
+    public func removeRecords(
         appID: Int,
         recordIdentities: [RecordIdentity.Write]
     ) async throws {
-        let httpBody = try JSONEncoder().encode(DeleteRecordsRequest(appID: appID, recordIdentities: recordIdentities))
+        let httpBody = try JSONEncoder().encode(RemoveRecordsRequest(appID: appID, recordIdentities: recordIdentities))
         let request = makeRequest(httpMethod: .delete, endpoint: .records, httpBody: httpBody)
         let (_, response) = try await dataRequestHandler(request)
         try check(response: response)
