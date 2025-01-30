@@ -8,6 +8,8 @@
 import Foundation
 
 public struct KintoneAPI: Sendable {
+    public typealias FileKey = String
+    
     var authenticationMethod: AuthenticationMethod
     var dataRequestHandler: @Sendable (URLRequest) async throws -> (Data, URLResponse)
 
@@ -102,26 +104,27 @@ public struct KintoneAPI: Sendable {
     public func submitRecord(
         appID: Int,
         record: Record.Write
-    ) async throws -> SubmitRecordResponse {
+    ) async throws -> RecordIdentity.Read {
         let httpBody = try JSONEncoder().encode(SubmitRecordRequest(appID: appID, record: record))
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        return try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
+        let submitRecordResponse = try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
+        return submitRecordResponse.recordIdentity
     }
     
     @discardableResult
     public func updateRecord(
         appID: Int,
-        recordID: Int,
-        revision: Int? = nil,
+        recordIdentity: RecordIdentity.Write,
         record: Record.Write
-    ) async throws -> UpdateRecordResponse {
-        let httpBody = try JSONEncoder().encode(UpdateRecordRequest(appID: appID, recordID: recordID, revision: revision, record: record))
+    ) async throws -> RecordIdentity.Read {
+        let httpBody = try JSONEncoder().encode(UpdateRecordRequest(appID: appID, recordIdentity: recordIdentity, record: record))
         let request = makeRequest(httpMethod: .put, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        return try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
+        let updateRecordResponse = try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
+        return RecordIdentity.Read(id: recordIdentity.id, revision: updateRecordResponse.revision)
     }
     
     public func fetchRecords(
@@ -140,11 +143,21 @@ public struct KintoneAPI: Sendable {
         return fetchRecordsResponse.records
     }
     
+    public func deleteRecords(
+        appID: Int,
+        recordIdentities: [RecordIdentity.Write]
+    ) async throws {
+        let httpBody = try JSONEncoder().encode(DeleteRecordsRequest(appID: appID, recordIdentities: recordIdentities))
+        let request = makeRequest(httpMethod: .delete, endpoint: .records, httpBody: httpBody)
+        let (_, response) = try await dataRequestHandler(request)
+        try check(response: response)
+    }
+    
     public func uploadFile(
         fileName: String,
         mimeType: String,
         data: Data
-    ) async throws -> String {
+    ) async throws -> FileKey {
         let boundary = "---------\(UUID().uuidString)"
         var httpBody = Data()
         httpBody.append("--\(boundary)\r\n".data(using: .utf8)!)
