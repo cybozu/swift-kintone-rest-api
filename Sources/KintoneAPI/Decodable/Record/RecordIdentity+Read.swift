@@ -22,8 +22,8 @@ extension RecordIdentity {
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.id = try container.customDecode(String.self, forKey: .id) { Int($0) }
-            self.revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
+            id = try container.customDecode(String.self, forKey: .id) { Int($0) }
+            revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
         }
     }
 }

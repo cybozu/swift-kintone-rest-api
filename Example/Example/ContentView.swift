@@ -16,6 +16,7 @@ enum TabCategory {
     case fetchRecords
     case submitRecord
     case uploadFile
+    case status
 }
 
 @MainActor @Observable final class ContentViewModel {
@@ -29,6 +30,7 @@ enum TabCategory {
     var layout = [FormLayout]()
     var fields = [FieldProperty]()
     var records = [Record.Read]()
+    var statusSettings: AppStatusSettings?
 
     var kintoneAPI: KintoneAPI {
         .init(
@@ -57,10 +59,11 @@ enum TabCategory {
 
     func onTask() async {
         do {
-            apps = try await kintoneAPI.fetchApps()
-            layout = try await kintoneAPI.fetchFormLayout(appID: appID)
-            fields = try await kintoneAPI.fetchFields(appID: appID)
-            records = try await kintoneAPI.fetchRecords(appID: appID)
+//            apps = try await kintoneAPI.fetchApps()
+//            layout = try await kintoneAPI.fetchFormLayout(appID: appID)
+//            fields = try await kintoneAPI.fetchFields(appID: appID)
+//            records = try await kintoneAPI.fetchRecords(appID: appID)
+            statusSettings = try await kintoneAPI.fetchAppStatusSettings(appID: appID)
         } catch {
             print(error.localizedDescription)
         }
@@ -220,6 +223,11 @@ enum TabCategory {
                         Label("Upload File", systemImage: "square.and.arrow.up")
                     }
                     .tag(TabCategory.uploadFile)
+                    FetchAppStatusSettingsView(statusSettings: viewModel.statusSettings)
+                        .tabItem {
+                            Label("Status", systemImage: "point.bottomleft.forward.to.arrow.triangle.scurvepath.fill")
+                        }
+                        .tag(TabCategory.status)
                 }
                 .navigationTitle("kintone API")
                 .task {
