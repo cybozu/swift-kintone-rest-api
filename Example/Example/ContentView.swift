@@ -59,16 +59,16 @@ enum TabCategory {
 
     func onTask() async {
         do {
-//            apps = try await kintoneAPI.fetchApps()
-//            layout = try await kintoneAPI.fetchFormLayout(appID: appID)
-//            fields = try await kintoneAPI.fetchFields(appID: appID)
-//            records = try await kintoneAPI.fetchRecords(appID: appID)
+            apps = try await kintoneAPI.fetchApps()
+            layout = try await kintoneAPI.fetchFormLayout(appID: appID)
+            fields = try await kintoneAPI.fetchFields(appID: appID)
+            records = try await kintoneAPI.fetchRecords(appID: appID)
             statusSettings = try await kintoneAPI.fetchAppStatusSettings(appID: appID)
         } catch {
             print(error.localizedDescription)
         }
     }
-    
+
     func downloadFile(fileKey: String) async -> Data? {
         do {
             return try await kintoneAPI.downloadFile(fileKey: fileKey)
@@ -88,7 +88,7 @@ enum TabCategory {
             return nil
         }
     }
-    
+
     func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async -> RecordIdentity.Read? {
         do {
             let recordIdentity = RecordIdentity.Write(id: recordID)
@@ -100,7 +100,7 @@ enum TabCategory {
             return nil
         }
     }
-    
+
     func onRemoveRecord(recordID: Int) async {
         do {
             let recordIdentity = RecordIdentity.Write(id: recordID)
@@ -109,7 +109,7 @@ enum TabCategory {
             print(error.localizedDescription)
         }
     }
-    
+
     func uploadFile(fileArguments: FileArguments?) async -> String? {
         guard let fileArguments else { return nil }
         do {

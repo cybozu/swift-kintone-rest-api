@@ -11,7 +11,7 @@ import SwiftUI
 struct FilePreviewView: View {
     @State private var data: Data?
     var downloadFileHandler: () async -> Data?
-    
+
     var body: some View {
         Group {
             if let data {

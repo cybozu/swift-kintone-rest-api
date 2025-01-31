@@ -11,7 +11,7 @@ import SwiftUI
 struct RecordInputFieldView: View {
     var field: FieldProperty
     @Binding var fieldValues: [String: RecordFieldValue.Write]
-    
+
     var body: some View {
         switch field.type {
         case .richText:

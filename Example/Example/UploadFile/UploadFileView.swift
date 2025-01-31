@@ -64,7 +64,7 @@ struct UploadFileView: View {
             onChange(pickerItem: newValue)
         }
     }
-    
+
     private func onCompletion(url: URL) {
         guard url.startAccessingSecurityScopedResource() else { return }
         defer {
@@ -77,7 +77,7 @@ struct UploadFileView: View {
         }
         fileArguments = FileArguments(fileName: fileName, mimeType: mimeType, data: data)
     }
-    
+
     private func onChange(pickerItem: PhotosPickerItem?) {
         guard let pickerItem else { return }
         Task {
