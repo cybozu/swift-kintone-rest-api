@@ -5,8 +5,6 @@
 //  Created by ky0me22 on 2025/01/21.
 //
 
-import Foundation
-
 public struct SubtableAttribute: Decodable, Sendable {
     public var noLabel: Bool
     public var fields: [FieldProperty]
