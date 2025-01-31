@@ -74,22 +74,17 @@ struct SubmitRecordView: View {
             }
             Section {
                 LabeledContent {
-                    Button {
-                        Task {
-                            if let recordIdentity = await onSubmitRecordHandler(fieldValues) {
-                                self.recordID = recordIdentity.id
-                                self.revision = recordIdentity.revision
-                            }
-                        }
-                    } label: {
-                        Text("Submit")
-                    }
-                    .buttonStyle(.borderedProminent)
-                } label: {
-                    EmptyView()
-                }
-                LabeledContent {
                     HStack {
+                        Button {
+                            Task {
+                                if let recordIdentity = await onSubmitRecordHandler(fieldValues) {
+                                    self.recordID = recordIdentity.id
+                                    self.revision = recordIdentity.revision
+                                }
+                            }
+                        } label: {
+                            Text("Submit")
+                        }
                         Button {
                             Task {
                                 guard let recordID else { return }
@@ -100,6 +95,7 @@ struct SubmitRecordView: View {
                         } label: {
                             Text("Update")
                         }
+                        .disabled(recordID == nil)
                         Button {
                             Task {
                                 guard let recordID else { return }
@@ -110,12 +106,14 @@ struct SubmitRecordView: View {
                         } label: {
                             Text("Remove")
                         }
+                        .disabled(recordID == nil)
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(recordID == nil)
                 } label: {
-                    Text("Record ID: \(String(optional: recordID)), Revision: \(String(optional: revision))")
+                    EmptyView()
                 }
+            } header: {
+                Text("Record ID: \(String(optional: recordID)), Revision: \(String(optional: revision))")
             }
         }
     }
