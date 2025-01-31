@@ -142,21 +142,6 @@ public struct KintoneAPI: Sendable {
         return RecordIdentity.Read(id: recordIdentity.id, revision: updateRecordResponse.revision)
     }
 
-    public func updateStatus(
-        appID: Int,
-        recordIdentity: RecordIdentity.Write,
-        action: String,
-        assignee: String?
-    ) async throws {
-        let httpBody = try JSONEncoder().encode(UpdateStatusRequest(appID: appID, recordIdentity: recordIdentity, action: action, assignee: assignee))
-        let request = makeRequest(httpMethod: .put, endpoint: .recordStatus, httpBody: httpBody)
-        let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
-        if let str = String(data: data, encoding: .utf8) {
-            print(str)
-        }
-    }
-
     public func fetchRecords(
         appID: Int,
         fields: [String]? = nil,
