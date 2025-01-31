@@ -8,8 +8,6 @@
 import Foundation
 
 public struct KintoneAPI: Sendable {
-    public typealias FileKey = String
-
     var authenticationMethod: AuthenticationMethod
     var dataRequestHandler: @Sendable (URLRequest) async throws -> (Data, URLResponse)
 
@@ -98,6 +96,21 @@ public struct KintoneAPI: Sendable {
         try check(response: response)
         let fetchFieldsResponse = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
         return fetchFieldsResponse.properties
+    }
+
+    public func fetchAppSettings(
+        appID: Int,
+        language: Language = .default
+    ) async throws -> AppSettings {
+        let queryItems = [
+            URLQueryItem(name: "app", value: appID.description),
+            URLQueryItem(name: "lang", value: language.rawValue),
+        ]
+        let request = makeRequest(httpMethod: .get, endpoint: .appSettings, queryItems: queryItems)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response)
+        let fetchAppSettingsResponse = try JSONDecoder().decode(FetchAppSettingsResponse.self, from: data)
+        return fetchAppSettingsResponse.appSettings
     }
 
     public func fetchAppStatusSettings(

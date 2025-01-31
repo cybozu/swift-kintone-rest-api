@@ -13,6 +13,7 @@ enum TabCategory {
     case fetchApps
     case fetchFormLayout
     case fetchFields
+    case fetchAppSettings
     case fetchRecords
     case submitRecord
     case uploadFile
@@ -29,6 +30,7 @@ enum TabCategory {
     var apps = [KintoneApp]()
     var layout = [FormLayout]()
     var fields = [FieldProperty]()
+    var appSettings: AppSettings?
     var records = [Record.Read]()
     var statusSettings: AppStatusSettings?
 
@@ -62,6 +64,7 @@ enum TabCategory {
             apps = try await kintoneAPI.fetchApps()
             layout = try await kintoneAPI.fetchFormLayout(appID: appID)
             fields = try await kintoneAPI.fetchFields(appID: appID)
+            appSettings = try await kintoneAPI.fetchAppSettings(appID: appID)
             records = try await kintoneAPI.fetchRecords(appID: appID)
             statusSettings = try await kintoneAPI.fetchAppStatusSettings(appID: appID)
         } catch {
@@ -193,6 +196,16 @@ enum TabCategory {
                             Label("Fields", systemImage: "square.3.layers.3d.down.left")
                         }
                         .tag(TabCategory.fetchFields)
+                    FetchAppSettingsView(
+                        appSettings: viewModel.appSettings,
+                        downloadFileHandler: { fileKey in
+                            await viewModel.downloadFile(fileKey: fileKey)
+                        }
+                    )
+                    .tabItem {
+                        Label("Settings", systemImage: "gear")
+                    }
+                    .tag(TabCategory.fetchAppSettings)
                     FetchRecordsView(records: viewModel.records) { fileKey in
                         await viewModel.downloadFile(fileKey: fileKey)
                     }
