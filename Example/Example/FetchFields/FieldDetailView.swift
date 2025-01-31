@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FieldDetailView: View {
     var field: FieldProperty
-    
+
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
@@ -173,7 +173,7 @@ struct FieldDetailView: View {
                             FieldDetailView(field: field)
                         }
                     }
-                    
+
                 case let .time(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")

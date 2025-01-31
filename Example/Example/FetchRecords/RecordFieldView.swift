@@ -11,7 +11,7 @@ import SwiftUI
 struct RecordFieldView: View {
     var recordField: RecordField.Read
     var downloadFileHandler: (String) async -> Data?
-    
+
     var body: some View {
         HStack(alignment: .top) {
             Text("Code: \(recordField.code)")
@@ -20,7 +20,7 @@ struct RecordFieldView: View {
             case let .id(integer),
                 let .revision(integer):
                 CornerRadiusText("Value: \(integer)")
-                
+
             case let .calc(string),
                 let .link(string),
                 let .multiLineText(string),
@@ -30,7 +30,7 @@ struct RecordFieldView: View {
                 let .singleLineText(string),
                 let .status(string):
                 CornerRadiusText("Value: \(string)")
-                
+
             case let .dropDown(string),
                 let .radioButton(string):
                 CornerRadiusText("Value: \(String(optional: string))")
@@ -45,29 +45,29 @@ struct RecordFieldView: View {
             case let .createdTime(date),
                 let .updatedTime(date):
                 CornerRadiusText("Value: \(date)")
-                
+
             case let .date(date),
                 let .dateTime(date),
                 let .time(date):
                 CornerRadiusText("Value: \(String(optional: date))")
-                
+
             case let .creator(entity),
-                let .modifier(entity),
-                let .statusAssignee(entity):
+                let .modifier(entity):
                 EntityView(entity: entity)
-                
+
             case let .file(files):
                 ArrayValueView(files) { file in
                     FileView(file: file, downloadFileHandler: downloadFileHandler)
                 }
-                
+
             case let .groupSelect(entityArray),
                 let .organizationSelect(entityArray),
+                let .statusAssignee(entityArray),
                 let .userSelect(entityArray):
                 ArrayValueView(entityArray) { entity in
                     EntityView(entity: entity)
                 }
-                
+
             case let .subTable(subtableValueArray):
                 ArrayValueView(subtableValueArray.indices, id: \.self) { i in
                     VStack(alignment: .leading, spacing: 4) {

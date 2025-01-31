@@ -10,7 +10,7 @@ import SwiftUI
 
 struct EntityView: View {
     var entity: Entity.Read
-    
+
     var body: some View {
         HStack(alignment: .top) {
             Text("Value:")

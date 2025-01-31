@@ -11,12 +11,12 @@ extension SubtableValue {
     public struct Read: Decodable, Sendable {
         public var id: String
         public var value: [RecordField.Read]
-        
+
         enum CodingKeys: CodingKey {
             case id
             case value
         }
-        
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             id = try container.decode(String.self, forKey: .id)

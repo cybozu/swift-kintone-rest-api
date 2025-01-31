@@ -12,7 +12,7 @@ struct FileView: View {
     @State private var isPresented = false
     var file: File.Read
     var downloadFileHandler: (String) async -> Data?
-    
+
     var body: some View {
         HStack(alignment: .top) {
             Text("Value:")
@@ -37,4 +37,3 @@ struct FileView: View {
         }
     }
 }
-

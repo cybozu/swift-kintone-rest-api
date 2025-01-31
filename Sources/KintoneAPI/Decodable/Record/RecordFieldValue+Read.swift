@@ -32,17 +32,17 @@ extension RecordFieldValue {
         case richText(String)
         case singleLineText(String)
         case status(String)
-        case statusAssignee(Entity.Read)
+        case statusAssignee([Entity.Read])
         case subTable([SubtableValue.Read])
         case time(Date?)
         case updatedTime(Date)
         case userSelect([Entity.Read])
-        
+
         enum CodingKeys: CodingKey {
             case type
             case value
         }
-        
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let type = try container.decode(RecordFieldType.self, forKey: .type)
@@ -109,8 +109,8 @@ extension RecordFieldValue {
             case .status:
                 self = .status(try container.decode(String.self, forKey: .value))
             case .statusAssignee:
-                let entities = try container.customDecode(EntityValue.self, forKey: .value) {
-                    Entity.Read(type: .user, code: $0.code, name: $0.name)
+                let entities = try container.customDecode([EntityValue].self, forKey: .value) {
+                    $0.map { Entity.Read(type: .user, code: $0.code, name: $0.name) }
                 }
                 self = .statusAssignee(entities)
             case .subtable:
@@ -128,7 +128,7 @@ extension RecordFieldValue {
                 self = .userSelect(entities)
             }
         }
-        
+
         public var integer: Int? {
             switch self {
             case let .id(value): value
@@ -136,7 +136,7 @@ extension RecordFieldValue {
             default: nil
             }
         }
-        
+
         public var string: String? {
             switch self {
             case let .calc(value): value
@@ -179,12 +179,11 @@ extension RecordFieldValue {
             default: nil
             }
         }
-        
+
         public var entity: Entity.Read? {
             switch self {
             case let .creator(value): value
             case let .modifier(value): value
-            case let .statusAssignee(value): value
             default: nil
             }
         }
@@ -193,6 +192,7 @@ extension RecordFieldValue {
             switch self {
             case let .groupSelect(value): value
             case let .organizationSelect(value): value
+            case let .statusAssignee(value): value
             case let .userSelect(value): value
             default: nil
             }

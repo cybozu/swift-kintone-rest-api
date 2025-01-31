@@ -25,11 +25,11 @@ extension RecordFieldValue {
         case singleLineText(String)
         case time(Date)
         case userSelect([Entity.Write])
-        
+
         enum CodingKeys: CodingKey {
             case value
         }
-        
+
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
@@ -70,7 +70,7 @@ extension RecordFieldValue {
                 try container.encode(entityArray, forKey: .value)
             }
         }
-        
+
         public var string: String? {
             switch self {
             case let .dropDown(value): value
@@ -107,7 +107,7 @@ extension RecordFieldValue {
             default: nil
             }
         }
-  
+
         public var entities: [Entity.Write]? {
             switch self {
             case let .groupSelect(value): value

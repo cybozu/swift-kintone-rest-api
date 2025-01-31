@@ -11,13 +11,13 @@ struct ArrayValueView<Data, ID, Content>: View where Data : RandomAccessCollecti
     var data: Data
     var content: (Data.Element) -> Content
     var id: KeyPath<Data.Element, ID>
-    
+
     init(_ data: Data, id: KeyPath<Data.Element, ID>, @ViewBuilder content: @escaping (Data.Element) -> Content) {
         self.data = data
         self.id = id
         self.content = content
     }
-    
+
     var body: some View {
         if data.isEmpty {
             CornerRadiusText("Array: empty")
@@ -43,5 +43,3 @@ extension ArrayValueView where ID == Data.Element.ID, Data.Element : Identifiabl
         self.content = content
     }
 }
-
-

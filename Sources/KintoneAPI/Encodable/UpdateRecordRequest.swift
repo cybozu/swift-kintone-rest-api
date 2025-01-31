@@ -5,8 +5,6 @@
 //  Created by ky0me22 on 2025/01/30.
 //
 
-import Foundation
-
 struct UpdateRecordRequest: Encodable {
     var appID: Int
     var recordIdentity: RecordIdentity.Write
@@ -18,7 +16,7 @@ struct UpdateRecordRequest: Encodable {
         case revision
         case record
     }
-    
+
     func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(appID, forKey: .appID)

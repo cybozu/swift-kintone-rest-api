@@ -20,9 +20,9 @@ public struct FormLayout: Decodable, Sendable {
 
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(FormLayoutType.self, forKey: .type)
-        self.code = try container.decodeIfPresent(String.self, forKey: .code)
-        self.fields = try container.decodeIfPresent([FormField].self, forKey: .fields) ?? []
-        self.layout = try container.decodeIfPresent([FormLayout].self, forKey: .layout) ?? []
+        type = try container.decode(FormLayoutType.self, forKey: .type)
+        code = try container.decodeIfPresent(String.self, forKey: .code)
+        fields = try container.decodeIfPresent([FormField].self, forKey: .fields) ?? []
+        layout = try container.decodeIfPresent([FormLayout].self, forKey: .layout) ?? []
     }
 }

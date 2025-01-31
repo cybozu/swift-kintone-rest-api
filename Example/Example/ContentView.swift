@@ -16,6 +16,7 @@ enum TabCategory {
     case fetchRecords
     case submitRecord
     case uploadFile
+    case status
 }
 
 @MainActor @Observable final class ContentViewModel {
@@ -29,6 +30,7 @@ enum TabCategory {
     var layout = [FormLayout]()
     var fields = [FieldProperty]()
     var records = [Record.Read]()
+    var statusSettings: AppStatusSettings?
 
     var kintoneAPI: KintoneAPI {
         .init(
@@ -61,11 +63,12 @@ enum TabCategory {
             layout = try await kintoneAPI.fetchFormLayout(appID: appID)
             fields = try await kintoneAPI.fetchFields(appID: appID)
             records = try await kintoneAPI.fetchRecords(appID: appID)
+            statusSettings = try await kintoneAPI.fetchAppStatusSettings(appID: appID)
         } catch {
             print(error.localizedDescription)
         }
     }
-    
+
     func downloadFile(fileKey: String) async -> Data? {
         do {
             return try await kintoneAPI.downloadFile(fileKey: fileKey)
@@ -85,7 +88,7 @@ enum TabCategory {
             return nil
         }
     }
-    
+
     func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async -> RecordIdentity.Read? {
         do {
             let recordIdentity = RecordIdentity.Write(id: recordID)
@@ -97,7 +100,7 @@ enum TabCategory {
             return nil
         }
     }
-    
+
     func onRemoveRecord(recordID: Int) async {
         do {
             let recordIdentity = RecordIdentity.Write(id: recordID)
@@ -106,7 +109,7 @@ enum TabCategory {
             print(error.localizedDescription)
         }
     }
-    
+
     func uploadFile(fileArguments: FileArguments?) async -> String? {
         guard let fileArguments else { return nil }
         do {
@@ -220,6 +223,11 @@ enum TabCategory {
                         Label("Upload File", systemImage: "square.and.arrow.up")
                     }
                     .tag(TabCategory.uploadFile)
+                    FetchAppStatusSettingsView(statusSettings: viewModel.statusSettings)
+                        .tabItem {
+                            Label("Status", systemImage: "point.bottomleft.forward.to.arrow.triangle.scurvepath.fill")
+                        }
+                        .tag(TabCategory.status)
                 }
                 .navigationTitle("kintone API")
                 .task {

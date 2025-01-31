@@ -30,3 +30,15 @@ extension RecordField.Read: @retroactive Identifiable {
 extension File.Read: @retroactive Identifiable {
     public var id: String { fileKey }
 }
+
+extension RecordState: @retroactive Identifiable {
+    public var id: String { name }
+}
+
+extension StatusAction: @retroactive Identifiable {
+    public var id: String { name }
+}
+
+extension AssigneeEntity: @retroactive Identifiable {
+    public var id: String { code }
+}

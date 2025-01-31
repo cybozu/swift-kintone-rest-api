@@ -9,7 +9,7 @@ extension Entity {
     public struct Write: Encodable, Sendable {
         public var type: EntityType
         public var code: String
-        
+
         public init(type: EntityType, code: String) {
             self.type = type
             self.code = code

@@ -34,7 +34,7 @@ extension DateFormatter {
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         return formatter
     }()
-    
+
     func date(fromOptional dateString: String?) -> Date? {
         if let dateString {
             date(from: dateString)
