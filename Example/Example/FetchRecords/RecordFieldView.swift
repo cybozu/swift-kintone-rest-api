@@ -52,8 +52,7 @@ struct RecordFieldView: View {
                 CornerRadiusText("Value: \(String(optional: date))")
 
             case let .creator(entity),
-                let .modifier(entity),
-                let .statusAssignee(entity):
+                let .modifier(entity):
                 EntityView(entity: entity)
 
             case let .file(files):
@@ -63,6 +62,7 @@ struct RecordFieldView: View {
 
             case let .groupSelect(entityArray),
                 let .organizationSelect(entityArray),
+                let .statusAssignee(entityArray),
                 let .userSelect(entityArray):
                 ArrayValueView(entityArray) { entity in
                     EntityView(entity: entity)
