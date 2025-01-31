@@ -72,6 +72,16 @@ enum TabCategory {
         }
     }
 
+    func updateStatus(recordIdentity: RecordIdentity.Write, action: StatusAction) async {
+        do {
+            let assignee = statusSettings?.states.first(where: { $0.name == action.to })?.assignee.entities.first?.code
+            try await kintoneAPI.updateStatus(appID: appID, recordIdentity: recordIdentity, actionName: action.name, assignee: assignee)
+            records = try await kintoneAPI.fetchRecords(appID: appID)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+
     func downloadFile(fileKey: String) async -> Data? {
         do {
             return try await kintoneAPI.downloadFile(fileKey: fileKey)
@@ -206,9 +216,16 @@ enum TabCategory {
                         Label("Settings", systemImage: "gear")
                     }
                     .tag(TabCategory.fetchAppSettings)
-                    FetchRecordsView(records: viewModel.records) { fileKey in
-                        await viewModel.downloadFile(fileKey: fileKey)
-                    }
+                    FetchRecordsView(
+                        records: viewModel.records,
+                        actions: viewModel.statusSettings?.actions ?? [],
+                        updateStatusHandler: { recordIdentity, action in
+                            await viewModel.updateStatus(recordIdentity: recordIdentity, action: action)
+                        },
+                        downloadFileHandler: { fileKey in
+                            await viewModel.downloadFile(fileKey: fileKey)
+                        }
+                    )
                     .tabItem {
                         Label("Records", systemImage: "document.on.document")
                     }

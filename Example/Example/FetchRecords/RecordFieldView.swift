@@ -10,6 +10,8 @@ import SwiftUI
 
 struct RecordFieldView: View {
     var recordField: RecordField.Read
+    var actions: [StatusAction]
+    var updateStatusHandler: (StatusAction) async -> Void
     var downloadFileHandler: (String) async -> Data?
 
     var body: some View {
@@ -27,9 +29,15 @@ struct RecordFieldView: View {
                 let .number(string),
                 let .recordNumber(string),
                 let .richText(string),
-                let .singleLineText(string),
-                let .status(string):
+                let .singleLineText(string):
                 CornerRadiusText("Value: \(string)")
+
+            case let .status(string):
+                RecordStatusView(
+                    state: string,
+                    actions: actions,
+                    updateStatusHandler: updateStatusHandler
+                )
 
             case let .dropDown(string),
                 let .radioButton(string):
@@ -73,7 +81,12 @@ struct RecordFieldView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("ID: \(subtableValueArray[i].id)")
                         ForEach(subtableValueArray[i].value) { recordField in
-                            RecordFieldView(recordField: recordField, downloadFileHandler: downloadFileHandler)
+                            RecordFieldView(
+                                recordField: recordField,
+                                actions: actions,
+                                updateStatusHandler: updateStatusHandler,
+                                downloadFileHandler: downloadFileHandler
+                            )
                         }
                     }
                     .cornerRadiusBorder()

@@ -44,9 +44,14 @@ public struct KintoneAPI: Sendable {
     }
 
     private func check(response: URLResponse) throws {
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse else {
             throw KintoneAPIError.invalidResponse
+        }
+        guard httpResponse.statusCode == 200 else {
+            throw KintoneAPIError.requestFailed(ErrorDetail(
+                statusCode: httpResponse.statusCode,
+                cybozuError: httpResponse.value(forHTTPHeaderField: "X-Cybozu-Error")
+            ))
         }
     }
 
@@ -128,6 +133,32 @@ public struct KintoneAPI: Sendable {
         return fetchAppStatusResponse.appStatusSettings
     }
 
+    public func fetchRecords(
+        appID: Int,
+        fields: [String]? = nil,
+        query: String? = nil
+    ) async throws -> [Record.Read] {
+        var queryItems = [URLQueryItem]()
+        queryItems.appendQueryItem(name: "app", value: appID.description)
+        queryItems.appendQueryItem(name: "fields", value: fields?.arrayString)
+        queryItems.appendQueryItem(name: "query", value: query)
+        let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response)
+        let fetchRecordsResponse = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
+        return fetchRecordsResponse.records
+    }
+
+    public func removeRecords(
+        appID: Int,
+        recordIdentities: [RecordIdentity.Write]
+    ) async throws {
+        let httpBody = try JSONEncoder().encode(RemoveRecordsRequest(appID: appID, recordIdentities: recordIdentities))
+        let request = makeRequest(httpMethod: .delete, endpoint: .records, httpBody: httpBody)
+        let (_, response) = try await dataRequestHandler(request)
+        try check(response: response)
+    }
+
     @discardableResult
     public func submitRecord(
         appID: Int,
@@ -155,30 +186,19 @@ public struct KintoneAPI: Sendable {
         return RecordIdentity.Read(id: recordIdentity.id, revision: updateRecordResponse.revision)
     }
 
-    public func fetchRecords(
+    @discardableResult
+    public func updateStatus(
         appID: Int,
-        fields: [String]? = nil,
-        query: String? = nil
-    ) async throws -> [Record.Read] {
-        var queryItems = [URLQueryItem]()
-        queryItems.appendQueryItem(name: "app", value: appID.description)
-        queryItems.appendQueryItem(name: "fields", value: fields?.arrayString)
-        queryItems.appendQueryItem(name: "query", value: query)
-        let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
+        recordIdentity: RecordIdentity.Write,
+        actionName: String,
+        assignee: String?
+    ) async throws -> RecordIdentity.Read {
+        let httpBody = try JSONEncoder().encode(UpdateStatusRequest(appID: appID, recordIdentity: recordIdentity, actionName: actionName, assignee: assignee))
+        let request = makeRequest(httpMethod: .put, endpoint: .recordStatus, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchRecordsResponse = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        return fetchRecordsResponse.records
-    }
-
-    public func removeRecords(
-        appID: Int,
-        recordIdentities: [RecordIdentity.Write]
-    ) async throws {
-        let httpBody = try JSONEncoder().encode(RemoveRecordsRequest(appID: appID, recordIdentities: recordIdentities))
-        let request = makeRequest(httpMethod: .delete, endpoint: .records, httpBody: httpBody)
-        let (_, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        let updateStatusResponse = try JSONDecoder().decode(UpdateStatusResponse.self, from: data)
+        return RecordIdentity.Read(id: recordIdentity.id, revision: updateStatusResponse.revision)
     }
 
     public func uploadFile(

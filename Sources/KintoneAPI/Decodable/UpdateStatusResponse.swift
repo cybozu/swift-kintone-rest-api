@@ -1,0 +1,19 @@
+//
+//  UpdateStatusResponse.swift
+//
+//
+//  Created by ky0me22 on 2025/01/31.
+//
+
+struct UpdateStatusResponse: Decodable, Sendable {
+    var revision: Int
+
+    enum CodingKeys: String, CodingKey {
+        case revision
+    }
+
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
+    }
+}
