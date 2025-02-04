@@ -10,6 +10,7 @@ public struct AppSettings: Decodable, Sendable {
     public var description: String
     public var icon: AppIcon.Read
     public var theme: AppThemeType
+    public var titleField: TitleField
     public var enableThumbnails: Bool
     public var enableBulkDeletion: Bool
     public var enableComments: Bool
@@ -24,6 +25,7 @@ public struct AppSettings: Decodable, Sendable {
         case description
         case icon
         case theme
+        case titleField
         case enableThumbnails
         case enableBulkDeletion
         case enableComments
@@ -40,6 +42,7 @@ public struct AppSettings: Decodable, Sendable {
         description = try container.decode(String.self, forKey: .description)
         icon = try container.decode(AppIcon.Read.self, forKey: .icon)
         theme = try container.decode(AppThemeType.self, forKey: .theme)
+        titleField = try container.decode(TitleField.self, forKey: .titleField)
         enableThumbnails = try container.decode(Bool.self, forKey: .enableThumbnails)
         enableBulkDeletion = try container.decode(Bool.self, forKey: .enableBulkDeletion)
         enableComments = try container.decode(Bool.self, forKey: .enableComments)

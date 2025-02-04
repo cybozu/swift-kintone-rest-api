@@ -20,6 +20,7 @@ struct FetchAppSettingsView: View {
                     CornerRadiusText("Description: \(appSettings.description)")
                     IconFileView(icon: appSettings.icon, downloadFileHandler: downloadFileHandler)
                     CornerRadiusText("Theme: \(appSettings.theme)")
+                    TitleFieldView(titleField: appSettings.titleField)
                     CornerRadiusText("Enable Thumbnails: \(appSettings.enableThumbnails)")
                     CornerRadiusText("Enable Bulk Deletion: \(appSettings.enableBulkDeletion)")
                     CornerRadiusText("Enable Comments: \(appSettings.enableComments)")
