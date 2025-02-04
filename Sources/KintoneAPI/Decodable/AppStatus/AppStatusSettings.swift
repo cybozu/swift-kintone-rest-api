@@ -21,9 +21,13 @@ public struct AppStatusSettings: Decodable, Sendable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         enable = try container.decode(Bool.self, forKey: .enable)
-        let statesContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .states)
-        states = try statesContainer.allKeys.map { key in
-            try statesContainer.decode(RecordState.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
+        if try container.decodeNil(forKey: .states) {
+            states = []
+        } else {
+            let statesContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .states)
+            states = try statesContainer.allKeys.map { key in
+                try statesContainer.decode(RecordState.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
+            }
         }
         self.actions = try container.decodeIfPresent([StatusAction].self, forKey: .actions) ?? []
         self.revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
