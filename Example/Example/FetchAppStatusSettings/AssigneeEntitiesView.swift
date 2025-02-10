@@ -16,11 +16,11 @@ struct AssigneeEntitiesView: View {
             Text("Assignee Entities:")
             Divider()
             VStack(alignment: .leading, spacing: 4) {
-                ForEach(entities) { entity in
+                ForEach(entities.indices, id: \.self) { i in
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Type: \(entity.type)")
-                        Text("Code: \(entity.code)")
-                        Text("Include Subs: \(entity.includeSubs)")
+                        Text("Type: \(entities[i].type)")
+                        Text("Code: \(String(optional: entities[i].code))")
+                        Text("Include Subs: \(entities[i].includeSubs)")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .cornerRadiusBorder()
