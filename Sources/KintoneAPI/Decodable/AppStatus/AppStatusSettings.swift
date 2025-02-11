@@ -29,7 +29,7 @@ public struct AppStatusSettings: Decodable, Sendable {
                 try statesContainer.decode(RecordState.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
             }
         }
-        self.actions = try container.decodeIfPresent([StatusAction].self, forKey: .actions) ?? []
-        self.revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
+        actions = try container.decodeIfPresent([StatusAction].self, forKey: .actions) ?? []
+        revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
     }
 }

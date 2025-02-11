@@ -15,7 +15,7 @@ extension RecordIdentity {
             self.revision = revision
         }
 
-        enum CodingKeys: String, CodingKey {
+        enum CodingKeys: CodingKey {
             case id
             case revision
         }

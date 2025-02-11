@@ -8,7 +8,7 @@
 struct UpdateRecordResponse: Decodable, Sendable {
     var revision: Int
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: CodingKey {
         case revision
     }
 

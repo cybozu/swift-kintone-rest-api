@@ -18,8 +18,8 @@ public struct RecordState: Decodable, Sendable {
 
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.name = try container.decode(String.self, forKey: .name)
-        self.index = try container.customDecode(String.self, forKey: .index) { Int($0) }
-        self.assignee = try container.decode(Assignee.self, forKey: .assignee)
+        name = try container.decode(String.self, forKey: .name)
+        index = try container.customDecode(String.self, forKey: .index) { Int($0) }
+        assignee = try container.decode(Assignee.self, forKey: .assignee)
     }
 }

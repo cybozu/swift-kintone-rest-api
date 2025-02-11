@@ -38,7 +38,3 @@ extension RecordState: @retroactive Identifiable {
 extension StatusAction: @retroactive Identifiable {
     public var id: String { name }
 }
-
-extension AssigneeEntity: @retroactive Identifiable {
-    public var id: String { code }
-}
