@@ -8,8 +8,8 @@ struct FetchFormLayoutResponseTests {
     func response_empty() throws {
         let input = """
         {
-            "layout" : [],
-            "revision" : "1"
+          "layout" : [],
+          "revision" : "1"
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -211,25 +211,25 @@ struct FetchFormLayoutResponseTests {
     func response_group(_ fieldProperty: FieldProperty) throws {
         let input = """
         {
-            "layout" : [
-              {
-                "type" : "GROUP",
-                "code" : "dummy",
-                "layout" : [
-                  {
-                    "type" : "ROW",
-                    "fields": [
-                      {
-                        "type" : "\(fieldProperty.type)",
-                        "code" : "dummy",
-                        "size" : { "width" : "100" }
-                      }
-                    ]
-                  }
-                ]
-              },
-            ],
-            "revision" : "1"
+          "layout" : [
+            {
+              "type" : "GROUP",
+              "code" : "dummy",
+              "layout" : [
+                {
+                  "type" : "ROW",
+                  "fields" : [
+                    {
+                      "type" : "\(fieldProperty.type)",
+                      "code" : "dummy",
+                      "size" : { "width" : "100" }
+                    }
+                  ]
+                }
+              ]
+            },
+          ],
+          "revision" : "1"
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -260,20 +260,20 @@ struct FetchFormLayoutResponseTests {
     func response_subtable(_ fieldProperty: FieldProperty) throws {
         let input = """
         {
-            "layout" : [
-              {
-                "type" : "SUBTABLE",
-                "code" : "dummy",
-                "fields" : [
-                  {
-                    "type" : "\(fieldProperty.type)",
-                    "code" : "dummy",
-                    "size" : { "width" : "100" }
-                  }
-                ]
-              },
-            ],
-            "revision" : "1"
+          "layout" : [
+            {
+              "type" : "SUBTABLE",
+              "code" : "dummy",
+              "fields" : [
+                {
+                  "type" : "\(fieldProperty.type)",
+                  "code" : "dummy",
+                  "size" : { "width" : "100" }
+                }
+              ]
+            },
+          ],
+          "revision" : "1"
         }
         """
         let data = try #require(input.data(using: .utf8))

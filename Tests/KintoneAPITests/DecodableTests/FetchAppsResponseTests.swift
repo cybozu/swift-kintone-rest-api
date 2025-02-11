@@ -29,7 +29,7 @@ struct FetchAppsResponseTests {
               "createdAt" : "1970-01-01T00:00:00.000Z",
               "creator" : {
                 "code" : "dummy",
-                "name": "dummy"
+                "name" : "dummy"
               },
               "modifiedAt" : "1970-01-01T00:00:00.000Z",
               "modifier" : {
@@ -73,7 +73,7 @@ struct FetchAppsResponseTests {
               "createdAt" : "1970-01-01T00:00:00.000Z",
               "creator" : {
                 "code" : "dummy",
-                "name": "dummy"
+                "name" : "dummy"
               },
               "modifiedAt" : "1970-01-01T00:00:00.000Z",
               "modifier" : {
