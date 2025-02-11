@@ -11,7 +11,7 @@ public struct FieldProperty: Decodable, Sendable {
     public var type: FieldType
     public var attribute: FieldAttribute
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: CodingKey {
         case code
         case label
         case type
