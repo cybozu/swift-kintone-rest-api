@@ -25,12 +25,51 @@ struct SubmitRecordRequestTests {
         #expect(actual == expected)
     }
 
-    @Test
-    func request_checkBox() throws {
+    @Test(arguments: [
+        SingleValueFieldProperty(value: .date(Date(timeIntervalSince1970: 0)), expectedValue: "1970-01-01"),
+        SingleValueFieldProperty(value: .dateTime(Date(timeIntervalSince1970: 0)), expectedValue: "1970-01-01T00:00:00Z"),
+        SingleValueFieldProperty(value: .dropDown("dummy"), expectedValue: "dummy"),
+        SingleValueFieldProperty(value: .link("https://example.com"), expectedValue: "https:\\/\\/example.com"),
+        SingleValueFieldProperty(value: .multiLineText("dummy\ndummy"), expectedValue: "dummy\\ndummy"),
+        SingleValueFieldProperty(value: .number("123.456"), expectedValue: "123.456"),
+        SingleValueFieldProperty(value: .radioButton("dummy"), expectedValue: "dummy"),
+        SingleValueFieldProperty(value: .richText("<h1>dummy</h1>"), expectedValue: "<h1>dummy<\\/h1>"),
+        SingleValueFieldProperty(value: .singleLineText("dummy"), expectedValue: "dummy"),
+        SingleValueFieldProperty(value: .time(Date(timeIntervalSince1970: 0)), expectedValue: "00:00"),
+    ])
+    func request_single_value(_ fieldProperty: SingleValueFieldProperty) throws {
         let sut = SubmitRecordRequest(
             appID: 0,
             record: .init(fields: [
-                .init(code: "dummy", value: .checkBox(["dummy"]))
+                .init(code: "dummy", value: fieldProperty.value)
+            ])
+        )
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let data = try encoder.encode(sut)
+        let actual = try #require(String(data: data, encoding: .utf8))
+        let expected = """
+        {
+          "app" : 0,
+          "record" : {
+            "dummy" : {
+              "value" : "\(fieldProperty.expectedValue)"
+            }
+          }
+        }
+        """
+        #expect(actual == expected)
+    }
+
+    @Test(arguments: [
+        ArrayValueFieldProperty(value: .checkBox(["dummy1", "dummy2"])),
+        ArrayValueFieldProperty(value: .multiSelect(["dummy1", "dummy2"])),
+    ])
+    func request_array_value(_ fieldProperty: ArrayValueFieldProperty) throws {
+        let sut = SubmitRecordRequest(
+            appID: 0,
+            record: .init(fields: [
+                .init(code: "dummy", value: fieldProperty.value)
             ])
         )
         let encoder = JSONEncoder()
@@ -43,83 +82,9 @@ struct SubmitRecordRequestTests {
           "record" : {
             "dummy" : {
               "value" : [
-                "dummy"
+                "dummy1",
+                "dummy2"
               ]
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_date() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .date(Date(timeIntervalSince1970: 0)))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "1970-01-01"
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_dateTime() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .dateTime(Date(timeIntervalSince1970: 0)))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "1970-01-01T00:00:00Z"
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_dropDown() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .dropDown("dummy"))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "dummy"
             }
           }
         }
@@ -156,12 +121,25 @@ struct SubmitRecordRequestTests {
         #expect(actual == expected)
     }
 
-    @Test
-    func request_groupSelect() throws {
+    @Test(arguments: [
+        EntityValueFieldProperty(
+            value: .groupSelect([.init(type: .group, code: "dummy")]),
+            expectedType: "GROUP"
+        ),
+        EntityValueFieldProperty(
+            value: .organizationSelect([.init(type: .organization, code: "dummy")]),
+            expectedType: "ORGANIZATION"
+        ),
+        EntityValueFieldProperty(
+            value: .userSelect([.init(type: .user, code: "dummy")]),
+            expectedType: "USER"
+        ),
+    ])
+    func request_entity_select(_ fieldProperty: EntityValueFieldProperty) throws {
         let sut = SubmitRecordRequest(
             appID: 0,
             record: .init(fields: [
-                .init(code: "dummy", value: .groupSelect([.init(type: .group, code: "dummy")]))
+                .init(code: "dummy", value: fieldProperty.value)
             ])
         )
         let encoder = JSONEncoder()
@@ -176,7 +154,7 @@ struct SubmitRecordRequestTests {
               "value" : [
                 {
                   "code" : "dummy",
-                  "type" : "GROUP"
+                  "type" : "\(fieldProperty.expectedType)"
                 }
               ]
             }
@@ -185,267 +163,18 @@ struct SubmitRecordRequestTests {
         """
         #expect(actual == expected)
     }
+}
 
-    @Test
-    func request_link() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .link("https://example.com"))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "https:\\/\\/example.com"
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
+struct SingleValueFieldProperty {
+    var value: RecordFieldValue.Write
+    var expectedValue: String
+}
 
-    @Test
-    func request_multiLineText() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .multiLineText("dummy\ndummy"))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "dummy\\ndummy"
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
+struct ArrayValueFieldProperty {
+    var value: RecordFieldValue.Write
+}
 
-    @Test
-    func request_multiSelect() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .multiSelect(["dummy1", "dummy2"]))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : [
-                "dummy1",
-                "dummy2"
-              ]
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_number() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .number("123.456"))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "123.456"
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_organizationSelect() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .organizationSelect([.init(type: .organization, code: "dummy")]))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : [
-                {
-                  "code" : "dummy",
-                  "type" : "ORGANIZATION"
-                }
-              ]
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_radioButton() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .radioButton("dummy"))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "dummy"
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_richText() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .richText("<h1>dummy</h1>"))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "<h1>dummy<\\/h1>"
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_singleLineText() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .singleLineText("dummy"))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "dummy"
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_time() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .time(Date(timeIntervalSince1970: 0)))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : "00:00"
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
-    @Test
-    func request_userSelect() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .userSelect([.init(type: .user, code: "dummy")]))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : [
-                {
-                  "code" : "dummy",
-                  "type" : "USER"
-                }
-              ]
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
+struct EntityValueFieldProperty {
+    var value: RecordFieldValue.Write
+    var expectedType: String
 }

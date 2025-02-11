@@ -3,11 +3,6 @@ import Testing
 
 @testable import KintoneAPI
 
-private struct FieldProperty {
-    var type: String
-    var expectedType: FormFieldType
-}
-
 struct FetchFormLayoutResponseTests {
     @Test
     func response_empty() throws {
@@ -296,4 +291,9 @@ struct FetchFormLayoutResponseTests {
         #expect(layout.layout.isEmpty)
         #expect(actual.revision == 1)
     }
+}
+
+struct FieldProperty {
+    var type: String
+    var expectedType: FormFieldType
 }
