@@ -47,15 +47,15 @@ struct FetchFormLayoutResponseTests {
         {
           "layout" : [
             {
-            "type" : "ROW",
-            "fields" : [
-              {
-                "type" : "\(fieldProperty.type)",
-                "code" : "dummy",
-                "size" : { "width" : "100" }
-              }
-            ]
-            },
+              "type" : "ROW",
+              "fields" : [
+                {
+                  "type" : "\(fieldProperty.type)",
+                  "code" : "dummy",
+                  "size" : { "width" : "100" }
+                }
+              ]
+            }
           ],
           "revision" : "1"
         }
@@ -80,14 +80,14 @@ struct FetchFormLayoutResponseTests {
         {
           "layout" : [
             {
-            "type" : "ROW",
-            "fields" : [
-              {
-                "type" : "HR",
-                "size" : { "width" : "100" }
-              }
-            ]
-            },
+              "type" : "ROW",
+              "fields" : [
+                {
+                  "type" : "HR",
+                  "size" : { "width" : "100" }
+                }
+              ]
+            }
           ],
           "revision" : "1"
         }
@@ -112,15 +112,15 @@ struct FetchFormLayoutResponseTests {
         {
           "layout" : [
             {
-            "type" : "ROW",
-            "fields" : [
-              {
-                "type" : "LABEL",
-                "label" : "dummy",
-                "size" : { "width" : "100" }
-              }
-            ]
-            },
+              "type" : "ROW",
+              "fields" : [
+                {
+                  "type" : "LABEL",
+                  "label" : "dummy",
+                  "size" : { "width" : "100" }
+                }
+              ]
+            }
           ],
           "revision" : "1"
         }
@@ -145,15 +145,15 @@ struct FetchFormLayoutResponseTests {
         {
           "layout" : [
             {
-            "type" : "ROW",
-            "fields" : [
-              {
-                "type" : "SPACER",
-                "elementId" : "dummy",
-                "size" : { "width" : "100" }
-              }
-            ]
-            },
+              "type" : "ROW",
+              "fields" : [
+                {
+                  "type" : "SPACER",
+                  "elementId" : "dummy",
+                  "size" : { "width" : "100" }
+                }
+              ]
+            }
           ],
           "revision" : "1"
         }
@@ -178,14 +178,14 @@ struct FetchFormLayoutResponseTests {
         {
           "layout" : [
             {
-            "type" : "ROW",
-            "fields" : [
-              {
-                "type" : "REFERENCE_TABLE",
-                "code" : "dummy"
-              }
-            ]
-            },
+              "type" : "ROW",
+              "fields" : [
+                {
+                  "type" : "REFERENCE_TABLE",
+                  "code" : "dummy"
+                }
+              ]
+            }
           ],
           "revision" : "1"
         }
@@ -227,7 +227,7 @@ struct FetchFormLayoutResponseTests {
                   ]
                 }
               ]
-            },
+            }
           ],
           "revision" : "1"
         }
@@ -271,7 +271,7 @@ struct FetchFormLayoutResponseTests {
                   "size" : { "width" : "100" }
                 }
               ]
-            },
+            }
           ],
           "revision" : "1"
         }

@@ -87,8 +87,8 @@ struct FieldDetailView: View {
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
                     CornerRadiusText("Link Protocol: \(attribute.linkProtocol)")
-                    CornerRadiusText("Min Length: \(attribute.minLength)")
-                    CornerRadiusText("Max Length: \(attribute.maxLength)")
+                    CornerRadiusText("Min Length: \(String(optional: attribute.minLength))")
+                    CornerRadiusText("Max Length: \(String(optional: attribute.maxLength))")
                     CornerRadiusText("Unique: \(attribute.unique)")
                     CornerRadiusText("Default Value: \(attribute.defaultValue)")
 
@@ -145,6 +145,17 @@ struct FieldDetailView: View {
                 case let .recordNumber(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
 
+                case let .referenceTable(attribute):
+                    CornerRadiusText("No Label: \(attribute.noLabel)")
+                    CornerRadiusText("Related App/App: \(attribute.referenceTable.relatedApp.app)")
+                    CornerRadiusText("Related App/Code: \(attribute.referenceTable.relatedApp.code)")
+                    CornerRadiusText("Condition/Field: \(attribute.referenceTable.condition.field)")
+                    CornerRadiusText("Condition/Related Field: \(attribute.referenceTable.condition.relatedField)")
+                    CornerRadiusText("Filter Condition: \(attribute.referenceTable.filterCondition)")
+                    CornerRadiusText("Display Fields: \(attribute.referenceTable.displayFields.joined(separator: ","))")
+                    CornerRadiusText("Sort: \(attribute.referenceTable.sort)")
+                    CornerRadiusText("Size: \(attribute.referenceTable.size)")
+
                 case let .richText(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
@@ -153,8 +164,8 @@ struct FieldDetailView: View {
                 case let .singleLineText(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
-                    CornerRadiusText("Min Length: \(attribute.minLength)")
-                    CornerRadiusText("Max Length: \(attribute.maxLength)")
+                    CornerRadiusText("Min Length: \(String(optional: attribute.minLength))")
+                    CornerRadiusText("Max Length: \(String(optional: attribute.maxLength))")
                     CornerRadiusText("Expression: \(attribute.expression)")
                     CornerRadiusText("Hide Expression: \(attribute.hideExpression)")
                     CornerRadiusText("Unique: \(attribute.unique)")

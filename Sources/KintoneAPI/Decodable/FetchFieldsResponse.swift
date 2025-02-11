@@ -7,9 +7,11 @@
 
 struct FetchFieldsResponse: Decodable {
     var properties: [FieldProperty]
+    var revision: Int
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: CodingKey {
         case properties
+        case revision
     }
 
     init(from decoder: any Decoder) throws {
@@ -18,5 +20,6 @@ struct FetchFieldsResponse: Decodable {
         properties = try propertiesContainer.allKeys.map { key in
             try propertiesContainer.decode(FieldProperty.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
         }
+        revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
     }
 }
