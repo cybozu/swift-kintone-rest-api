@@ -92,35 +92,6 @@ struct SubmitRecordRequestTests {
         #expect(actual == expected)
     }
 
-    @Test
-    func request_file() throws {
-        let sut = SubmitRecordRequest(
-            appID: 0,
-            record: .init(fields: [
-                .init(code: "dummy", value: .file([.init(fileKey: "dummy")]))
-            ])
-        )
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(sut)
-        let actual = try #require(String(data: data, encoding: .utf8))
-        let expected = """
-        {
-          "app" : 0,
-          "record" : {
-            "dummy" : {
-              "value" : [
-                {
-                  "fileKey" : "dummy"
-                }
-              ]
-            }
-          }
-        }
-        """
-        #expect(actual == expected)
-    }
-
     @Test(arguments: [
         EntityValueFieldProperty(
             value: .groupSelect([.init(type: .group, code: "dummy")]),
@@ -163,18 +134,47 @@ struct SubmitRecordRequestTests {
         """
         #expect(actual == expected)
     }
-}
 
-struct SingleValueFieldProperty {
-    var value: RecordFieldValue.Write
-    var expectedValue: String
-}
+    @Test
+    func request_file() throws {
+        let sut = SubmitRecordRequest(
+            appID: 0,
+            record: .init(fields: [
+                .init(code: "dummy", value: .file([.init(fileKey: "dummy")]))
+            ])
+        )
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let data = try encoder.encode(sut)
+        let actual = try #require(String(data: data, encoding: .utf8))
+        let expected = """
+        {
+          "app" : 0,
+          "record" : {
+            "dummy" : {
+              "value" : [
+                {
+                  "fileKey" : "dummy"
+                }
+              ]
+            }
+          }
+        }
+        """
+        #expect(actual == expected)
+    }
 
-struct ArrayValueFieldProperty {
-    var value: RecordFieldValue.Write
-}
+    struct SingleValueFieldProperty {
+        var value: RecordFieldValue.Write
+        var expectedValue: String
+    }
 
-struct EntityValueFieldProperty {
-    var value: RecordFieldValue.Write
-    var expectedType: String
+    struct ArrayValueFieldProperty {
+        var value: RecordFieldValue.Write
+    }
+
+    struct EntityValueFieldProperty {
+        var value: RecordFieldValue.Write
+        var expectedType: String
+    }
 }
