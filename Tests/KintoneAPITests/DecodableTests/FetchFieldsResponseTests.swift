@@ -1065,7 +1065,7 @@ struct FetchFieldsResponseTests {
                 Issue.record("textAttribute must be single line text type.")
             }
         } else {
-            Issue.record("attribute must be time type.")
+            Issue.record("attribute must be subtable type.")
         }
         #expect(actual.revision == 1)
     }

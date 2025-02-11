@@ -16,7 +16,7 @@ extension FieldProperty: @retroactive Identifiable {
 }
 
 extension FieldOption: @retroactive Identifiable {
-    public var id: String { index }
+    public var id: Int { index }
 }
 
 extension Entity.Read: @retroactive Identifiable {

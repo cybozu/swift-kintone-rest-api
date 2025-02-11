@@ -75,7 +75,7 @@ extension RecordFieldValue {
                 let entities = try container.customDecode([EntityValue].self, forKey: .value) {
                     $0.map { Entity.Read(type: .group, code: $0.code, name: $0.name) }
                 }
-                self = .userSelect(entities)
+                self = .groupSelect(entities)
             case .id:
                 self = .id(try container.customDecode(String.self, forKey: .value, initializer: { Int($0) }))
             case .link:
