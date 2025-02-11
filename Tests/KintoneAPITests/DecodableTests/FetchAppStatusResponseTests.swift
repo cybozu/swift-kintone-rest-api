@@ -194,13 +194,13 @@ struct FetchAppStatusResponseTests {
           "enable" : true,
           "states" : null,
           "actions" : [
-            { 
+            {
               "name" : "action1",
               "from" : "step1",
               "to" : "step2",
               "filterCond" : ""
             },
-            { 
+            {
               "name" : "action2",
               "from" : "step2",
               "to" : "step3",
