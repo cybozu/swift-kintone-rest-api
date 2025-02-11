@@ -6,6 +6,17 @@
 //
 
 public struct RelatedApp: Decodable, Sendable {
-    public var app: String
+    public var appID: Int
     public var code: String
+
+    enum CodingKeys: String, CodingKey {
+        case appID = "app"
+        case code
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        appID = try container.customDecode(String.self, forKey: .appID) { Int($0) }
+        code = try container.decode(String.self, forKey: .code)
+    }
 }

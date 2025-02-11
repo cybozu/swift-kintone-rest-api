@@ -8,5 +8,18 @@
 public struct FileAttribute: Decodable, Sendable {
     public var noLabel: Bool
     public var required: Bool
-    public var thumbnailSize: String
+    public var thumbnailSize: Int
+
+    enum CodingKeys: CodingKey {
+        case noLabel
+        case required
+        case thumbnailSize
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        noLabel = try container.decode(Bool.self, forKey: .noLabel)
+        required = try container.decode(Bool.self, forKey: .required)
+        thumbnailSize = try container.customDecode(String.self, forKey: .thumbnailSize) { Int($0) }
+    }
 }
