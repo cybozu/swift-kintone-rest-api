@@ -9,7 +9,7 @@ import Foundation
 
 extension SubtableValue {
     public struct Read: Decodable, Sendable {
-        public var id: String
+        public var id: Int
         public var value: [RecordField.Read]
 
         enum CodingKeys: CodingKey {
@@ -19,7 +19,7 @@ extension SubtableValue {
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            id = try container.decode(String.self, forKey: .id)
+            id = try container.customDecode(String.self, forKey: .id) { Int($0) }
             let valueContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .value)
             value = try valueContainer.allKeys.map { key in
                 let _value = try valueContainer.decode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)

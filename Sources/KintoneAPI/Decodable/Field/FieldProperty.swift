@@ -11,7 +11,7 @@ public struct FieldProperty: Decodable, Sendable {
     public var type: FieldType
     public var attribute: FieldAttribute
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: CodingKey {
         case code
         case label
         case type
@@ -65,6 +65,8 @@ public struct FieldProperty: Decodable, Sendable {
                 try FieldAttribute.radioButton(RadioButtonAttribute(from: decoder))
             case .recordNumber:
                 try FieldAttribute.recordNumber(RecordNumberAttribute(from: decoder))
+            case .referenceTable:
+                try FieldAttribute.referenceTable(ReferenceTableAttribute(from: decoder))
             case .richText:
                 try FieldAttribute.richText(RichTextAttribute(from: decoder))
             case .singleLineText:

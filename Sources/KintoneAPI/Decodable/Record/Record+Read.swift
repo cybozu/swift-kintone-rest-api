@@ -15,7 +15,8 @@ extension Record {
             let id = try container.customDecode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: "$id")!) { $0.integer }
             let revision = try container.customDecode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: "$revision")!) { $0.integer }
             identity = RecordIdentity.Read(id: id, revision: revision)
-            fields = try container.allKeys.map { key in
+            let keys = container.allKeys.filter { !["$id", "$revision"].contains($0.stringValue) }
+            fields = try keys.map { key in
                 let value = try container.decode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
                 return RecordField.Read(code: key.stringValue, value: value)
             }

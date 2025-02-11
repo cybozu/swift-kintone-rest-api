@@ -7,7 +7,18 @@
 
 public struct FieldOption: Decodable, Sendable {
     public var label: String
-    public var index: String
+    public var index: Int
+
+    enum CodingKeys: CodingKey {
+        case label
+        case index
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        label = try container.decode(String.self, forKey: .label)
+        index = try container.customDecode(String.self, forKey: .index) { Int($0) }
+    }
 }
 
 struct FieldOptions: Decodable, Sendable {
