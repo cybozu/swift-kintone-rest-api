@@ -26,6 +26,7 @@ public enum FieldAttribute: Sendable {
     case organizationSelect(OrganizationSelectAttribute)
     case radioButton(RadioButtonAttribute)
     case recordNumber(RecordNumberAttribute)
+    case referenceTable(ReferenceTableAttribute)
     case richText(RichTextAttribute)
     case singleLineText(SingleLineTextAttribute)
     case status(StatusAttribute)

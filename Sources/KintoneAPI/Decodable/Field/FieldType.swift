@@ -25,6 +25,7 @@ public enum FieldType: String, Decodable, Sendable {
     case organizationSelect = "ORGANIZATION_SELECT"
     case radioButton = "RADIO_BUTTON"
     case recordNumber = "RECORD_NUMBER"
+    case referenceTable = "REFERENCE_TABLE"
     case richText = "RICH_TEXT"
     case singleLineText = "SINGLE_LINE_TEXT"
     case status = "STATUS"
