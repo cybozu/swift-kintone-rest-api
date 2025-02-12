@@ -2,6 +2,12 @@
 
 Providing kintone REST API with Swift interface.
 
+[![Github forks](https://img.shields.io/github/forks/cybozu/swift-kintone-rest-api)](https://github.com/cybozu/swift-kintone-rest-api/network/members)
+[![Github stars](https://img.shields.io/github/stars/cybozu/swift-kintone-rest-api)](https://github.com/cybozu/swift-kintone-rest-api/stargazers)
+[![Github issues](https://img.shields.io/github/issues/cybozu/swift-kintone-rest-api)](https://github.com/cybozu/swift-kintone-rest-api/issues)
+[![Release](https://img.shields.io/github/v/release/cybozu/swift-kintone-rest-api)](https://github.com/cybozu/swift-kintone-rest-api/releases)
+[![License](https://img.shields.io/github/license/cybozu/swift-kintone-rest-api)](https://github.com/cybozu/swift-kintone-rest-api/blob/main/LICENSE)
+
 ## Requirements
 
 - Development with Xcode 16.0+
