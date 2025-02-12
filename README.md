@@ -8,6 +8,9 @@ Providing kintone REST API with Swift interface.
 [![Release](https://img.shields.io/github/v/release/cybozu/swift-kintone-rest-api)](https://github.com/cybozu/swift-kintone-rest-api/releases)
 [![License](https://img.shields.io/github/license/cybozu/swift-kintone-rest-api)](https://github.com/cybozu/swift-kintone-rest-api/blob/main/LICENSE)
 
+> [!NOTE]
+> This library is still in alpha.
+
 ## Requirements
 
 - Development with Xcode 16.0+
