@@ -12,4 +12,8 @@ public enum AppThemeType: String, Codable, Sendable {
     case blue = "BLUE"
     case yellow = "YELLOW"
     case black = "BLACK"
+    case clipboard = "CLIPBOARD"
+    case binder = "BINDER"
+    case pencil = "PENCIL"
+    case clips = "CLIPS"
 }
