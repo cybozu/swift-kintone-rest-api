@@ -173,7 +173,7 @@ struct FetchRecordsResponseTests {
               },
               "dummy" : {
                 "type" : "CREATED_TIME",
-                "value" : "1970-01-01T00:00:00Z"
+                "value" : "0001-01-01T00:00:00Z"
               }
             }
           ]
@@ -189,7 +189,7 @@ struct FetchRecordsResponseTests {
         let field = try #require(record.fields.first)
         #expect(field.code == "dummy")
         if case let .createdTime(value) = field.value {
-            #expect(value == Date(timeIntervalSince1970: 0))
+            #expect(value == .distantPast)
         } else {
             Issue.record("value must be created time type.")
         }
@@ -239,7 +239,7 @@ struct FetchRecordsResponseTests {
 
     @Test(arguments: [
         DateProperty(value: "null", expectedValue: nil),
-        DateProperty(value: "\"1970-01-01\"", expectedValue: Date(timeIntervalSince1970: 0)),
+        DateProperty(value: "\"0001-01-01\"", expectedValue: .distantPast),
     ])
     func response_date(_ dateProperty: DateProperty) throws {
         let input = """
@@ -280,7 +280,7 @@ struct FetchRecordsResponseTests {
 
     @Test(arguments: [
         DateTimeProperty(value: "null", expectedValue: nil),
-        DateTimeProperty(value: "\"1970-01-01T00:00:00Z\"", expectedValue: Date(timeIntervalSince1970: 0)),
+        DateTimeProperty(value: "\"0001-01-01T00:00:00Z\"", expectedValue: .distantPast),
     ])
     func response_dateTime(_ dateTimeProperty: DateTimeProperty) throws {
         let input = """
@@ -1002,7 +1002,7 @@ struct FetchRecordsResponseTests {
 
     @Test(arguments: [
         TimeProperty(value: "null", expectedValue: nil),
-        TimeProperty(value: "\"00:00\"", expectedValue: Date(timeIntervalSince1970: 946684800)),
+        TimeProperty(value: "\"00:00\"", expectedValue: .distantReference),
     ])
     func response_time(_ timeProperty: TimeProperty) throws {
         let input = """
@@ -1057,7 +1057,7 @@ struct FetchRecordsResponseTests {
               },
               "dummy" : {
                 "type" : "UPDATED_TIME",
-                "value" : "1970-01-01T00:00:00Z"
+                "value" : "0001-01-01T00:00:00Z"
               }
             }
           ]
@@ -1073,7 +1073,7 @@ struct FetchRecordsResponseTests {
         let field = try #require(record.fields.first)
         #expect(field.code == "dummy")
         if case let .updatedTime(value) = field.value {
-            #expect(value == Date(timeIntervalSince1970: 0))
+            #expect(value == .distantPast)
         } else {
             Issue.record("value must be updated time type.")
         }

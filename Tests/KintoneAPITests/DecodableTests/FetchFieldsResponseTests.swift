@@ -222,7 +222,7 @@ struct FetchFieldsResponseTests {
               "required" : true,
               "unique" : true,
               "defaultNowValue" : false,
-              "defaultValue" : "1970-01-01"
+              "defaultValue" : "0001-01-01"
             }
           },
           "revision" : "1"
@@ -240,7 +240,7 @@ struct FetchFieldsResponseTests {
             #expect(attribute.required)
             #expect(attribute.unique)
             #expect(attribute.defaultNowValue == false)
-            #expect(attribute.defaultValue == Date(timeIntervalSince1970: 0))
+            #expect(attribute.defaultValue == .distantPast)
         } else {
             Issue.record("attribute must be date type.")
         }
@@ -260,7 +260,7 @@ struct FetchFieldsResponseTests {
               "required" : true,
               "unique" : true,
               "defaultNowValue" : false,
-              "defaultValue" : "1970-01-01T00:00"
+              "defaultValue" : "0001-01-01T00:00"
             }
           },
           "revision" : "1"
@@ -278,7 +278,7 @@ struct FetchFieldsResponseTests {
             #expect(attribute.required)
             #expect(attribute.unique)
             #expect(attribute.defaultNowValue == false)
-            #expect(attribute.defaultValue == Date(timeIntervalSince1970: 0))
+            #expect(attribute.defaultValue == .distantPast)
         } else {
             Issue.record("attribute must be date time type.")
         }
@@ -1100,7 +1100,7 @@ struct FetchFieldsResponseTests {
             #expect(attribute.noLabel)
             #expect(attribute.required)
             #expect(attribute.defaultNowValue == false)
-            #expect(attribute.defaultValue == Date(timeIntervalSince1970: 946684800))
+            #expect(attribute.defaultValue == .distantReference)
         } else {
             Issue.record("attribute must be time type.")
         }

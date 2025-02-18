@@ -26,12 +26,12 @@ struct FetchAppsResponseTests {
               "code" : "dummy",
               "name" : "dummy",
               "description" : "dummy",
-              "createdAt" : "1970-01-01T00:00:00.000Z",
+              "createdAt" : "0001-01-01T00:00:00.000Z",
               "creator" : {
                 "code" : "dummy",
                 "name" : "dummy"
               },
-              "modifiedAt" : "1970-01-01T00:00:00.000Z",
+              "modifiedAt" : "0001-01-01T00:00:00.000Z",
               "modifier" : {
                 "code" : "dummy",
                 "name" : "dummy"
@@ -50,10 +50,10 @@ struct FetchAppsResponseTests {
         #expect(app.code == "dummy")
         #expect(app.name == "dummy")
         #expect(app.description == "dummy")
-        #expect(app.createdAt == Date(timeIntervalSince1970: 0))
+        #expect(app.createdAt == .distantPast)
         #expect(app.creator.code == "dummy")
         #expect(app.creator.name == "dummy")
-        #expect(app.modifiedAt == Date(timeIntervalSince1970: 0))
+        #expect(app.modifiedAt == .distantPast)
         #expect(app.modifier.code == "dummy")
         #expect(app.modifier.name == "dummy")
         #expect(app.spaceID == nil)
@@ -70,12 +70,12 @@ struct FetchAppsResponseTests {
               "code" : "dummy",
               "name" : "dummy",
               "description" : "dummy",
-              "createdAt" : "1970-01-01T00:00:00.000Z",
+              "createdAt" : "0001-01-01T00:00:00.000Z",
               "creator" : {
                 "code" : "dummy",
                 "name" : "dummy"
               },
-              "modifiedAt" : "1970-01-01T00:00:00.000Z",
+              "modifiedAt" : "0001-01-01T00:00:00.000Z",
               "modifier" : {
                 "code" : "dummy",
                 "name" : "dummy"
@@ -94,10 +94,10 @@ struct FetchAppsResponseTests {
         #expect(app.code == "dummy")
         #expect(app.name == "dummy")
         #expect(app.description == "dummy")
-        #expect(app.createdAt == Date(timeIntervalSince1970: 0))
+        #expect(app.createdAt == .distantPast)
         #expect(app.creator.code == "dummy")
         #expect(app.creator.name == "dummy")
-        #expect(app.modifiedAt == Date(timeIntervalSince1970: 0))
+        #expect(app.modifiedAt == .distantPast)
         #expect(app.modifier.code == "dummy")
         #expect(app.modifier.name == "dummy")
         #expect(app.spaceID == 2)

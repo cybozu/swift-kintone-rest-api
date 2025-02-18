@@ -26,8 +26,8 @@ struct SubmitRecordRequestTests {
     }
 
     @Test(arguments: [
-        SingleValueFieldProperty(value: .date(Date(timeIntervalSince1970: 0)), expectedValue: "1970-01-01"),
-        SingleValueFieldProperty(value: .dateTime(Date(timeIntervalSince1970: 0)), expectedValue: "1970-01-01T00:00:00Z"),
+        SingleValueFieldProperty(value: .date(.distantPast), expectedValue: "0001-01-01"),
+        SingleValueFieldProperty(value: .dateTime(.distantPast), expectedValue: "0001-01-01T00:00:00Z"),
         SingleValueFieldProperty(value: .dropDown("dummy"), expectedValue: "dummy"),
         SingleValueFieldProperty(value: .link("https://example.com"), expectedValue: "https:\\/\\/example.com"),
         SingleValueFieldProperty(value: .multiLineText("dummy\ndummy"), expectedValue: "dummy\\ndummy"),
@@ -35,7 +35,7 @@ struct SubmitRecordRequestTests {
         SingleValueFieldProperty(value: .radioButton("dummy"), expectedValue: "dummy"),
         SingleValueFieldProperty(value: .richText("<h1>dummy</h1>"), expectedValue: "<h1>dummy<\\/h1>"),
         SingleValueFieldProperty(value: .singleLineText("dummy"), expectedValue: "dummy"),
-        SingleValueFieldProperty(value: .time(Date(timeIntervalSince1970: 0)), expectedValue: "00:00"),
+        SingleValueFieldProperty(value: .time(.distantPast), expectedValue: "00:00"),
     ])
     func request_single_value(_ fieldProperty: SingleValueFieldProperty) throws {
         let sut = SubmitRecordRequest(
