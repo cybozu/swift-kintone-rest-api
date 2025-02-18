@@ -29,7 +29,7 @@ jobs:
         run: |
           xcodebuild test \
             -scheme KintoneAPI \
-            -destination "platform=macOS" \
+            -destination "platform=macOS,arch=arm64" \
             -derivedDataPath DerivedData \
-            -resultBundlePath TestResults | \
+            -resultBundlePath TestResults/result_bundle | \
             xcbeautify && exit ${PIPESTATUS[0]}
