@@ -212,13 +212,12 @@ public struct KintoneAPI: Sendable {
         recordIdentity: RecordIdentity.Write,
         actionName: String,
         assignee: String?
-    ) async throws -> RecordIdentity.Read {
+    ) async throws -> UpdateStatusResponse {
         let httpBody = try JSONEncoder().encode(UpdateStatusRequest(appID: appID, recordIdentity: recordIdentity, actionName: actionName, assignee: assignee))
         let request = makeRequest(httpMethod: .put, endpoint: .recordStatus, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let updateStatusResponse = try JSONDecoder().decode(UpdateStatusResponse.self, from: data)
-        return RecordIdentity.Read(id: recordIdentity.id, revision: updateStatusResponse.revision)
+        return try JSONDecoder().decode(UpdateStatusResponse.self, from: data)
     }
 
     public func uploadFile(
