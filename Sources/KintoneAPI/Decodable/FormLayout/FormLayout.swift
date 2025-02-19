@@ -2,27 +2,22 @@
 //  FormLayout.swift
 //
 //
-//  Created by ky0me22 on 2024/12/07.
+//  Created by ky0me22 on 2025/02/19.
 //
 
 public struct FormLayout: Decodable, Sendable {
-    public var type: FormLayoutType
-    public var code: String?
-    public var fields: [FormField]
-    public var layout: [FormLayout]
+    public var layoutChunks: [FormLayoutChunk]
+    public var revision: Int
 
-    enum CodingKeys: CodingKey {
-        case type
-        case code
-        case fields
-        case layout
+    enum CodingKeys: String, CodingKey {
+        case layoutChunks = "layout"
+        case revision
     }
 
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        type = try container.decode(FormLayoutType.self, forKey: .type)
-        code = try container.decodeIfPresent(String.self, forKey: .code)
-        fields = try container.decodeIfPresent([FormField].self, forKey: .fields) ?? []
-        layout = try container.decodeIfPresent([FormLayout].self, forKey: .layout) ?? []
+        layoutChunks = try container.decode([FormLayoutChunk].self, forKey: .layoutChunks)
+        revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
     }
 }
+

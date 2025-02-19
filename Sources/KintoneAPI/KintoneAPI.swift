@@ -79,13 +79,13 @@ public struct KintoneAPI: Sendable {
 
     public func fetchFormLayout(
         appID: Int
-    ) async throws -> [FormLayout] {
+    ) async throws -> FormLayout {
         let queryItems = [URLQueryItem(name: "app", value: appID.description)]
         let request = makeRequest(httpMethod: .get, endpoint: .formLayout, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
         let fetchFormLayoutResponse = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        return fetchFormLayoutResponse.layout
+        return fetchFormLayoutResponse.formLayout
     }
 
     public func fetchFields(

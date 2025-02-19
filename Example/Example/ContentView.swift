@@ -28,7 +28,7 @@ enum TabCategory {
     var isPresented = false
     var tabCategory = TabCategory.fetchApps
     var apps = [KintoneApp]()
-    var layout = [FormLayout]()
+    var layoutProperties = [FormLayoutProperty]()
     var fields = [Field]()
     var appSettings: AppSettings?
     var records = [Record.Read]()
@@ -62,7 +62,7 @@ enum TabCategory {
     func onTask() async {
         do {
             apps = try await kintoneAPI.fetchApps()
-            layout = try await kintoneAPI.fetchFormLayout(appID: appID)
+            layoutProperties = try await kintoneAPI.fetchFormLayout(appID: appID).layoutProperties
             fields = try await kintoneAPI.fetchFields(appID: appID).fields
             appSettings = try await kintoneAPI.fetchAppSettings(appID: appID)
             records = try await kintoneAPI.fetchRecords(appID: appID)
@@ -205,7 +205,7 @@ enum TabCategory {
                             Label("Apps", systemImage: "app.fill")
                         }
                         .tag(TabCategory.fetchApps)
-                    FetchFormLayoutView(layout: viewModel.layout)
+                    FetchFormLayoutView(layoutProperties: viewModel.layoutProperties)
                         .tabItem {
                             Label("Form Layout", systemImage: "square.grid.2x2")
                         }

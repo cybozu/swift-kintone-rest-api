@@ -1,5 +1,5 @@
 //
-//  FormLayoutDetailView.swift
+//  FormLayoutPropertyView.swift
 //  Example
 //
 //  Created by ky0me22 on 2025/01/23.
@@ -8,28 +8,28 @@
 import KintoneAPI
 import SwiftUI
 
-struct FormLayoutDetailView: View {
-    var layout: FormLayout
+struct FormLayoutPropertyView: View {
+    var layoutProperty: FormLayoutProperty
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Type: \(layout.type)")
-                Text("Code: \(String(optional: layout.code))")
-                switch layout.type {
+                Text("Type: \(layoutProperty.type)")
+                Text("Code: \(String(optional: layoutProperty.code))")
+                switch layoutProperty.type {
                 case .row, .subtable:
-                    Text("Fields: \(layout.fields.count)")
+                    Text("Fields: \(layoutProperty.fields.count)")
                 case .group:
-                    Text("Layout: \(layout.layout.count)")
+                    Text("Layout: \(layoutProperty.layoutProperties.count)")
                 }
                 Spacer()
             }
             Divider()
             VStack(alignment: .leading, spacing: 4) {
-                switch layout.type {
+                switch layoutProperty.type {
                 case .row, .subtable:
-                    ForEach(layout.fields.indices, id: \.self) { j in
-                        let field = layout.fields[j]
+                    ForEach(layoutProperty.fields.indices, id: \.self) { j in
+                        let field = layoutProperty.fields[j]
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Type: \(field.type)")
                             Text("Code: \(String(optional: field.code))")
@@ -39,8 +39,8 @@ struct FormLayoutDetailView: View {
                         .cornerRadiusBorder()
                     }
                 case .group:
-                    ForEach(layout.layout.indices, id: \.self) { j in
-                        FormLayoutDetailView(layout: layout.layout[j])
+                    ForEach(layoutProperty.layoutProperties.indices, id: \.self) { j in
+                        FormLayoutPropertyView(layoutProperty: layoutProperty.layoutProperties[j])
                     }
                 }
             }
