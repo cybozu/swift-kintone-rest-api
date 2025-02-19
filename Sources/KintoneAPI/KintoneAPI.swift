@@ -62,7 +62,7 @@ public struct KintoneAPI: Sendable {
         spaceIDs: [Int]? = nil,
         offset: Int? = nil,
         limit: Int? = nil
-    ) async throws -> [KintoneApp] {
+    ) async throws -> FetchAppsResponse {
         var queryItems = [URLQueryItem]()
         queryItems.appendQueryItem(name: "ids", value: appIDs?.arrayString)
         queryItems.appendQueryItem(name: "codes", value: codes?.arrayString)
@@ -73,8 +73,7 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .apps, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchAppsResponse = try JSONDecoder().decode(FetchAppsResponse.self, from: data)
-        return fetchAppsResponse.apps
+        return try JSONDecoder().decode(FetchAppsResponse.self, from: data)
     }
 
     public func fetchFormLayout(

@@ -61,7 +61,7 @@ enum TabCategory {
 
     func onTask() async {
         do {
-            apps = try await kintoneAPI.fetchApps()
+            apps = try await kintoneAPI.fetchApps().apps
             layoutChunks = try await kintoneAPI.fetchFormLayout(appID: appID).layoutChunks
             fields = try await kintoneAPI.fetchFields(appID: appID).fields
             appSettings = try await kintoneAPI.fetchAppSettings(appID: appID)
