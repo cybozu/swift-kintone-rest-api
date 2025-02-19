@@ -11,7 +11,7 @@ import SwiftUI
 struct SubmitRecordView: View {
     var fields: [Field]
     var onSubmitRecordHandler: ([String: RecordFieldValue.Write]) async -> RecordIdentity.Read?
-    var onUpdateRecordHandler: (Int, [String: RecordFieldValue.Write]) async -> RecordIdentity.Read?
+    var onUpdateRecordHandler: (Int, [String: RecordFieldValue.Write]) async -> Int?
     var onRemoveRecordHandler: (Int) async -> Void
     @State private var recordID: Int?
     @State private var revision: Int?
@@ -20,7 +20,7 @@ struct SubmitRecordView: View {
     init(
         fields: [Field],
         onSubmitRecordHandler: @escaping ([String: RecordFieldValue.Write]) async -> RecordIdentity.Read?,
-        onUpdateRecordHandler: @escaping (Int, [String: RecordFieldValue.Write]) async -> RecordIdentity.Read?,
+        onUpdateRecordHandler: @escaping (Int, [String: RecordFieldValue.Write]) async -> Int?,
         onRemoveRecordHandler: @escaping (Int) async -> Void
     ) {
         self.fields = fields
@@ -88,9 +88,7 @@ struct SubmitRecordView: View {
                         Button {
                             Task {
                                 guard let recordID else { return }
-                                if let recordIdentity = await onUpdateRecordHandler(recordID, fieldValues) {
-                                    self.revision = recordIdentity.revision
-                                }
+                                self.revision = await onUpdateRecordHandler(recordID, fieldValues)
                             }
                         } label: {
                             Text("Update")

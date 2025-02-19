@@ -111,12 +111,12 @@ enum TabCategory {
         }
     }
 
-    func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async -> RecordIdentity.Read? {
+    func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async -> Int? {
         do {
             let recordIdentity = RecordIdentity.Write(id: recordID)
             let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
             let record = Record.Write(fields: fields)
-            return try await kintoneAPI.updateRecord(appID: appID, recordIdentity: recordIdentity, record: record)
+            return try await kintoneAPI.updateRecord(appID: appID, recordIdentity: recordIdentity, record: record).revision
         } catch {
             print(error.localizedDescription)
             return nil

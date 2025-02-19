@@ -177,13 +177,12 @@ public struct KintoneAPI: Sendable {
         appID: Int,
         recordIdentity: RecordIdentity.Write,
         record: Record.Write
-    ) async throws -> RecordIdentity.Read {
+    ) async throws -> UpdateRecordResponse {
         let httpBody = try JSONEncoder().encode(UpdateRecordRequest(appID: appID, recordIdentity: recordIdentity, record: record))
         let request = makeRequest(httpMethod: .put, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let updateRecordResponse = try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
-        return RecordIdentity.Read(id: recordIdentity.id, revision: updateRecordResponse.revision)
+        return try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
     }
 
     public func fetchRecordComments(
