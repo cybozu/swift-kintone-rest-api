@@ -13,6 +13,7 @@ struct RecordDetailView: View {
     var actions: [StatusAction]
     var updateStatusHandler: (RecordIdentity.Write, StatusAction) async -> Void
     var downloadFileHandler: (String) async -> Data?
+    var fetchRecordCommentsHandler: (Int) async -> RecordComments?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -26,6 +27,9 @@ struct RecordDetailView: View {
                     },
                     downloadFileHandler: downloadFileHandler
                 )
+            }
+            FetchRecordCommentsView {
+                await fetchRecordCommentsHandler(record.identity.id)
             }
         }
         .cornerRadiusBorder()

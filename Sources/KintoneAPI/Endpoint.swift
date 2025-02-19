@@ -6,13 +6,14 @@
 //
 
 enum Endpoint: String {
-    case apps =         "/k/v1/apps.json"
-    case formLayout =   "/k/v1/app/form/layout.json"
-    case fields =       "/k/v1/app/form/fields.json"
-    case appSettings =  "/k/v1/app/settings.json"
-    case appStatus =    "/k/v1/app/status.json"
-    case records =      "/k/v1/records.json"
-    case record =       "/k/v1/record.json"
-    case recordStatus = "/k/v1/record/status.json"
-    case file =         "/k/v1/file.json"
+    case apps =           "/k/v1/apps.json"
+    case formLayout =     "/k/v1/app/form/layout.json"
+    case fields =         "/k/v1/app/form/fields.json"
+    case appSettings =    "/k/v1/app/settings.json"
+    case appStatus =      "/k/v1/app/status.json"
+    case records =        "/k/v1/records.json"
+    case record =         "/k/v1/record.json"
+    case recordComments = "/k/v1/record/comments.json"
+    case recordStatus =   "/k/v1/record/status.json"
+    case file =           "/k/v1/file.json"
 }

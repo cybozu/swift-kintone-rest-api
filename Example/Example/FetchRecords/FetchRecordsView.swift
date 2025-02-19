@@ -13,6 +13,7 @@ struct FetchRecordsView: View {
     var actions: [StatusAction]
     var updateStatusHandler: (RecordIdentity.Write, StatusAction) async -> Void
     var downloadFileHandler: (String) async -> Data?
+    var fetchRecordCommentsHandler: (Int) async -> RecordComments?
 
     var body: some View {
         ScrollView {
@@ -22,7 +23,8 @@ struct FetchRecordsView: View {
                         record: records[i],
                         actions: actions,
                         updateStatusHandler: updateStatusHandler,
-                        downloadFileHandler: downloadFileHandler
+                        downloadFileHandler: downloadFileHandler,
+                        fetchRecordCommentsHandler: fetchRecordCommentsHandler
                     )
                 }
             }
