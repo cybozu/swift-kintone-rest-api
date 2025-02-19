@@ -64,7 +64,7 @@ enum TabCategory {
             apps = try await kintoneAPI.fetchApps().apps
             layoutChunks = try await kintoneAPI.fetchFormLayout(appID: appID).layoutChunks
             fields = try await kintoneAPI.fetchFields(appID: appID).fields
-            appSettings = try await kintoneAPI.fetchAppSettings(appID: appID)
+            appSettings = try await kintoneAPI.fetchAppSettings(appID: appID).appSettings
             records = try await kintoneAPI.fetchRecords(appID: appID).records
             statusSettings = try await kintoneAPI.fetchAppStatusSettings(appID: appID).appStatusSettings
         } catch {

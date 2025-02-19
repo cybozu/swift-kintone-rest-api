@@ -103,7 +103,7 @@ public struct KintoneAPI: Sendable {
     public func fetchAppSettings(
         appID: Int,
         language: Language = .default
-    ) async throws -> AppSettings {
+    ) async throws -> FetchAppSettingsResponse {
         let queryItems = [
             URLQueryItem(name: "app", value: appID.description),
             URLQueryItem(name: "lang", value: language.rawValue),
@@ -111,8 +111,7 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .appSettings, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchAppSettingsResponse = try JSONDecoder().decode(FetchAppSettingsResponse.self, from: data)
-        return fetchAppSettingsResponse.appSettings
+        return try JSONDecoder().decode(FetchAppSettingsResponse.self, from: data)
     }
 
     public func fetchAppStatusSettings(
