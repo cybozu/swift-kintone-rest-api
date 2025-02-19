@@ -65,7 +65,7 @@ enum TabCategory {
             layoutChunks = try await kintoneAPI.fetchFormLayout(appID: appID).layoutChunks
             fields = try await kintoneAPI.fetchFields(appID: appID).fields
             appSettings = try await kintoneAPI.fetchAppSettings(appID: appID)
-            records = try await kintoneAPI.fetchRecords(appID: appID)
+            records = try await kintoneAPI.fetchRecords(appID: appID).records
             statusSettings = try await kintoneAPI.fetchAppStatusSettings(appID: appID)
         } catch {
             print(error.localizedDescription)
@@ -85,7 +85,7 @@ enum TabCategory {
         do {
             let assignee = statusSettings?.states.first(where: { $0.name == action.to })?.assignee.entities.first?.code
             try await kintoneAPI.updateStatus(appID: appID, recordIdentity: recordIdentity, actionName: action.name, assignee: assignee)
-            records = try await kintoneAPI.fetchRecords(appID: appID)
+            records = try await kintoneAPI.fetchRecords(appID: appID).records
         } catch {
             print(error.localizedDescription)
         }

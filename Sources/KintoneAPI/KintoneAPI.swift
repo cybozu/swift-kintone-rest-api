@@ -137,7 +137,7 @@ public struct KintoneAPI: Sendable {
         appID: Int,
         fields: [String]? = nil,
         query: String? = nil
-    ) async throws -> [Record.Read] {
+    ) async throws -> FetchRecordsResponse {
         var queryItems = [URLQueryItem]()
         queryItems.appendQueryItem(name: "app", value: appID.description)
         queryItems.appendQueryItem(name: "fields", value: fields?.arrayString)
@@ -145,8 +145,7 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchRecordsResponse = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        return fetchRecordsResponse.records
+        return try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
     }
 
     public func removeRecords(
