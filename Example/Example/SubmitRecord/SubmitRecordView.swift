@@ -9,21 +9,21 @@ import KintoneAPI
 import SwiftUI
 
 struct SubmitRecordView: View {
-    var fields: [Field]
-    var onSubmitRecordHandler: ([String: RecordFieldValue.Write]) async -> RecordIdentity.Read?
-    var onUpdateRecordHandler: (Int, [String: RecordFieldValue.Write]) async -> Int?
-    var onRemoveRecordHandler: (Int) async -> Void
+    private var fields: [Field]
+    private var onSubmitRecordHandler: ([String: RecordFieldValue.Write]) async -> SubmitRecordResponse?
+    private var onUpdateRecordHandler: (Int, [String: RecordFieldValue.Write]) async -> UpdateRecordResponse?
+    private var onRemoveRecordHandler: (Int) async -> Void
     @State private var recordID: Int?
     @State private var revision: Int?
     @State private var fieldValues: [String: RecordFieldValue.Write]
 
     init(
-        fields: [Field],
-        onSubmitRecordHandler: @escaping ([String: RecordFieldValue.Write]) async -> RecordIdentity.Read?,
-        onUpdateRecordHandler: @escaping (Int, [String: RecordFieldValue.Write]) async -> Int?,
+        fieldsResponse: FetchFieldsResponse?,
+        onSubmitRecordHandler: @escaping ([String: RecordFieldValue.Write]) async -> SubmitRecordResponse?,
+        onUpdateRecordHandler: @escaping (Int, [String: RecordFieldValue.Write]) async -> UpdateRecordResponse?,
         onRemoveRecordHandler: @escaping (Int) async -> Void
     ) {
-        self.fields = fields
+        fields = fieldsResponse?.fields ?? []
         self.onSubmitRecordHandler = onSubmitRecordHandler
         self.onUpdateRecordHandler = onUpdateRecordHandler
         self.onRemoveRecordHandler = onRemoveRecordHandler
@@ -77,9 +77,9 @@ struct SubmitRecordView: View {
                     HStack {
                         Button {
                             Task {
-                                if let recordIdentity = await onSubmitRecordHandler(fieldValues) {
-                                    self.recordID = recordIdentity.id
-                                    self.revision = recordIdentity.revision
+                                if let response = await onSubmitRecordHandler(fieldValues) {
+                                    recordID = response.recordIdentity.id
+                                    revision = response.recordIdentity.revision
                                 }
                             }
                         } label: {
@@ -88,7 +88,7 @@ struct SubmitRecordView: View {
                         Button {
                             Task {
                                 guard let recordID else { return }
-                                self.revision = await onUpdateRecordHandler(recordID, fieldValues)
+                                revision = await onUpdateRecordHandler(recordID, fieldValues)?.revision
                             }
                         } label: {
                             Text("Update")

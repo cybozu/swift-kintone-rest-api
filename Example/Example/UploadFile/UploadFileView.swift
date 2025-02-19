@@ -14,7 +14,7 @@ struct UploadFileView: View {
     @State private var pickerItem: PhotosPickerItem?
     @State private var fileArguments: FileArguments?
     @State private var fileKey: String?
-    var uploadFileHandler: (FileArguments?) async -> String?
+    var uploadFileHandler: (FileArguments?) async -> UploadFileResponse?
 
     var body: some View {
         Form {
@@ -36,7 +36,7 @@ struct UploadFileView: View {
                         }
                         Button {
                             Task {
-                                fileKey = await uploadFileHandler(fileArguments)
+                                fileKey = await uploadFileHandler(fileArguments)?.fileKey
                             }
                         } label: {
                             Text("Upload")

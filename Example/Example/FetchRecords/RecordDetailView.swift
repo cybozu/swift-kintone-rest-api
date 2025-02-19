@@ -13,7 +13,7 @@ struct RecordDetailView: View {
     var actions: [StatusAction]
     var updateStatusHandler: (RecordIdentity.Write, StatusAction) async -> Void
     var downloadFileHandler: (String) async -> Data?
-    var fetchRecordCommentsHandler: (Int) async -> [RecordComment.Read]
+    var fetchRecordCommentsHandler: (Int) async -> FetchRecordCommentsResponse?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {

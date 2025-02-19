@@ -27,12 +27,12 @@ enum TabCategory {
     var appID: Int
     var isPresented = false
     var tabCategory = TabCategory.fetchApps
-    var apps = [KintoneApp]()
-    var layoutChunks = [FormLayoutChunk]()
-    var fields = [Field]()
-    var appSettings: AppSettings?
-    var records = [Record.Read]()
-    var statusSettings: AppStatusSettings?
+    var appsResponse: FetchAppsResponse?
+    var formLayoutResponse: FetchFormLayoutResponse?
+    var fieldsResponse: FetchFieldsResponse?
+    var appSettingsResponse: FetchAppSettingsResponse?
+    var recordsResponse: FetchRecordsResponse?
+    var appStatusSettingsResponse: FetchAppStatusSettingsResponse?
 
     var kintoneAPI: KintoneAPI {
         .init(
@@ -61,31 +61,31 @@ enum TabCategory {
 
     func onTask() async {
         do {
-            apps = try await kintoneAPI.fetchApps().apps
-            layoutChunks = try await kintoneAPI.fetchFormLayout(appID: appID).layoutChunks
-            fields = try await kintoneAPI.fetchFields(appID: appID).fields
-            appSettings = try await kintoneAPI.fetchAppSettings(appID: appID).appSettings
-            records = try await kintoneAPI.fetchRecords(appID: appID).records
-            statusSettings = try await kintoneAPI.fetchAppStatusSettings(appID: appID).appStatusSettings
+            appsResponse = try await kintoneAPI.fetchApps()
+            formLayoutResponse = try await kintoneAPI.fetchFormLayout(appID: appID)
+            fieldsResponse = try await kintoneAPI.fetchFields(appID: appID)
+            appSettingsResponse = try await kintoneAPI.fetchAppSettings(appID: appID)
+            recordsResponse = try await kintoneAPI.fetchRecords(appID: appID)
+            appStatusSettingsResponse = try await kintoneAPI.fetchAppStatusSettings(appID: appID)
         } catch {
             print(error.localizedDescription)
         }
     }
 
-    func fetchRecordComments(recordID: Int) async -> [RecordComment.Read] {
+    func fetchRecordComments(recordID: Int) async -> FetchRecordCommentsResponse? {
         do {
-            return try await kintoneAPI.fetchRecordComments(appID: appID, recordID: recordID).comments
+            return try await kintoneAPI.fetchRecordComments(appID: appID, recordID: recordID)
         } catch {
             print(error.localizedDescription)
-            return []
+            return nil
         }
     }
 
     func updateStatus(recordIdentity: RecordIdentity.Write, action: StatusAction) async {
         do {
-            let assignee = statusSettings?.states.first(where: { $0.name == action.to })?.assignee.entities.first?.code
+            let assignee = appStatusSettingsResponse?.states.first(where: { $0.name == action.to })?.assignee.entities.first?.code
             try await kintoneAPI.updateStatus(appID: appID, recordIdentity: recordIdentity, actionName: action.name, assignee: assignee)
-            records = try await kintoneAPI.fetchRecords(appID: appID).records
+            recordsResponse = try await kintoneAPI.fetchRecords(appID: appID)
         } catch {
             print(error.localizedDescription)
         }
@@ -100,23 +100,23 @@ enum TabCategory {
         }
     }
 
-    func onSubmitRecord(fields: [String: RecordFieldValue.Write]) async -> RecordIdentity.Read? {
+    func onSubmitRecord(fields: [String: RecordFieldValue.Write]) async -> SubmitRecordResponse? {
         do {
             let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
             let record = Record.Write(fields: fields)
-            return try await kintoneAPI.submitRecord(appID: appID, record: record).recordIdentity
+            return try await kintoneAPI.submitRecord(appID: appID, record: record)
         } catch {
             print(error.localizedDescription)
             return nil
         }
     }
 
-    func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async -> Int? {
+    func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async -> UpdateRecordResponse? {
         do {
             let recordIdentity = RecordIdentity.Write(id: recordID)
             let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
             let record = Record.Write(fields: fields)
-            return try await kintoneAPI.updateRecord(appID: appID, recordIdentity: recordIdentity, record: record).revision
+            return try await kintoneAPI.updateRecord(appID: appID, recordIdentity: recordIdentity, record: record)
         } catch {
             print(error.localizedDescription)
             return nil
@@ -132,14 +132,14 @@ enum TabCategory {
         }
     }
 
-    func uploadFile(fileArguments: FileArguments?) async -> String? {
+    func uploadFile(fileArguments: FileArguments?) async -> UploadFileResponse? {
         guard let fileArguments else { return nil }
         do {
             return try await kintoneAPI.uploadFile(
                 fileName: fileArguments.fileName,
                 mimeType: fileArguments.mimeType,
                 data: fileArguments.data
-            ).fileKey
+            )
         } catch {
             print(error.localizedDescription)
             return nil
@@ -200,23 +200,29 @@ enum TabCategory {
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $viewModel.isPresented) {
                 TabView(selection: $viewModel.tabCategory) {
-                    FetchAppsView(apps: viewModel.apps)
-                        .tabItem {
-                            Label("Apps", systemImage: "app.fill")
-                        }
-                        .tag(TabCategory.fetchApps)
-                    FetchFormLayoutView(layoutChunks: viewModel.layoutChunks)
-                        .tabItem {
-                            Label("Form Layout", systemImage: "square.grid.2x2")
-                        }
-                        .tag(TabCategory.fetchFormLayout)
-                    FetchFieldsView(fields: viewModel.fields)
-                        .tabItem {
-                            Label("Fields", systemImage: "square.3.layers.3d.down.left")
-                        }
-                        .tag(TabCategory.fetchFields)
+                    FetchAppsView(
+                        appsResponse: viewModel.appsResponse
+                    )
+                    .tabItem {
+                        Label("Apps", systemImage: "app.fill")
+                    }
+                    .tag(TabCategory.fetchApps)
+                    FetchFormLayoutView(
+                        formLayoutResponse: viewModel.formLayoutResponse
+                    )
+                    .tabItem {
+                        Label("Form Layout", systemImage: "square.grid.2x2")
+                    }
+                    .tag(TabCategory.fetchFormLayout)
+                    FetchFieldsView(
+                        fieldsResponse: viewModel.fieldsResponse
+                    )
+                    .tabItem {
+                        Label("Fields", systemImage: "square.3.layers.3d.down.left")
+                    }
+                    .tag(TabCategory.fetchFields)
                     FetchAppSettingsView(
-                        appSettings: viewModel.appSettings,
+                        appSettingsResponse: viewModel.appSettingsResponse,
                         downloadFileHandler: { fileKey in
                             await viewModel.downloadFile(fileKey: fileKey)
                         }
@@ -226,8 +232,8 @@ enum TabCategory {
                     }
                     .tag(TabCategory.fetchAppSettings)
                     FetchRecordsView(
-                        records: viewModel.records,
-                        actions: viewModel.statusSettings?.actions ?? [],
+                        recordsResponse: viewModel.recordsResponse,
+                        appStatusSettingsResponse: viewModel.appStatusSettingsResponse,
                         updateStatusHandler: { recordIdentity, action in
                             await viewModel.updateStatus(recordIdentity: recordIdentity, action: action)
                         },
@@ -243,7 +249,7 @@ enum TabCategory {
                     }
                     .tag(TabCategory.fetchRecords)
                     SubmitRecordView(
-                        fields: viewModel.fields,
+                        fieldsResponse: viewModel.fieldsResponse,
                         onSubmitRecordHandler: { fields in
                             await viewModel.onSubmitRecord(fields: fields)
                         },
@@ -265,11 +271,13 @@ enum TabCategory {
                         Label("Upload File", systemImage: "square.and.arrow.up")
                     }
                     .tag(TabCategory.uploadFile)
-                    FetchAppStatusSettingsView(statusSettings: viewModel.statusSettings)
-                        .tabItem {
-                            Label("Status", systemImage: "point.bottomleft.forward.to.arrow.triangle.scurvepath.fill")
-                        }
-                        .tag(TabCategory.status)
+                    FetchAppStatusSettingsView(
+                        appStatusSettingsResponse: viewModel.appStatusSettingsResponse
+                    )
+                    .tabItem {
+                        Label("Status", systemImage: "point.bottomleft.forward.to.arrow.triangle.scurvepath.fill")
+                    }
+                    .tag(TabCategory.status)
                 }
                 .navigationTitle("kintone API")
                 .task {
