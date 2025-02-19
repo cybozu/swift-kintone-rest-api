@@ -3,7 +3,7 @@ import Testing
 
 @testable import KintoneAPI
 
-struct FetchAppStatusResponseTests {
+struct FetchAppStatusSettingsResponseTests {
     @Test
     func response_empty() throws {
         let input = """
@@ -15,7 +15,7 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
         #expect(actual.enable)
         #expect(actual.states.isEmpty)
         #expect(actual.actions.isEmpty)
@@ -50,7 +50,7 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
         #expect(actual.enable)
         #expect(actual.states.count == 1)
         let state = try #require(actual.states.first)
@@ -101,7 +101,7 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
         #expect(actual.enable)
         #expect(actual.states.count == 1)
         let state = try #require(actual.states.first)
@@ -163,7 +163,7 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
         #expect(actual.enable)
         #expect(actual.states.count == 1)
         let state = try #require(actual.states.first)
@@ -211,7 +211,7 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
         #expect(actual.enable)
         #expect(actual.states.isEmpty)
         #expect(actual.actions.count == 2)
