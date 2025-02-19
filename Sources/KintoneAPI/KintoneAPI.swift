@@ -225,7 +225,7 @@ public struct KintoneAPI: Sendable {
         fileName: String,
         mimeType: String,
         data: Data
-    ) async throws -> FileKey {
+    ) async throws -> UploadFileResponse {
         let boundary = "---------\(UUID().uuidString)"
         var httpBody = Data()
         httpBody.append("--\(boundary)\r\n".data(using: .utf8)!)
@@ -238,8 +238,7 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .post, endpoint: .file, httpBody: httpBody, contentType: .multipartFormData(boundary))
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let uploadFileResponse = try JSONDecoder().decode(UploadFileResponse.self, from: data)
-        return uploadFileResponse.fileKey
+        return try JSONDecoder().decode(UploadFileResponse.self, from: data)
     }
 
     public func downloadFile(

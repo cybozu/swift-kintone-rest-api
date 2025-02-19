@@ -139,7 +139,7 @@ enum TabCategory {
                 fileName: fileArguments.fileName,
                 mimeType: fileArguments.mimeType,
                 data: fileArguments.data
-            )
+            ).fileKey
         } catch {
             print(error.localizedDescription)
             return nil
