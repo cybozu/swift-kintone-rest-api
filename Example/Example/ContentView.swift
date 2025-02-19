@@ -72,6 +72,15 @@ enum TabCategory {
         }
     }
 
+    func fetchRecordComments(recordID: Int) async -> RecordComments? {
+        do {
+            return try await kintoneAPI.fetchRecordComments(appID: appID, recordID: recordID)
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+
     func updateStatus(recordIdentity: RecordIdentity.Write, action: StatusAction) async {
         do {
             let assignee = statusSettings?.states.first(where: { $0.name == action.to })?.assignee.entities.first?.code
@@ -224,6 +233,9 @@ enum TabCategory {
                         },
                         downloadFileHandler: { fileKey in
                             await viewModel.downloadFile(fileKey: fileKey)
+                        },
+                        fetchRecordCommentsHandler: { recordID in
+                            await viewModel.fetchRecordComments(recordID: recordID)
                         }
                     )
                     .tabItem {

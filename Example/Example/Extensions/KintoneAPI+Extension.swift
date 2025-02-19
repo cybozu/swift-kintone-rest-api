@@ -38,3 +38,5 @@ extension RecordState: @retroactive Identifiable {
 extension StatusAction: @retroactive Identifiable {
     public var id: String { name }
 }
+
+extension RecordComment.Read: @retroactive Identifiable {}

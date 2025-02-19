@@ -27,16 +27,16 @@ struct FetchAppsView: View {
                         Divider()
                         VStack(alignment: .leading, spacing: 4) {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Created At: \(String(optional: app.createdAt))")
-                                Text("Code: \(app.creator.code)")
-                                Text("Name: \(String(optional: app.creator.name))")
+                                Text("Created At: \(app.createdAt)")
+                                Text("Creator/Code: \(app.creator.code)")
+                                Text("Creator/Name: \(String(optional: app.creator.name))")
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .cornerRadiusBorder()
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Modified At: \(String(optional: app.modifiedAt))")
-                                Text("Code: \(app.modifier.code)")
-                                Text("Name: \(String(optional: app.modifier.name))")
+                                Text("Modified At: \(app.modifiedAt)")
+                                Text("Modifier/Code: \(app.modifier.code)")
+                                Text("Modifier/Name: \(String(optional: app.modifier.name))")
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .cornerRadiusBorder()
