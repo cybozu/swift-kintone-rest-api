@@ -8,28 +8,28 @@
 import KintoneAPI
 import SwiftUI
 
-struct FormLayoutPropertyView: View {
-    var layoutProperty: FormLayoutProperty
+struct FormLayoutChunkView: View {
+    var layoutChunk: FormLayoutChunk
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Type: \(layoutProperty.type)")
-                Text("Code: \(String(optional: layoutProperty.code))")
-                switch layoutProperty.type {
+                Text("Type: \(layoutChunk.type)")
+                Text("Code: \(String(optional: layoutChunk.code))")
+                switch layoutChunk.type {
                 case .row, .subtable:
-                    Text("Fields: \(layoutProperty.fields.count)")
+                    Text("Fields: \(layoutChunk.fields.count)")
                 case .group:
-                    Text("Layout: \(layoutProperty.layoutProperties.count)")
+                    Text("Layout: \(layoutChunk.layoutChunks.count)")
                 }
                 Spacer()
             }
             Divider()
             VStack(alignment: .leading, spacing: 4) {
-                switch layoutProperty.type {
+                switch layoutChunk.type {
                 case .row, .subtable:
-                    ForEach(layoutProperty.fields.indices, id: \.self) { j in
-                        let field = layoutProperty.fields[j]
+                    ForEach(layoutChunk.fields.indices, id: \.self) { j in
+                        let field = layoutChunk.fields[j]
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Type: \(field.type)")
                             Text("Code: \(String(optional: field.code))")
@@ -39,8 +39,8 @@ struct FormLayoutPropertyView: View {
                         .cornerRadiusBorder()
                     }
                 case .group:
-                    ForEach(layoutProperty.layoutProperties.indices, id: \.self) { j in
-                        FormLayoutPropertyView(layoutProperty: layoutProperty.layoutProperties[j])
+                    ForEach(layoutChunk.layoutChunks.indices, id: \.self) { j in
+                        FormLayoutChunkView(layoutChunk: layoutChunk.layoutChunks[j])
                     }
                 }
             }

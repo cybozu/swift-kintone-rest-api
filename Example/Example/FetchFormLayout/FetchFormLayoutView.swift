@@ -9,13 +9,13 @@ import KintoneAPI
 import SwiftUI
 
 struct FetchFormLayoutView: View {
-    var layoutProperties: [FormLayoutProperty]
+    var layoutChunks: [FormLayoutChunk]
 
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                ForEach(layoutProperties.indices, id: \.self) { i in
-                    FormLayoutPropertyView(layoutProperty: layoutProperties[i])
+                ForEach(layoutChunks.indices, id: \.self) { i in
+                    FormLayoutChunkView(layoutChunk: layoutChunks[i])
                 }
             }
             .padding()
