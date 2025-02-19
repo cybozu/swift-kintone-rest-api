@@ -9,7 +9,7 @@ import KintoneAPI
 import SwiftUI
 
 struct SubmitRecordView: View {
-    var fields: [FieldProperty]
+    var fields: [Field]
     var onSubmitRecordHandler: ([String: RecordFieldValue.Write]) async -> RecordIdentity.Read?
     var onUpdateRecordHandler: (Int, [String: RecordFieldValue.Write]) async -> RecordIdentity.Read?
     var onRemoveRecordHandler: (Int) async -> Void
@@ -18,7 +18,7 @@ struct SubmitRecordView: View {
     @State private var fieldValues: [String: RecordFieldValue.Write]
 
     init(
-        fields: [FieldProperty],
+        fields: [Field],
         onSubmitRecordHandler: @escaping ([String: RecordFieldValue.Write]) async -> RecordIdentity.Read?,
         onUpdateRecordHandler: @escaping (Int, [String: RecordFieldValue.Write]) async -> RecordIdentity.Read?,
         onRemoveRecordHandler: @escaping (Int) async -> Void

@@ -9,7 +9,7 @@ import KintoneAPI
 import SwiftUI
 
 struct FetchFieldsView: View {
-    var fields: [FieldProperty]
+    var fields: [Field]
 
     var body: some View {
         ScrollView {

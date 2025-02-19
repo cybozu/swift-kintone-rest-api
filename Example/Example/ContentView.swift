@@ -29,7 +29,7 @@ enum TabCategory {
     var tabCategory = TabCategory.fetchApps
     var apps = [KintoneApp]()
     var layout = [FormLayout]()
-    var fields = [FieldProperty]()
+    var fields = [Field]()
     var appSettings: AppSettings?
     var records = [Record.Read]()
     var statusSettings: AppStatusSettings?
@@ -63,7 +63,7 @@ enum TabCategory {
         do {
             apps = try await kintoneAPI.fetchApps()
             layout = try await kintoneAPI.fetchFormLayout(appID: appID)
-            fields = try await kintoneAPI.fetchFields(appID: appID)
+            fields = try await kintoneAPI.fetchFields(appID: appID).fields
             appSettings = try await kintoneAPI.fetchAppSettings(appID: appID)
             records = try await kintoneAPI.fetchRecords(appID: appID)
             statusSettings = try await kintoneAPI.fetchAppStatusSettings(appID: appID)
