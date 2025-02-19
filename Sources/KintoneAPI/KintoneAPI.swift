@@ -91,7 +91,7 @@ public struct KintoneAPI: Sendable {
     public func fetchFields(
         appID: Int,
         language: Language = .default
-    ) async throws -> [FieldProperty] {
+    ) async throws -> Fields {
         let queryItems = [
             URLQueryItem(name: "app", value: appID.description),
             URLQueryItem(name: "lang", value: language.rawValue),
@@ -100,7 +100,7 @@ public struct KintoneAPI: Sendable {
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
         let fetchFieldsResponse = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        return fetchFieldsResponse.properties
+        return fetchFieldsResponse.fields
     }
 
     public func fetchAppSettings(
