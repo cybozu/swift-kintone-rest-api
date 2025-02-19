@@ -14,9 +14,9 @@ public struct KintoneApp: Decodable, Sendable {
     public var description: String
     public var spaceID: Int?
     public var threadID: Int?
-    public var createdAt: Date?
+    public var createdAt: Date
     public var creator: Entity.Read
-    public var modifiedAt: Date?
+    public var modifiedAt: Date
     public var modifier: Entity.Read
 
     enum CodingKeys: String, CodingKey {
@@ -40,13 +40,13 @@ public struct KintoneApp: Decodable, Sendable {
         description = try container.decode(String.self, forKey: .description)
         spaceID = try container.customDecodeIfPresent(String.self, forKey: .spaceID) { Int($0) }
         threadID = try container.customDecodeIfPresent(String.self, forKey: .threadID) { Int($0) }
-        createdAt = try container.customDecodeIfPresent(String.self, forKey: .createdAt) {
+        createdAt = try container.customDecode(String.self, forKey: .createdAt) {
             DateFormatter.kintoneDateTime.date(from: $0.normalizedDateTime)
         }
         creator = try container.customDecode(EntityValue.self, forKey: .creator) {
             Entity.Read(type: .user, code: $0.code, name: $0.name)
         }
-        modifiedAt = try container.customDecodeIfPresent(String.self, forKey: .modifiedAt) {
+        modifiedAt = try container.customDecode(String.self, forKey: .modifiedAt) {
             DateFormatter.kintoneDateTime.date(from: $0.normalizedDateTime)
         }
         modifier = try container.customDecode(EntityValue.self, forKey: .modifier) {

@@ -186,6 +186,26 @@ public struct KintoneAPI: Sendable {
         return RecordIdentity.Read(id: recordIdentity.id, revision: updateRecordResponse.revision)
     }
 
+    public func fetchRecordComments(
+        appID: Int,
+        recordID: Int,
+        order: Order? = nil,
+        offset: Int? = nil,
+        limit: Int? = nil
+    ) async throws -> RecordComments {
+        var queryItems = [URLQueryItem]()
+        queryItems.appendQueryItem(name: "app", value: appID.description)
+        queryItems.appendQueryItem(name: "record", value: recordID.description)
+        queryItems.appendQueryItem(name: "order", value: order?.rawValue)
+        queryItems.appendQueryItem(name: "offset", value: offset?.description)
+        queryItems.appendQueryItem(name: "limit", value: limit?.description)
+        let request = makeRequest(httpMethod: .get, endpoint: .recordComments, queryItems: queryItems)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response)
+        let fetchRecordCommentsResponse = try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
+        return fetchRecordCommentsResponse.recordComments
+    }
+
     @discardableResult
     public func updateStatus(
         appID: Int,
