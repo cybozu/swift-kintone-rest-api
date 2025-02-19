@@ -72,12 +72,12 @@ enum TabCategory {
         }
     }
 
-    func fetchRecordComments(recordID: Int) async -> RecordComments? {
+    func fetchRecordComments(recordID: Int) async -> [RecordComment.Read] {
         do {
-            return try await kintoneAPI.fetchRecordComments(appID: appID, recordID: recordID)
+            return try await kintoneAPI.fetchRecordComments(appID: appID, recordID: recordID).comments
         } catch {
             print(error.localizedDescription)
-            return nil
+            return []
         }
     }
 
