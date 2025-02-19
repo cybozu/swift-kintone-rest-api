@@ -163,13 +163,12 @@ public struct KintoneAPI: Sendable {
     public func submitRecord(
         appID: Int,
         record: Record.Write
-    ) async throws -> RecordIdentity.Read {
+    ) async throws -> SubmitRecordResponse {
         let httpBody = try JSONEncoder().encode(SubmitRecordRequest(appID: appID, record: record))
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let submitRecordResponse = try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
-        return submitRecordResponse.recordIdentity
+        return try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
     }
 
     @discardableResult

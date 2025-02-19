@@ -104,7 +104,7 @@ enum TabCategory {
         do {
             let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
             let record = Record.Write(fields: fields)
-            return try await kintoneAPI.submitRecord(appID: appID, record: record)
+            return try await kintoneAPI.submitRecord(appID: appID, record: record).recordIdentity
         } catch {
             print(error.localizedDescription)
             return nil
