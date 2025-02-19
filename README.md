@@ -30,6 +30,7 @@ Providing kintone REST API with Swift interface.
 | `removeRecords`          | DELETE | [/k/v1/records.json](https://kintone.dev/en/docs/kintone/rest-api/records/delete-records/)                  |
 | `submitRecord`           | POST   | [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/add-record/)                       |
 | `updateRecord`           | PUT    | [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/update-record/)                    |
+| `fetchRecordComments`    | GET    | [/k/v1/record/comments.json](https://kintone.dev/en/docs/kintone/rest-api/records/get-comments/)            |
 | `updateStatus`           | PUT    | [/k/v1/record/status.json](https://kintone.dev/en/docs/kintone/rest-api/records/update-status/)             |
 | `downloadFile`           | GET    | [/k/v1/file.json](https://kintone.dev/en/docs/kintone/rest-api/files/download-file/)                        |
 | `uploadFile`             | POST   | [/k/v1/file.json](https://kintone.dev/en/docs/kintone/rest-api/files/upload-file/)                          |
