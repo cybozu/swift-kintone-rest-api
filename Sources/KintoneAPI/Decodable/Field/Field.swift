@@ -1,11 +1,11 @@
 //
-//  FieldProperty.swift
+//  Field.swift
 //
 //
 //  Created by ky0me22 on 2024/12/07.
 //
 
-public struct FieldProperty: Decodable, Sendable {
+public struct Field: Decodable, Sendable {
     public var code: String
     public var label: String
     public var type: FieldType

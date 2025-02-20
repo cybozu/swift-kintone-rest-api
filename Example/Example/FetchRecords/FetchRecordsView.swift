@@ -9,11 +9,25 @@ import KintoneAPI
 import SwiftUI
 
 struct FetchRecordsView: View {
-    var records: [Record.Read]
-    var actions: [StatusAction]
-    var updateStatusHandler: (RecordIdentity.Write, StatusAction) async -> Void
-    var downloadFileHandler: (String) async -> Data?
-    var fetchRecordCommentsHandler: (Int) async -> RecordComments?
+    private var records: [Record.Read]
+    private var actions: [StatusAction]
+    private var updateStatusHandler: (RecordIdentity.Write, StatusAction) async -> Void
+    private var downloadFileHandler: (String) async -> Data?
+    private var fetchRecordCommentsHandler: (Int) async -> FetchRecordCommentsResponse?
+
+    init(
+        recordsResponse: FetchRecordsResponse?,
+        appStatusSettingsResponse: FetchAppStatusSettingsResponse?,
+        updateStatusHandler: @escaping (RecordIdentity.Write, StatusAction) async -> Void,
+        downloadFileHandler: @escaping (String) async -> Data?,
+        fetchRecordCommentsHandler: @escaping (Int) async -> FetchRecordCommentsResponse?
+    ) {
+        records = recordsResponse?.records ?? []
+        actions = appStatusSettingsResponse?.actions ?? []
+        self.updateStatusHandler = updateStatusHandler
+        self.downloadFileHandler = downloadFileHandler
+        self.fetchRecordCommentsHandler = fetchRecordCommentsHandler
+    }
 
     var body: some View {
         ScrollView {

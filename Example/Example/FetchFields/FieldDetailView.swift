@@ -9,7 +9,7 @@ import KintoneAPI
 import SwiftUI
 
 struct FieldDetailView: View {
-    var field: FieldProperty
+    var field: Field
 
     var body: some View {
         HStack(alignment: .top) {

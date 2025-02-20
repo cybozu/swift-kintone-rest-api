@@ -7,7 +7,7 @@
 
 public struct SubtableAttribute: Decodable, Sendable {
     public var noLabel: Bool
-    public var fields: [FieldProperty]
+    public var fields: [Field]
 
     enum CodingKeys: CodingKey {
         case noLabel
@@ -19,7 +19,7 @@ public struct SubtableAttribute: Decodable, Sendable {
         noLabel = try container.decode(Bool.self, forKey: .noLabel)
         let fieldsContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .fields)
         fields = try fieldsContainer.allKeys.map { key in
-            try fieldsContainer.decode(FieldProperty.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
+            try fieldsContainer.decode(Field.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
         }
     }
 }

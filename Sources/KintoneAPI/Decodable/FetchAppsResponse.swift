@@ -5,6 +5,6 @@
 //  Created by ky0me22 on 2024/12/06.
 //
 
-struct FetchAppsResponse: Decodable {
-    var apps: [KintoneApp]
+public struct FetchAppsResponse: Decodable, Sendable {
+    public var apps: [KintoneApp]
 }

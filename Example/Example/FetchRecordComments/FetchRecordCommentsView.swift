@@ -11,7 +11,7 @@ import SwiftUI
 struct FetchRecordCommentsView: View {
     @State private var isPresented = false
     @State private var comments = [RecordComment.Read]()
-    var fetchRecordCommentsHandler: () async -> RecordComments?
+    var fetchRecordCommentsHandler: () async -> FetchRecordCommentsResponse?
 
     var body: some View {
         HStack(alignment: .top) {
@@ -28,9 +28,8 @@ struct FetchRecordCommentsView: View {
         .sheet(isPresented: $isPresented) {
             RecordCommentsView(comments: comments)
                 .task {
-                    if let recordComments = await fetchRecordCommentsHandler() {
-                        comments = recordComments.comments
-                    }
+                    let response = await fetchRecordCommentsHandler()
+                    comments = response?.comments ?? []
                 }
         }
     }

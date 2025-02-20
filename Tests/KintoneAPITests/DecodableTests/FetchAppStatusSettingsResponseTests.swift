@@ -3,7 +3,7 @@ import Testing
 
 @testable import KintoneAPI
 
-struct FetchAppStatusResponseTests {
+struct FetchAppStatusSettingsResponseTests {
     @Test
     func response_empty() throws {
         let input = """
@@ -15,11 +15,11 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
-        #expect(actual.appStatusSettings.enable)
-        #expect(actual.appStatusSettings.states.isEmpty)
-        #expect(actual.appStatusSettings.actions.isEmpty)
-        #expect(actual.appStatusSettings.revision == 1)
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
+        #expect(actual.enable)
+        #expect(actual.states.isEmpty)
+        #expect(actual.actions.isEmpty)
+        #expect(actual.revision == 1)
     }
 
     @Test
@@ -50,10 +50,10 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
-        #expect(actual.appStatusSettings.enable)
-        #expect(actual.appStatusSettings.states.count == 1)
-        let state = try #require(actual.appStatusSettings.states.first)
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
+        #expect(actual.enable)
+        #expect(actual.states.count == 1)
+        let state = try #require(actual.states.first)
         #expect(state.name == "dummy")
         #expect(state.index == 1)
         #expect(state.assignee.type == .one)
@@ -62,8 +62,8 @@ struct FetchAppStatusResponseTests {
         #expect(entity.type == .user)
         #expect(entity.code == "dummy")
         #expect(entity.includeSubs == false)
-        #expect(actual.appStatusSettings.actions.isEmpty)
-        #expect(actual.appStatusSettings.revision == 1)
+        #expect(actual.actions.isEmpty)
+        #expect(actual.revision == 1)
     }
 
     @Test
@@ -101,10 +101,10 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
-        #expect(actual.appStatusSettings.enable)
-        #expect(actual.appStatusSettings.states.count == 1)
-        let state = try #require(actual.appStatusSettings.states.first)
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
+        #expect(actual.enable)
+        #expect(actual.states.count == 1)
+        let state = try #require(actual.states.first)
         #expect(state.name == "dummy")
         #expect(state.index == 1)
         #expect(state.assignee.type == .all)
@@ -117,8 +117,8 @@ struct FetchAppStatusResponseTests {
         #expect(entity1.type == .customField)
         #expect(entity1.code == "dummy")
         #expect(entity1.includeSubs == false)
-        #expect(actual.appStatusSettings.actions.isEmpty)
-        #expect(actual.appStatusSettings.revision == 1)
+        #expect(actual.actions.isEmpty)
+        #expect(actual.revision == 1)
     }
 
     @Test
@@ -163,10 +163,10 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
-        #expect(actual.appStatusSettings.enable)
-        #expect(actual.appStatusSettings.states.count == 1)
-        let state = try #require(actual.appStatusSettings.states.first)
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
+        #expect(actual.enable)
+        #expect(actual.states.count == 1)
+        let state = try #require(actual.states.first)
         #expect(state.name == "dummy")
         #expect(state.index == 1)
         #expect(state.assignee.type == .any)
@@ -183,8 +183,8 @@ struct FetchAppStatusResponseTests {
         #expect(entity2.type == .creator)
         #expect(entity2.code == nil)
         #expect(entity2.includeSubs == false)
-        #expect(actual.appStatusSettings.actions.isEmpty)
-        #expect(actual.appStatusSettings.revision == 1)
+        #expect(actual.actions.isEmpty)
+        #expect(actual.revision == 1)
     }
 
     @Test
@@ -211,20 +211,20 @@ struct FetchAppStatusResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
-        #expect(actual.appStatusSettings.enable)
-        #expect(actual.appStatusSettings.states.isEmpty)
-        #expect(actual.appStatusSettings.actions.count == 2)
-        let action0 = try #require(actual.appStatusSettings.actions[0])
+        let actual = try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
+        #expect(actual.enable)
+        #expect(actual.states.isEmpty)
+        #expect(actual.actions.count == 2)
+        let action0 = try #require(actual.actions[0])
         #expect(action0.name == "action1")
         #expect(action0.from == "step1")
         #expect(action0.to == "step2")
         #expect(action0.filterCondition == "")
-        let action1 = try #require(actual.appStatusSettings.actions[1])
+        let action1 = try #require(actual.actions[1])
         #expect(action1.name == "action2")
         #expect(action1.from == "step2")
         #expect(action1.to == "step3")
         #expect(action1.filterCondition == "dummy = \"1\"")
-        #expect(actual.appStatusSettings.revision == 1)
+        #expect(actual.revision == 1)
     }
 }

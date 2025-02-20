@@ -10,7 +10,7 @@ import SwiftUI
 
 struct IconFileView: View {
     @State private var isPresented = false
-    var icon: AppIcon.Read
+    var icon: AppIcon.Read?
     var downloadFileHandler: (String) async -> Data?
 
     var body: some View {
@@ -38,6 +38,9 @@ struct IconFileView: View {
                         await downloadFileHandler(file.fileKey)
                     }
                 }
+            case .none:
+                Text("nil")
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .cornerRadiusBorder()

@@ -35,26 +35,26 @@ struct FetchAppSettingsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchAppSettingsResponse.self, from: data)
-        #expect(actual.appSettings.name == "dummy")
-        #expect(actual.appSettings.description == "dummy")
-        if case let .preset(key) = actual.appSettings.icon {
+        #expect(actual.name == "dummy")
+        #expect(actual.description == "dummy")
+        if case let .preset(key) = actual.icon {
             #expect(key == "APP39")
         } else {
             Issue.record("icon must be preset type.")
         }
-        #expect(actual.appSettings.theme == .white)
-        #expect(actual.appSettings.titleField.selectionMode == .automatic)
-        #expect(actual.appSettings.titleField.code == "dummy")
-        #expect(actual.appSettings.enableThumbnails)
-        #expect(actual.appSettings.enableBulkDeletion)
-        #expect(actual.appSettings.enableComments)
-        #expect(actual.appSettings.enableDuplicateRecord)
-        #expect(actual.appSettings.enableInlineRecordEditing)
-        #expect(actual.appSettings.numberPrecision.digits == 16)
-        #expect(actual.appSettings.numberPrecision.decimalPlaces == 4)
-        #expect(actual.appSettings.numberPrecision.roundingMode == .halfEven)
-        #expect(actual.appSettings.firstMonthOfFiscalYear == 1)
-        #expect(actual.appSettings.revision == 1)
+        #expect(actual.theme == .white)
+        #expect(actual.titleField.selectionMode == .automatic)
+        #expect(actual.titleField.code == "dummy")
+        #expect(actual.enableThumbnails)
+        #expect(actual.enableBulkDeletion)
+        #expect(actual.enableComments)
+        #expect(actual.enableDuplicateRecord)
+        #expect(actual.enableInlineRecordEditing)
+        #expect(actual.numberPrecision.digits == 16)
+        #expect(actual.numberPrecision.decimalPlaces == 4)
+        #expect(actual.numberPrecision.roundingMode == .halfEven)
+        #expect(actual.firstMonthOfFiscalYear == 1)
+        #expect(actual.revision == 1)
     }
 
     @Test
@@ -93,9 +93,9 @@ struct FetchAppSettingsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchAppSettingsResponse.self, from: data)
-        #expect(actual.appSettings.name == "dummy")
-        #expect(actual.appSettings.description == "dummy")
-        if case let .file(file) = actual.appSettings.icon {
+        #expect(actual.name == "dummy")
+        #expect(actual.description == "dummy")
+        if case let .file(file) = actual.icon {
             #expect(file.fileKey == "dummy")
             #expect(file.fileName == "dummy.png")
             #expect(file.mimeType == "image/png")
@@ -103,18 +103,18 @@ struct FetchAppSettingsResponseTests {
         } else {
             Issue.record("icon must be file type.")
         }
-        #expect(actual.appSettings.theme == .black)
-        #expect(actual.appSettings.titleField.selectionMode == .manual)
-        #expect(actual.appSettings.titleField.code == "dummy")
-        #expect(actual.appSettings.enableThumbnails == false)
-        #expect(actual.appSettings.enableBulkDeletion == false)
-        #expect(actual.appSettings.enableComments == false)
-        #expect(actual.appSettings.enableDuplicateRecord == false)
-        #expect(actual.appSettings.enableInlineRecordEditing == false)
-        #expect(actual.appSettings.numberPrecision.digits == 16)
-        #expect(actual.appSettings.numberPrecision.decimalPlaces == 4)
-        #expect(actual.appSettings.numberPrecision.roundingMode == .up)
-        #expect(actual.appSettings.firstMonthOfFiscalYear == 1)
-        #expect(actual.appSettings.revision == 1)
+        #expect(actual.theme == .black)
+        #expect(actual.titleField.selectionMode == .manual)
+        #expect(actual.titleField.code == "dummy")
+        #expect(actual.enableThumbnails == false)
+        #expect(actual.enableBulkDeletion == false)
+        #expect(actual.enableComments == false)
+        #expect(actual.enableDuplicateRecord == false)
+        #expect(actual.enableInlineRecordEditing == false)
+        #expect(actual.numberPrecision.digits == 16)
+        #expect(actual.numberPrecision.decimalPlaces == 4)
+        #expect(actual.numberPrecision.roundingMode == .up)
+        #expect(actual.firstMonthOfFiscalYear == 1)
+        #expect(actual.revision == 1)
     }
 }

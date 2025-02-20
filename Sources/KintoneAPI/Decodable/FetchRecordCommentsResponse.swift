@@ -5,10 +5,8 @@
 //  Created by ky0me22 on 2025/02/19.
 //
 
-struct FetchRecordCommentsResponse: Decodable {
-    var recordComments: RecordComments
-
-    init(from decoder: any Decoder) throws {
-        recordComments = try RecordComments(from: decoder)
-    }
+public struct FetchRecordCommentsResponse: Decodable, Sendable {
+    public var comments: [RecordComment.Read]
+    public var older: Bool
+    public var newer: Bool
 }

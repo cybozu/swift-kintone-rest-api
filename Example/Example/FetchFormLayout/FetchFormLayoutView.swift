@@ -9,14 +9,21 @@ import KintoneAPI
 import SwiftUI
 
 struct FetchFormLayoutView: View {
-    var layout: [FormLayout]
+    private var layoutChunks: [FormLayoutChunk]
+    private var revision: Int?
+
+    init(formLayoutResponse: FetchFormLayoutResponse?) {
+        layoutChunks = formLayoutResponse?.layoutChunks ?? []
+        revision = formLayoutResponse?.revision
+    }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                ForEach(layout.indices, id: \.self) { i in
-                    FormLayoutDetailView(layout: layout[i])
+                ForEach(layoutChunks.indices, id: \.self) { i in
+                    FormLayoutChunkView(layoutChunk: layoutChunks[i])
                 }
+                CornerRadiusText("Revision: \(String(optional: revision))")
             }
             .padding()
         }

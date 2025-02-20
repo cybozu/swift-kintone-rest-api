@@ -11,7 +11,7 @@ extension KintoneApp: @retroactive Identifiable {
     public var id: Int { appID }
 }
 
-extension FieldProperty: @retroactive Identifiable {
+extension Field: @retroactive Identifiable {
     public var id: String { code }
 }
 

@@ -15,9 +15,9 @@ struct FetchRecordCommentsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
-        #expect(actual.recordComments.comments.isEmpty)
-        #expect(actual.recordComments.older == false)
-        #expect(actual.recordComments.newer == false)
+        #expect(actual.comments.isEmpty)
+        #expect(actual.older == false)
+        #expect(actual.newer == false)
     }
 
     @Test
@@ -39,16 +39,16 @@ struct FetchRecordCommentsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
-        #expect(actual.recordComments.comments.count == 1)
-        let comment = try #require(actual.recordComments.comments.first)
+        #expect(actual.comments.count == 1)
+        let comment = try #require(actual.comments.first)
         #expect(comment.id == 1)
         #expect(comment.text == "dummy\ndummy\ndummy")
         #expect(comment.createdAt == .distantPast)
         #expect(comment.creator.code == "dummy")
         #expect(comment.creator.name == "dummy")
         #expect(comment.mentions.isEmpty)
-        #expect(actual.recordComments.older)
-        #expect(actual.recordComments.newer)
+        #expect(actual.older)
+        #expect(actual.newer)
     }
 
     @Test(arguments: [
@@ -76,8 +76,8 @@ struct FetchRecordCommentsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
-        #expect(actual.recordComments.comments.count == 1)
-        let comment = try #require(actual.recordComments.comments.first)
+        #expect(actual.comments.count == 1)
+        let comment = try #require(actual.comments.first)
         #expect(comment.id == 1)
         #expect(comment.text == "user \norganization \ngroup \ndummy")
         #expect(comment.createdAt == .distantPast)
@@ -87,8 +87,8 @@ struct FetchRecordCommentsResponseTests {
         let mention = try #require(comment.mentions.first)
         #expect(mention.code == "dummy")
         #expect(mention.type == mentionProperty.expectedType)
-        #expect(actual.recordComments.older)
-        #expect(actual.recordComments.newer)
+        #expect(actual.older)
+        #expect(actual.newer)
     }
 
     struct MentionProperty {
