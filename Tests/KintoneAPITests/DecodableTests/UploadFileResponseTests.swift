@@ -13,6 +13,6 @@ struct UploadFileResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(UploadFileResponse.self, from: data)
-        #expect(actual.fileKey == "dummy")
+        #expect(actual == .init(fileKey: "dummy"))
     }
 }
