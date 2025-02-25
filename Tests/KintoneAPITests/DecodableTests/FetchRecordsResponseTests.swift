@@ -923,7 +923,7 @@ struct FetchRecordsResponseTests {
     }
 
     @Test
-    func response_subTable() throws {
+    func response_subtable() throws {
         let input = """
         {
           "records" : [
@@ -960,7 +960,7 @@ struct FetchRecordsResponseTests {
                 .init(
                     identity: .init(id: 1, revision: 1),
                     fields: [
-                        .init(code: "dummy", value: .subTable([.init(id: 1, value: [
+                        .init(code: "dummy", value: .subtable([.init(id: 1, value: [
                             .init(code: "dummy0", value: .number("1234")),
                             .init(code: "dummy1", value: .singleLineText("dummy")),
                         ])]))

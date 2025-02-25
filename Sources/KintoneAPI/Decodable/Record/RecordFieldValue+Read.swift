@@ -33,7 +33,7 @@ extension RecordFieldValue {
         case singleLineText(String)
         case status(String)
         case statusAssignee([Entity.Read])
-        case subTable([SubtableValue.Read])
+        case subtable([SubtableValue.Read])
         case time(Date?)
         case updatedTime(Date)
         case userSelect([Entity.Read])
@@ -114,7 +114,7 @@ extension RecordFieldValue {
                 }
                 self = .statusAssignee(entities)
             case .subtable:
-                self = .subTable(try container.decode([SubtableValue.Read].self, forKey: .value))
+                self = .subtable(try container.decode([SubtableValue.Read].self, forKey: .value))
             case .time:
                 let dateString = try container.decode(String?.self, forKey: .value)
                 self = .time(DateFormatter.kintoneTime.date(fromOptional: dateString))
@@ -155,7 +155,7 @@ extension RecordFieldValue {
             case let (.singleLineText(l), .singleLineText(r)): l == r
             case let (.status(l), .status(r)): l == r
             case let (.statusAssignee(l), .statusAssignee(r)): l == r
-            case let (.subTable(l), .subTable(r)): l == r
+            case let (.subtable(l), .subtable(r)): l == r
             case let (.time(l), .time(r)): l == r
             case let (.updatedTime(l), .updatedTime(r)): l == r
             case let (.userSelect(l), .userSelect(r)): l == r
