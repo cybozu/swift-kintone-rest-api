@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  KintoneAPI
+//  RecordFieldValue.swift
+//
 //
 //  Created by ky0me22 on 2025/01/22.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 extension RecordFieldValue {
-    public enum Read: Decodable, Sendable {
+    public enum Read: Decodable, Sendable, Equatable {
         case calc(String)
         case category([String])
         case checkBox([String])
@@ -126,6 +126,40 @@ extension RecordFieldValue {
                     $0.map { Entity.Read(type: .user, code: $0.code, name: $0.name) }
                 }
                 self = .userSelect(entities)
+            }
+        }
+
+        public static func == (lhs: RecordFieldValue.Read, rhs: RecordFieldValue.Read) -> Bool {
+            switch (lhs, rhs) {
+            case let (.calc(l), .calc(r)): l == r
+            case let (.category(l), .category(r)): l == r
+            case let (.checkBox(l), .checkBox(r)): l == r
+            case let (.createdTime(l), .createdTime(r)): l == r
+            case let (.creator(l), .creator(r)): l == r
+            case let (.date(l), .date(r)): l == r
+            case let (.dateTime(l), .dateTime(r)): l == r
+            case let (.dropDown(l), .dropDown(r)): l == r
+            case let (.file(l), .file(r)): l == r
+            case let (.groupSelect(l), .groupSelect(r)): l == r
+            case let (.id(l), .id(r)): l == r
+            case let (.link(l), .link(r)): l == r
+            case let (.modifier(l), .modifier(r)): l == r
+            case let (.multiLineText(l), .multiLineText(r)): l == r
+            case let (.multiSelect(l), .multiSelect(r)): l == r
+            case let (.number(l), .number(r)): l == r
+            case let (.organizationSelect(l), .organizationSelect(r)): l == r
+            case let (.radioButton(l), .radioButton(r)): l == r
+            case let (.recordNumber(l), .recordNumber(r)): l == r
+            case let (.revision(l), .revision(r)): l == r
+            case let (.richText(l), .richText(r)): l == r
+            case let (.singleLineText(l), .singleLineText(r)): l == r
+            case let (.status(l), .status(r)): l == r
+            case let (.statusAssignee(l), .statusAssignee(r)): l == r
+            case let (.subTable(l), .subTable(r)): l == r
+            case let (.time(l), .time(r)): l == r
+            case let (.updatedTime(l), .updatedTime(r)): l == r
+            case let (.userSelect(l), .userSelect(r)): l == r
+            default: false
             }
         }
 

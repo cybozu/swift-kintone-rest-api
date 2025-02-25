@@ -8,7 +8,7 @@
 import Foundation
 
 extension RecordField {
-    public struct Read: Decodable, Sendable {
+    public struct Read: Decodable, Sendable, Equatable {
         public var code: String
         public var value: RecordFieldValue.Read
 

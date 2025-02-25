@@ -6,7 +6,7 @@
 //
 
 extension Record {
-    public struct Read: Decodable, Sendable {
+    public struct Read: Decodable, Sendable, Equatable {
         public var identity: RecordIdentity.Read
         public var fields: [RecordField.Read]
 
@@ -20,6 +20,11 @@ extension Record {
                 let value = try container.decode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
                 return RecordField.Read(code: key.stringValue, value: value)
             }
+        }
+
+        init(identity: RecordIdentity.Read, fields: [RecordField.Read]) {
+            self.identity = identity
+            self.fields = fields
         }
     }
 }

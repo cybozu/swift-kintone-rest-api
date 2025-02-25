@@ -6,7 +6,7 @@
 //
 
 extension File {
-    public struct Read: Decodable, Sendable {
+    public struct Read: Decodable, Sendable, Equatable {
         public var fileKey: String
         public var mimeType: String
         public var fileName: String
@@ -25,6 +25,13 @@ extension File {
             mimeType = try container.decode(String.self, forKey: .mimeType)
             fileName = try container.decode(String.self, forKey: .fileName)
             fileSize = try container.decode(String.self, forKey: .fileSize)
+        }
+
+        init(fileKey: String, mimeType: String, fileName: String, fileSize: String) {
+            self.fileKey = fileKey
+            self.mimeType = mimeType
+            self.fileName = fileName
+            self.fileSize = fileSize
         }
     }
 }
