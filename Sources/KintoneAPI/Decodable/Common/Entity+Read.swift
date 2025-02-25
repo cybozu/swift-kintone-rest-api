@@ -6,7 +6,7 @@
 //
 
 extension Entity {
-    public struct Read: Decodable, Sendable {
+    public struct Read: Decodable, Sendable, Equatable {
         public var type: EntityType
         public var code: String
         public var name: String?

@@ -14,7 +14,6 @@ struct SubmitRecordResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
-        #expect(actual.recordIdentity.id == 0)
-        #expect(actual.recordIdentity.revision == 0)
+        #expect(actual == .init(recordIdentity: .init(id: 0, revision: 0)))
     }
 }

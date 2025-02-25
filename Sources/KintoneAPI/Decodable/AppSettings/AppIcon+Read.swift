@@ -6,7 +6,7 @@
 //
 
 extension AppIcon {
-    public enum Read: Decodable, Sendable {
+    public enum Read: Decodable, Sendable, Equatable {
         case preset(String)
         case file(File.Read)
 

@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  KintoneAPI
+//  RecordFieldValue.swift
+//
 //
 //  Created by ky0me22 on 2025/01/22.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 extension RecordFieldValue {
-    public enum Read: Decodable, Sendable {
+    public enum Read: Decodable, Sendable, Equatable {
         case calc(String)
         case category([String])
         case checkBox([String])
@@ -33,7 +33,7 @@ extension RecordFieldValue {
         case singleLineText(String)
         case status(String)
         case statusAssignee([Entity.Read])
-        case subTable([SubtableValue.Read])
+        case subtable([SubtableValue.Read])
         case time(Date?)
         case updatedTime(Date)
         case userSelect([Entity.Read])
@@ -114,7 +114,7 @@ extension RecordFieldValue {
                 }
                 self = .statusAssignee(entities)
             case .subtable:
-                self = .subTable(try container.decode([SubtableValue.Read].self, forKey: .value))
+                self = .subtable(try container.decode([SubtableValue.Read].self, forKey: .value))
             case .time:
                 let dateString = try container.decode(String?.self, forKey: .value)
                 self = .time(DateFormatter.kintoneTime.date(fromOptional: dateString))

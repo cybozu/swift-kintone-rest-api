@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2024/12/07.
 //
 
-public struct FormLayoutChunk: Decodable, Sendable {
+public struct FormLayoutChunk: Decodable, Sendable, Equatable {
     public var type: FormLayoutType
     public var code: String?
     public var fields: [FormField]
@@ -24,5 +24,17 @@ public struct FormLayoutChunk: Decodable, Sendable {
         code = try container.decodeIfPresent(String.self, forKey: .code)
         fields = try container.decodeIfPresent([FormField].self, forKey: .fields) ?? []
         layoutChunks = try container.decodeIfPresent([FormLayoutChunk].self, forKey: .layoutChunks) ?? []
+    }
+
+    init(
+        type: FormLayoutType,
+        code: String?,
+        fields: [FormField],
+        layoutChunks: [FormLayoutChunk]
+    ) {
+        self.type = type
+        self.code = code
+        self.fields = fields
+        self.layoutChunks = layoutChunks
     }
 }

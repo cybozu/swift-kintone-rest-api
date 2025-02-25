@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2025/01/22.
 //
 
-public struct FetchRecordsResponse: Decodable, Sendable {
+public struct FetchRecordsResponse: Decodable, Sendable, Equatable {
     public var records: [Record.Read]
     public var totalCount: Int?
 }

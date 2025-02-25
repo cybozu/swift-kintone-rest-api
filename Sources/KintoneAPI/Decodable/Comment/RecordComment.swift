@@ -8,7 +8,7 @@
 import Foundation
 
 extension RecordComment {
-    public struct Read: Decodable, Sendable {
+    public struct Read: Decodable, Sendable, Equatable {
         public var id: Int
         public var text: String
         public var createdAt: Date
@@ -34,6 +34,20 @@ extension RecordComment {
                 Entity.Read(type: .user, code: $0.code, name: $0.name)
             }
             mentions = try container.decode([Entity.Read].self, forKey: .mentions)
+        }
+
+        init(
+            id: Int,
+            text: String,
+            createdAt: Date,
+            creator: Entity.Read,
+            mentions: [Entity.Read]
+        ) {
+            self.id = id
+            self.text = text
+            self.createdAt = createdAt
+            self.creator = creator
+            self.mentions = mentions
         }
     }
 }

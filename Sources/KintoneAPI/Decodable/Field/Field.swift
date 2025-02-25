@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2024/12/07.
 //
 
-public struct Field: Decodable, Sendable {
+public struct Field: Decodable, Sendable, Equatable {
     public var code: String
     public var label: String
     public var type: FieldType
@@ -85,5 +85,17 @@ public struct Field: Decodable, Sendable {
                 try FieldAttribute.userSelect(UserSelectAttribute(from: decoder))
             }
         }
+    }
+
+    init(
+        code: String,
+        label: String,
+        type: FieldType,
+        attribute: FieldAttribute
+    ) {
+        self.code = code
+        self.label = label
+        self.type = type
+        self.attribute = attribute
     }
 }

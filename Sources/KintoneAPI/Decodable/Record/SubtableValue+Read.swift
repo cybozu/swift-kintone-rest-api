@@ -1,6 +1,6 @@
 //
 //  SubtableValue+Read.swift
-//  KintoneAPI
+//
 //
 //  Created by ky0me22 on 2025/01/22.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 extension SubtableValue {
-    public struct Read: Decodable, Sendable {
+    public struct Read: Decodable, Sendable, Equatable {
         public var id: Int
         public var value: [RecordField.Read]
 
@@ -25,6 +25,15 @@ extension SubtableValue {
                 let _value = try valueContainer.decode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
                 return RecordField.Read(code: key.stringValue, value: _value)
             }
+            .sorted(using: KeyPathComparator(\.code))
+        }
+
+        init(
+            id: Int,
+            value: [RecordField.Read]
+        ) {
+            self.id = id
+            self.value = value
         }
     }
 }

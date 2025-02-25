@@ -5,7 +5,9 @@
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public struct FieldOption: Decodable, Sendable {
+import Foundation
+
+public struct FieldOption: Decodable, Sendable, Equatable {
     public var label: String
     public var index: Int
 
@@ -18,6 +20,14 @@ public struct FieldOption: Decodable, Sendable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         label = try container.decode(String.self, forKey: .label)
         index = try container.customDecode(String.self, forKey: .index) { Int($0) }
+    }
+
+    init(
+        label: String,
+        index: Int
+    ) {
+        self.label = label
+        self.index = index
     }
 }
 
@@ -35,7 +45,7 @@ struct FieldOptions: Decodable, Sendable {
             values = try optionsContainer.allKeys.compactMap { key in
                 try optionsContainer.decodeIfPresent(FieldOption.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
             }
-            .sorted(by: { $0.index < $1.index })
+            .sorted(using: KeyPathComparator(\.index))
         } else {
             values = []
         }

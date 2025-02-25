@@ -14,7 +14,7 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.isEmpty)
+        #expect(actual == .init(records: [], totalCount: nil))
     }
 
     @Test
@@ -38,12 +38,12 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.isEmpty)
-        #expect(actual.totalCount == 1)
+        #expect(actual == .init(
+            records: [
+                .init(identity: .init(id: 1, revision: 1), fields: [])
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -71,18 +71,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .calc(value) = field.value {
-            #expect(value == "0")
-        } else {
-            Issue.record("value must be calc type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .calc("0"))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -110,18 +109,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .category(value) = field.value {
-            #expect(value == ["dummy0", "dummy1"])
-        } else {
-            Issue.record("value must be category type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .category(["dummy0", "dummy1"]))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -149,18 +147,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .checkBox(value) = field.value {
-            #expect(value == ["dummy0", "dummy1"])
-        } else {
-            Issue.record("value must be check box type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .checkBox(["dummy0", "dummy1"]))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -188,18 +185,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .createdTime(value) = field.value {
-            #expect(value == .distantPast)
-        } else {
-            Issue.record("value must be created time type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .createdTime(.distantPast))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -220,7 +216,7 @@ struct FetchRecordsResponseTests {
                 "type" : "CREATOR",
                 "value" : {
                   "code" : "dummy",
-                  "name" : "dummy"
+                  "name" : "Dummy"
                 }
               }
             }
@@ -230,19 +226,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .creator(value) = field.value {
-            #expect(value.code == "dummy")
-            #expect(value.name == "dummy")
-        } else {
-            Issue.record("value must be creator type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .creator(.init(type: .user, code: "dummy", name: "Dummy")))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test(arguments: [
@@ -273,18 +267,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .date(value) = field.value {
-            #expect(value == dateProperty.expectedValue)
-        } else {
-            Issue.record("value must be date type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .date(dateProperty.expectedValue))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test(arguments: [
@@ -315,18 +308,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .dateTime(value) = field.value {
-            #expect(value == dateTimeProperty.expectedValue)
-        } else {
-            Issue.record("value must be date time type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .dateTime(dateTimeProperty.expectedValue))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test(arguments: [
@@ -357,18 +349,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .dropDown(value) = field.value {
-            #expect(value == dropDownProperty.expectedValue)
-        } else {
-            Issue.record("value must be drop down type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .dropDown(dropDownProperty.expectedValue))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -403,23 +394,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .file(value) = field.value {
-            #expect(value.count == 1)
-            let file = try #require(value.first)
-            #expect(file.fileKey == "dummy")
-            #expect(file.mimeType == "image/png")
-            #expect(file.fileName == "dummy.png")
-            #expect(file.fileSize == "100")
-        } else {
-            Issue.record("value must be file type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .file([.init(fileKey: "dummy", mimeType: "image/png", fileName: "dummy.png", fileSize: "100")]))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -452,22 +437,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .groupSelect(value) = field.value {
-            #expect(value.count == 1)
-            let entity = try #require(value.first)
-            #expect(entity.type == .group)
-            #expect(entity.code == "dummy")
-            #expect(entity.name == "Dummy")
-        } else {
-            Issue.record("value must be group select type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .groupSelect([.init(type: .group, code: "dummy", name: "Dummy")]))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -495,18 +475,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .link(value) = field.value {
-            #expect(value == "dummy")
-        } else {
-            Issue.record("value must be link type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .link("dummy"))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -527,7 +506,7 @@ struct FetchRecordsResponseTests {
                 "type" : "MODIFIER",
                 "value" : {
                   "code" : "dummy",
-                  "name" : "dummy"
+                  "name" : "Dummy"
                 }
               }
             }
@@ -537,19 +516,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .modifier(value) = field.value {
-            #expect(value.code == "dummy")
-            #expect(value.name == "dummy")
-        } else {
-            Issue.record("value must be modifier type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .modifier(.init(type: .user, code: "dummy", name: "Dummy")))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -577,18 +554,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .multiLineText(value) = field.value {
-            #expect(value == "dummy\ndummy")
-        } else {
-            Issue.record("value must be multi line text type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .multiLineText("dummy\ndummy"))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -616,18 +592,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .multiSelect(value) = field.value {
-            #expect(value == ["dummy0", "dummy1"])
-        } else {
-            Issue.record("value must be multi select type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .multiSelect(["dummy0", "dummy1"]))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -655,18 +630,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .number(value) = field.value {
-            #expect(value == "123.456")
-        } else {
-            Issue.record("value must be number type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .number("123.456"))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -699,22 +673,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .organizationSelect(value) = field.value {
-            #expect(value.count == 1)
-            let entity = try #require(value.first)
-            #expect(entity.type == .organization)
-            #expect(entity.code == "dummy")
-            #expect(entity.name == "Dummy")
-        } else {
-            Issue.record("value must be group select type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .organizationSelect([.init(type: .organization, code: "dummy", name: "Dummy")]))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test(arguments: [
@@ -745,18 +714,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .radioButton(value) = field.value {
-            #expect(value == radioButtonProperty.expectedValue)
-        } else {
-            Issue.record("value must be radio button type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .radioButton(radioButtonProperty.expectedValue))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -784,18 +752,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .recordNumber(value) = field.value {
-            #expect(value == "DUMMY-1")
-        } else {
-            Issue.record("value must be record number type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .recordNumber("DUMMY-1"))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -823,18 +790,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .richText(value) = field.value {
-            #expect(value == "<h1>dummy</h1>")
-        } else {
-            Issue.record("value must be record number type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .richText("<h1>dummy</h1>"))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -862,18 +828,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .singleLineText(value) = field.value {
-            #expect(value == "dummy")
-        } else {
-            Issue.record("value must be single line text type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .singleLineText("dummy"))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -901,18 +866,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .status(value) = field.value {
-            #expect(value == "dummy")
-        } else {
-            Issue.record("value must be status type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .status("dummy"))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -945,26 +909,21 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .statusAssignee(value) = field.value {
-            #expect(value.count == 1)
-            let entity = try #require(value.first)
-            #expect(entity.type == .user)
-            #expect(entity.code == "dummy")
-            #expect(entity.name == "Dummy")
-        } else {
-            Issue.record("value must be status assignee type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .statusAssignee([.init(type: .user, code: "dummy", name: "Dummy")]))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
-    func response_subTable() throws {
+    func response_subtable() throws {
         let input = """
         {
           "records" : [
@@ -996,34 +955,20 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .subTable(value) = field.value {
-            #expect(value.count == 1)
-            let row = try #require(value.first)
-            #expect(row.id == 1)
-            let subFields = row.value.sorted { $0.code < $1.code }
-            #expect(subFields.count == 2)
-            #expect(subFields[0].code == "dummy0")
-            if case let .number(numberValue) = subFields[0].value {
-                #expect(numberValue == "1234")
-            } else {
-                Issue.record("numberValue must be number type.")
-            }
-            #expect(subFields[1].code == "dummy1")
-            if case let .singleLineText(textValue) = subFields[1].value {
-                #expect(textValue == "dummy")
-            } else {
-                Issue.record("textValue must be single line text type.")
-            }
-        } else {
-            Issue.record("value must be status sub table type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .subtable([.init(id: 1, value: [
+                            .init(code: "dummy0", value: .number("1234")),
+                            .init(code: "dummy1", value: .singleLineText("dummy")),
+                        ])]))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test(arguments: [
@@ -1054,18 +999,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .time(value) = field.value {
-            #expect(value == timeProperty.expectedValue)
-        } else {
-            Issue.record("value must be time type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .time(timeProperty.expectedValue))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -1093,18 +1037,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .updatedTime(value) = field.value {
-            #expect(value == .distantPast)
-        } else {
-            Issue.record("value must be updated time type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .updatedTime(.distantPast))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     @Test
@@ -1137,22 +1080,17 @@ struct FetchRecordsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        #expect(actual.records.count == 1)
-        let record = try #require(actual.records.first)
-        #expect(record.identity.id == 1)
-        #expect(record.identity.revision == 1)
-        #expect(record.fields.count == 1)
-        let field = try #require(record.fields.first)
-        #expect(field.code == "dummy")
-        if case let .userSelect(value) = field.value {
-            #expect(value.count == 1)
-            let entity = try #require(value.first)
-            #expect(entity.type == .user)
-            #expect(entity.code == "dummy")
-            #expect(entity.name == "Dummy")
-        } else {
-            Issue.record("value must be group select type.")
-        }
+        #expect(actual == .init(
+            records: [
+                .init(
+                    identity: .init(id: 1, revision: 1),
+                    fields: [
+                        .init(code: "dummy", value: .userSelect([.init(type: .user, code: "dummy", name: "Dummy")]))
+                    ]
+                )
+            ],
+            totalCount: 1
+        ))
     }
 
     struct DateProperty {

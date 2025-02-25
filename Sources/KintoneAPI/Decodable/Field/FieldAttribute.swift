@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public enum FieldAttribute: Sendable {
+public enum FieldAttribute: Sendable, Equatable {
     case calc(CalcAttribute)
     case category(CategoryAttribute)
     case checkBox(CheckBoxAttribute)

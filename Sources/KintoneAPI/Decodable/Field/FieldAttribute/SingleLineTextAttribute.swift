@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public struct SingleLineTextAttribute: Decodable, Sendable {
+public struct SingleLineTextAttribute: Decodable, Sendable, Equatable {
     public var noLabel: Bool
     public var required: Bool
     public var minLength: Int?
@@ -36,5 +36,25 @@ public struct SingleLineTextAttribute: Decodable, Sendable {
         hideExpression = try container.decode(Bool.self, forKey: .hideExpression)
         unique = try container.decode(Bool.self, forKey: .unique)
         defaultValue = try container.decode(String.self, forKey: .defaultValue)
+    }
+
+    init(
+        noLabel: Bool,
+        required: Bool,
+        minLength: Int?,
+        maxLength: Int?,
+        expression: String,
+        hideExpression: Bool,
+        unique: Bool,
+        defaultValue: String
+    ) {
+        self.noLabel = noLabel
+        self.required = required
+        self.minLength = minLength
+        self.maxLength = maxLength
+        self.expression = expression
+        self.hideExpression = hideExpression
+        self.unique = unique
+        self.defaultValue = defaultValue
     }
 }

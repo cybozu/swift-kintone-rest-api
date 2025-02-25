@@ -76,7 +76,7 @@ struct RecordFieldView: View {
                     EntityView(entity: entity)
                 }
 
-            case let .subTable(subtableValueArray):
+            case let .subtable(subtableValueArray):
                 ArrayValueView(subtableValueArray.indices, id: \.self) { i in
                     VStack(alignment: .leading, spacing: 4) {
                         Text("ID: \(subtableValueArray[i].id)")

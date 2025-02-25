@@ -15,9 +15,11 @@ struct FetchRecordCommentsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
-        #expect(actual.comments.isEmpty)
-        #expect(actual.older == false)
-        #expect(actual.newer == false)
+        #expect(actual == .init(
+            comments: [],
+            older: false,
+            newer: false
+        ))
     }
 
     @Test
@@ -29,7 +31,7 @@ struct FetchRecordCommentsResponseTests {
               "id" : "1",
               "text" : "dummy\\ndummy\\ndummy",
               "createdAt" : "0001-01-01T00:00:00Z",
-              "creator" : { "code" : "dummy", "name" : "dummy" },
+              "creator" : { "code" : "dummy", "name" : "Dummy" },
               "mentions" : []
             }
           ],
@@ -39,16 +41,19 @@ struct FetchRecordCommentsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
-        #expect(actual.comments.count == 1)
-        let comment = try #require(actual.comments.first)
-        #expect(comment.id == 1)
-        #expect(comment.text == "dummy\ndummy\ndummy")
-        #expect(comment.createdAt == .distantPast)
-        #expect(comment.creator.code == "dummy")
-        #expect(comment.creator.name == "dummy")
-        #expect(comment.mentions.isEmpty)
-        #expect(actual.older)
-        #expect(actual.newer)
+        #expect(actual == .init(
+            comments: [
+                .init(
+                    id: 1,
+                    text: "dummy\ndummy\ndummy",
+                    createdAt: .distantPast,
+                    creator: .init(type: .user, code: "dummy", name: "Dummy"),
+                    mentions: []
+                )
+            ],
+            older: true,
+            newer: true
+        ))
     }
 
     @Test(arguments: [
@@ -64,7 +69,7 @@ struct FetchRecordCommentsResponseTests {
               "id" : "1",
               "text" : "user \\norganization \\ngroup \\ndummy",
               "createdAt" : "0001-01-01T00:00:00Z",
-              "creator" : { "code" : "dummy", "name" : "dummy" },
+              "creator" : { "code" : "dummy", "name" : "Dummy" },
               "mentions" : [
                 { "code" : "dummy", "type" : "\(mentionProperty.type)" }
               ]
@@ -76,19 +81,21 @@ struct FetchRecordCommentsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
-        #expect(actual.comments.count == 1)
-        let comment = try #require(actual.comments.first)
-        #expect(comment.id == 1)
-        #expect(comment.text == "user \norganization \ngroup \ndummy")
-        #expect(comment.createdAt == .distantPast)
-        #expect(comment.creator.code == "dummy")
-        #expect(comment.creator.name == "dummy")
-        #expect(comment.mentions.count == 1)
-        let mention = try #require(comment.mentions.first)
-        #expect(mention.code == "dummy")
-        #expect(mention.type == mentionProperty.expectedType)
-        #expect(actual.older)
-        #expect(actual.newer)
+        #expect(actual == .init(
+            comments: [
+                .init(
+                    id: 1,
+                    text: "user \norganization \ngroup \ndummy",
+                    createdAt: .distantPast,
+                    creator: .init(type: .user, code: "dummy", name: "Dummy"),
+                    mentions: [
+                        .init(type: mentionProperty.expectedType, code: "dummy", name: nil)
+                    ]
+                )
+            ],
+            older: true,
+            newer: true
+        ))
     }
 
     struct MentionProperty {

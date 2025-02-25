@@ -14,8 +14,7 @@ struct FetchFormLayoutResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        #expect(actual.layoutChunks.isEmpty)
-        #expect(actual.revision == 1)
+        #expect(actual == .init(layoutChunks: [], revision: 1))
     }
 
     @Test(arguments: [
@@ -62,16 +61,17 @@ struct FetchFormLayoutResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        #expect(actual.layoutChunks.count == 1)
-        let layoutChunk = try #require(actual.layoutChunks.first)
-        #expect(layoutChunk.type == .row)
-        #expect(layoutChunk.fields.count == 1)
-        let field = try #require(layoutChunk.fields.first)
-        #expect(field.type == fieldProperty.expectedType)
-        #expect(field.code == "dummy")
-        #expect(field.label == nil)
-        #expect(field.elementID == nil)
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            layoutChunks: [
+                .init(
+                    type: .row,
+                    code: nil,
+                    fields: [.init(type: fieldProperty.expectedType, code: "dummy", label: nil, elementID: nil)],
+                    layoutChunks: []
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -94,16 +94,17 @@ struct FetchFormLayoutResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        #expect(actual.layoutChunks.count == 1)
-        let layoutChunk = try #require(actual.layoutChunks.first)
-        #expect(layoutChunk.type == .row)
-        #expect(layoutChunk.fields.count == 1)
-        let field = try #require(layoutChunk.fields.first)
-        #expect(field.type == .hr)
-        #expect(field.code == nil)
-        #expect(field.label == nil)
-        #expect(field.elementID == nil)
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            layoutChunks: [
+                .init(
+                    type: .row,
+                    code: nil,
+                    fields: [.init(type: .hr, code: nil, label: nil, elementID: nil)],
+                    layoutChunks: []
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -127,16 +128,17 @@ struct FetchFormLayoutResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        #expect(actual.layoutChunks.count == 1)
-        let layoutChunk = try #require(actual.layoutChunks.first)
-        #expect(layoutChunk.type == .row)
-        #expect(layoutChunk.fields.count == 1)
-        let field = try #require(layoutChunk.fields.first)
-        #expect(field.type == .label)
-        #expect(field.code == nil)
-        #expect(field.label == "dummy")
-        #expect(field.elementID == nil)
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            layoutChunks: [
+                .init(
+                    type: .row,
+                    code: nil,
+                    fields: [.init(type: .label, code: nil, label: "dummy", elementID: nil)],
+                    layoutChunks: []
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -160,16 +162,17 @@ struct FetchFormLayoutResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        #expect(actual.layoutChunks.count == 1)
-        let layoutChunk = try #require(actual.layoutChunks.first)
-        #expect(layoutChunk.type == .row)
-        #expect(layoutChunk.fields.count == 1)
-        let field = try #require(layoutChunk.fields.first)
-        #expect(field.type == .spacer)
-        #expect(field.code == nil)
-        #expect(field.label == nil)
-        #expect(field.elementID == "dummy")
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            layoutChunks: [
+                .init(
+                    type: .row,
+                    code: nil,
+                    fields: [.init(type: .spacer, code: nil, label: nil, elementID: "dummy")],
+                    layoutChunks: []
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -192,16 +195,17 @@ struct FetchFormLayoutResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        #expect(actual.layoutChunks.count == 1)
-        let layoutChunk = try #require(actual.layoutChunks.first)
-        #expect(layoutChunk.type == .row)
-        #expect(layoutChunk.fields.count == 1)
-        let field = try #require(layoutChunk.fields.first)
-        #expect(field.type == .referenceTable)
-        #expect(field.code == "dummy")
-        #expect(field.label == nil)
-        #expect(field.elementID == nil)
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            layoutChunks: [
+                .init(
+                    type: .row,
+                    code: nil,
+                    fields: [.init(type: .referenceTable, code: "dummy", label: nil, elementID: nil)],
+                    layoutChunks: []
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test(arguments: [
@@ -234,23 +238,24 @@ struct FetchFormLayoutResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        #expect(actual.layoutChunks.count == 1)
-        let layoutChunk = try #require(actual.layoutChunks.first)
-        #expect(layoutChunk.type == .group)
-        #expect(layoutChunk.code == "dummy")
-        #expect(layoutChunk.fields.isEmpty)
-        #expect(layoutChunk.layoutChunks.count == 1)
-        let subLayoutChunk = try #require(layoutChunk.layoutChunks.first)
-        #expect(subLayoutChunk.type == .row)
-        #expect(subLayoutChunk.code == nil)
-        #expect(subLayoutChunk.fields.count == 1)
-        let subField = try #require(subLayoutChunk.fields.first)
-        #expect(subField.type == fieldProperty.expectedType)
-        #expect(subField.code == "dummy")
-        #expect(subField.label == nil)
-        #expect(subField.elementID == nil)
-        #expect(subLayoutChunk.layoutChunks.isEmpty)
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            layoutChunks: [
+                .init(
+                    type: .group,
+                    code: "dummy",
+                    fields: [],
+                    layoutChunks: [
+                        .init(
+                            type: .row,
+                            code: nil,
+                            fields: [.init(type: fieldProperty.expectedType, code: "dummy", label: nil, elementID: nil)],
+                            layoutChunks: []
+                        )
+                    ]
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test(arguments: [
@@ -278,18 +283,19 @@ struct FetchFormLayoutResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        #expect(actual.layoutChunks.count == 1)
-        let layoutChunk = try #require(actual.layoutChunks.first)
-        #expect(layoutChunk.type == .subtable)
-        #expect(layoutChunk.code == "dummy")
-        #expect(layoutChunk.fields.count == 1)
-        let field = try #require(layoutChunk.fields.first)
-        #expect(field.type == fieldProperty.expectedType)
-        #expect(field.code == "dummy")
-        #expect(field.label == nil)
-        #expect(field.elementID == nil)
-        #expect(layoutChunk.layoutChunks.isEmpty)
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            layoutChunks: [
+                .init(
+                    type: .subtable,
+                    code: "dummy",
+                    fields: [
+                        .init(type: fieldProperty.expectedType, code: "dummy", label: nil, elementID: nil)
+                    ],
+                    layoutChunks: []
+                )
+            ],
+            revision: 1
+        ))
     }
 
     struct FieldProperty {

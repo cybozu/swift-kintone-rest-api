@@ -1,6 +1,6 @@
 //
 //  RecordIdentity+Write.swift
-//  KintoneAPI
+//
 //
 //  Created by ky0me22 on 2025/01/30.
 //

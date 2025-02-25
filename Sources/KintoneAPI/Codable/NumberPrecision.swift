@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2025/01/31.
 //
 
-public struct NumberPrecision: Codable, Sendable {
+public struct NumberPrecision: Codable, Sendable, Equatable {
     public var digits: Int
     public var decimalPlaces: Int
     public var roundingMode: RoundingMode
@@ -28,5 +28,15 @@ public struct NumberPrecision: Codable, Sendable {
         try container.encode(digits.description, forKey: .digits)
         try container.encode(decimalPlaces.description, forKey: .decimalPlaces)
         try container.encode(roundingMode, forKey: .roundingMode)
+    }
+
+    init(
+        digits: Int,
+        decimalPlaces: Int,
+        roundingMode: RoundingMode
+    ) {
+        self.digits = digits
+        self.decimalPlaces = decimalPlaces
+        self.roundingMode = roundingMode
     }
 }

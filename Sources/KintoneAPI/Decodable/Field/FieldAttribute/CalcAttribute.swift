@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public struct CalcAttribute: Decodable, Sendable {
+public struct CalcAttribute: Decodable, Sendable, Equatable {
     public var noLabel: Bool
     public var required: Bool
     public var expression: String
@@ -36,5 +36,25 @@ public struct CalcAttribute: Decodable, Sendable {
         displayScale = Int(try container.decode(String.self, forKey: .displayScale))
         unit = try container.decode(String.self, forKey: .unit)
         unitPosition = try container.decode(UnitPosition.self, forKey: .unitPosition)
+    }
+
+    init(
+        noLabel: Bool,
+        required: Bool,
+        expression: String,
+        hideExpression: Bool,
+        format: CalcFormat,
+        displayScale: Int?,
+        unit: String,
+        unitPosition: UnitPosition
+    ) {
+        self.noLabel = noLabel
+        self.required = required
+        self.expression = expression
+        self.hideExpression = hideExpression
+        self.format = format
+        self.displayScale = displayScale
+        self.unit = unit
+        self.unitPosition = unitPosition
     }
 }
