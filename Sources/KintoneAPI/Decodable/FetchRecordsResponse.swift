@@ -7,4 +7,5 @@
 
 public struct FetchRecordsResponse: Decodable, Sendable {
     public var records: [Record.Read]
+    public var totalCount: Int?
 }

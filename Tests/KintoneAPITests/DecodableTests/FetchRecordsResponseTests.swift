@@ -8,7 +8,8 @@ struct FetchRecordsResponseTests {
     func response_records_empty() throws {
         let input = """
         {
-          "records" : []
+          "records" : [],
+          "totalCount" : null
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -31,7 +32,8 @@ struct FetchRecordsResponseTests {
                 "value" : "1"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -41,6 +43,7 @@ struct FetchRecordsResponseTests {
         #expect(record.identity.id == 1)
         #expect(record.identity.revision == 1)
         #expect(record.fields.isEmpty)
+        #expect(actual.totalCount == 1)
     }
 
     @Test
@@ -62,7 +65,8 @@ struct FetchRecordsResponseTests {
                 "value" : "0"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -100,7 +104,8 @@ struct FetchRecordsResponseTests {
                 "value" : ["dummy0", "dummy1"]
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -138,7 +143,8 @@ struct FetchRecordsResponseTests {
                 "value" : ["dummy0", "dummy1"]
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -176,7 +182,8 @@ struct FetchRecordsResponseTests {
                 "value" : "0001-01-01T00:00:00Z"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -217,7 +224,8 @@ struct FetchRecordsResponseTests {
                 }
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -259,7 +267,8 @@ struct FetchRecordsResponseTests {
                 "value" : \(dateProperty.value)
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -300,7 +309,8 @@ struct FetchRecordsResponseTests {
                 "value" : \(dateTimeProperty.value)
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -341,7 +351,8 @@ struct FetchRecordsResponseTests {
                 "value" : \(dropDownProperty.value)
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -386,7 +397,8 @@ struct FetchRecordsResponseTests {
                 ]
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -434,7 +446,8 @@ struct FetchRecordsResponseTests {
                 ]
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -476,7 +489,8 @@ struct FetchRecordsResponseTests {
                 "value" : "dummy"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -517,7 +531,8 @@ struct FetchRecordsResponseTests {
                 }
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -556,7 +571,8 @@ struct FetchRecordsResponseTests {
                 "value" : "dummy\\ndummy"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -594,7 +610,8 @@ struct FetchRecordsResponseTests {
                 "value" : ["dummy0", "dummy1"]
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -632,7 +649,8 @@ struct FetchRecordsResponseTests {
                 "value" : "123.456"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -675,7 +693,8 @@ struct FetchRecordsResponseTests {
                 ]
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -720,7 +739,8 @@ struct FetchRecordsResponseTests {
                 "value" : \(radioButtonProperty.value)
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -758,7 +778,8 @@ struct FetchRecordsResponseTests {
                 "value" : "DUMMY-1"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -796,7 +817,8 @@ struct FetchRecordsResponseTests {
                 "value" : "<h1>dummy</h1>"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -834,7 +856,8 @@ struct FetchRecordsResponseTests {
                 "value" : "dummy"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -872,7 +895,8 @@ struct FetchRecordsResponseTests {
                 "value" : "dummy"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -915,7 +939,8 @@ struct FetchRecordsResponseTests {
                 ]
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -965,7 +990,8 @@ struct FetchRecordsResponseTests {
                 ]
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -1022,7 +1048,8 @@ struct FetchRecordsResponseTests {
                 "value" : \(timeProperty.value)
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -1060,7 +1087,8 @@ struct FetchRecordsResponseTests {
                 "value" : "0001-01-01T00:00:00Z"
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))
@@ -1103,7 +1131,8 @@ struct FetchRecordsResponseTests {
                 ]
               }
             }
-          ]
+          ],
+          "totalCount" : 1
         }
         """
         let data = try #require(input.data(using: .utf8))

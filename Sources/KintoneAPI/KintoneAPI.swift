@@ -131,12 +131,14 @@ public struct KintoneAPI: Sendable {
     public func fetchRecords(
         appID: Int,
         fields: [String]? = nil,
-        query: String? = nil
+        query: String? = nil,
+        totalCount: Bool? = nil
     ) async throws -> FetchRecordsResponse {
         var queryItems = [URLQueryItem]()
         queryItems.appendQueryItem(name: "app", value: appID.description)
         queryItems.appendQueryItem(name: "fields", value: fields?.arrayString)
         queryItems.appendQueryItem(name: "query", value: query)
+        queryItems.appendQueryItem(name: "totalCount", value: totalCount?.description)
         let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
