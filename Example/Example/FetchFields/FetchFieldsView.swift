@@ -9,7 +9,13 @@ import KintoneAPI
 import SwiftUI
 
 struct FetchFieldsView: View {
-    var fields: [FieldProperty]
+    private var fields: [Field]
+    private var revision: Int?
+
+    init(fieldsResponse: FetchFieldsResponse?) {
+        fields = fieldsResponse?.fields ?? []
+        revision = fieldsResponse?.revision
+    }
 
     var body: some View {
         ScrollView {
@@ -17,6 +23,7 @@ struct FetchFieldsView: View {
                 ForEach(fields) { field in
                     FieldDetailView(field: field)
                 }
+                CornerRadiusText("Revision: \(String(optional: revision))")
             }
             .padding()
         }

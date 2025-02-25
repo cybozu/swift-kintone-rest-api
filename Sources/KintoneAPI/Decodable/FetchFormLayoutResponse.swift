@@ -5,18 +5,18 @@
 //  Created by ky0me22 on 2024/12/04.
 //
 
-struct FetchFormLayoutResponse: Decodable {
-    var layout: [FormLayout]
-    var revision: Int
+public struct FetchFormLayoutResponse: Decodable, Sendable {
+    public var layoutChunks: [FormLayoutChunk]
+    public var revision: Int
 
-    enum CodingKeys: CodingKey {
-        case layout
+    enum CodingKeys: String, CodingKey {
+        case layoutChunks = "layout"
         case revision
     }
 
-    init(from decoder: any Decoder) throws {
+    public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        layout = try container.decode([FormLayout].self, forKey: .layout)
+        layoutChunks = try container.decode([FormLayoutChunk].self, forKey: .layoutChunks)
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
     }
 }

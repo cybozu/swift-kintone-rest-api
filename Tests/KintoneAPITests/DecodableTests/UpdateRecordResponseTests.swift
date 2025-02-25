@@ -12,7 +12,7 @@ struct UpdateRecordResponseTests {
         }
         """
         let data = try #require(input.data(using: .utf8))
-        let actual = try JSONDecoder().decode(UpdateStatusResponse.self, from: data)
+        let actual = try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
         #expect(actual.revision == 1)
     }
 }

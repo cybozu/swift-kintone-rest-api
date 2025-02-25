@@ -1,21 +1,21 @@
 //
-//  FormLayout.swift
+//  FormLayoutChunk.swift
 //
 //
 //  Created by ky0me22 on 2024/12/07.
 //
 
-public struct FormLayout: Decodable, Sendable {
+public struct FormLayoutChunk: Decodable, Sendable {
     public var type: FormLayoutType
     public var code: String?
     public var fields: [FormField]
-    public var layout: [FormLayout]
+    public var layoutChunks: [FormLayoutChunk]
 
-    enum CodingKeys: CodingKey {
+    enum CodingKeys: String, CodingKey {
         case type
         case code
         case fields
-        case layout
+        case layoutChunks = "layout"
     }
 
     public init(from decoder: any Decoder) throws {
@@ -23,6 +23,6 @@ public struct FormLayout: Decodable, Sendable {
         type = try container.decode(FormLayoutType.self, forKey: .type)
         code = try container.decodeIfPresent(String.self, forKey: .code)
         fields = try container.decodeIfPresent([FormField].self, forKey: .fields) ?? []
-        layout = try container.decodeIfPresent([FormLayout].self, forKey: .layout) ?? []
+        layoutChunks = try container.decodeIfPresent([FormLayoutChunk].self, forKey: .layoutChunks) ?? []
     }
 }

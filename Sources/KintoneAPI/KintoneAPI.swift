@@ -62,7 +62,7 @@ public struct KintoneAPI: Sendable {
         spaceIDs: [Int]? = nil,
         offset: Int? = nil,
         limit: Int? = nil
-    ) async throws -> [KintoneApp] {
+    ) async throws -> FetchAppsResponse {
         var queryItems = [URLQueryItem]()
         queryItems.appendQueryItem(name: "ids", value: appIDs?.arrayString)
         queryItems.appendQueryItem(name: "codes", value: codes?.arrayString)
@@ -73,25 +73,23 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .apps, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchAppsResponse = try JSONDecoder().decode(FetchAppsResponse.self, from: data)
-        return fetchAppsResponse.apps
+        return try JSONDecoder().decode(FetchAppsResponse.self, from: data)
     }
 
     public func fetchFormLayout(
         appID: Int
-    ) async throws -> [FormLayout] {
+    ) async throws -> FetchFormLayoutResponse {
         let queryItems = [URLQueryItem(name: "app", value: appID.description)]
         let request = makeRequest(httpMethod: .get, endpoint: .formLayout, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchFormLayoutResponse = try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
-        return fetchFormLayoutResponse.layout
+        return try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
     }
 
     public func fetchFields(
         appID: Int,
         language: Language = .default
-    ) async throws -> [FieldProperty] {
+    ) async throws -> FetchFieldsResponse {
         let queryItems = [
             URLQueryItem(name: "app", value: appID.description),
             URLQueryItem(name: "lang", value: language.rawValue),
@@ -99,14 +97,13 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .fields, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchFieldsResponse = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        return fetchFieldsResponse.properties
+        return try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
     }
 
     public func fetchAppSettings(
         appID: Int,
         language: Language = .default
-    ) async throws -> AppSettings {
+    ) async throws -> FetchAppSettingsResponse {
         let queryItems = [
             URLQueryItem(name: "app", value: appID.description),
             URLQueryItem(name: "lang", value: language.rawValue),
@@ -114,14 +111,13 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .appSettings, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchAppSettingsResponse = try JSONDecoder().decode(FetchAppSettingsResponse.self, from: data)
-        return fetchAppSettingsResponse.appSettings
+        return try JSONDecoder().decode(FetchAppSettingsResponse.self, from: data)
     }
 
     public func fetchAppStatusSettings(
         appID: Int,
         language: Language = .default
-    ) async throws -> AppStatusSettings {
+    ) async throws -> FetchAppStatusSettingsResponse {
         let queryItems = [
             URLQueryItem(name: "app", value: appID.description),
             URLQueryItem(name: "lang", value: language.rawValue),
@@ -129,24 +125,24 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .appStatus, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchAppStatusResponse = try JSONDecoder().decode(FetchAppStatusResponse.self, from: data)
-        return fetchAppStatusResponse.appStatusSettings
+        return try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
     }
 
     public func fetchRecords(
         appID: Int,
         fields: [String]? = nil,
-        query: String? = nil
-    ) async throws -> [Record.Read] {
+        query: String? = nil,
+        totalCount: Bool? = nil
+    ) async throws -> FetchRecordsResponse {
         var queryItems = [URLQueryItem]()
         queryItems.appendQueryItem(name: "app", value: appID.description)
         queryItems.appendQueryItem(name: "fields", value: fields?.arrayString)
         queryItems.appendQueryItem(name: "query", value: query)
+        queryItems.appendQueryItem(name: "totalCount", value: totalCount?.description)
         let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchRecordsResponse = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
-        return fetchRecordsResponse.records
+        return try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
     }
 
     public func removeRecords(
@@ -163,13 +159,12 @@ public struct KintoneAPI: Sendable {
     public func submitRecord(
         appID: Int,
         record: Record.Write
-    ) async throws -> RecordIdentity.Read {
+    ) async throws -> SubmitRecordResponse {
         let httpBody = try JSONEncoder().encode(SubmitRecordRequest(appID: appID, record: record))
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let submitRecordResponse = try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
-        return submitRecordResponse.recordIdentity
+        return try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
     }
 
     @discardableResult
@@ -177,13 +172,12 @@ public struct KintoneAPI: Sendable {
         appID: Int,
         recordIdentity: RecordIdentity.Write,
         record: Record.Write
-    ) async throws -> RecordIdentity.Read {
+    ) async throws -> UpdateRecordResponse {
         let httpBody = try JSONEncoder().encode(UpdateRecordRequest(appID: appID, recordIdentity: recordIdentity, record: record))
         let request = makeRequest(httpMethod: .put, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let updateRecordResponse = try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
-        return RecordIdentity.Read(id: recordIdentity.id, revision: updateRecordResponse.revision)
+        return try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
     }
 
     public func fetchRecordComments(
@@ -192,7 +186,7 @@ public struct KintoneAPI: Sendable {
         order: Order? = nil,
         offset: Int? = nil,
         limit: Int? = nil
-    ) async throws -> RecordComments {
+    ) async throws -> FetchRecordCommentsResponse {
         var queryItems = [URLQueryItem]()
         queryItems.appendQueryItem(name: "app", value: appID.description)
         queryItems.appendQueryItem(name: "record", value: recordID.description)
@@ -202,8 +196,7 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .get, endpoint: .recordComments, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let fetchRecordCommentsResponse = try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
-        return fetchRecordCommentsResponse.recordComments
+        return try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
     }
 
     @discardableResult
@@ -212,20 +205,19 @@ public struct KintoneAPI: Sendable {
         recordIdentity: RecordIdentity.Write,
         actionName: String,
         assignee: String?
-    ) async throws -> RecordIdentity.Read {
+    ) async throws -> UpdateStatusResponse {
         let httpBody = try JSONEncoder().encode(UpdateStatusRequest(appID: appID, recordIdentity: recordIdentity, actionName: actionName, assignee: assignee))
         let request = makeRequest(httpMethod: .put, endpoint: .recordStatus, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let updateStatusResponse = try JSONDecoder().decode(UpdateStatusResponse.self, from: data)
-        return RecordIdentity.Read(id: recordIdentity.id, revision: updateStatusResponse.revision)
+        return try JSONDecoder().decode(UpdateStatusResponse.self, from: data)
     }
 
     public func uploadFile(
         fileName: String,
         mimeType: String,
         data: Data
-    ) async throws -> FileKey {
+    ) async throws -> UploadFileResponse {
         let boundary = "---------\(UUID().uuidString)"
         var httpBody = Data()
         httpBody.append("--\(boundary)\r\n".data(using: .utf8)!)
@@ -238,8 +230,7 @@ public struct KintoneAPI: Sendable {
         let request = makeRequest(httpMethod: .post, endpoint: .file, httpBody: httpBody, contentType: .multipartFormData(boundary))
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
-        let uploadFileResponse = try JSONDecoder().decode(UploadFileResponse.self, from: data)
-        return uploadFileResponse.fileKey
+        return try JSONDecoder().decode(UploadFileResponse.self, from: data)
     }
 
     public func downloadFile(

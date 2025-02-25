@@ -9,7 +9,7 @@ import KintoneAPI
 import SwiftUI
 
 struct RecordInputFieldView: View {
-    var field: FieldProperty
+    var field: Field
     @Binding var fieldValues: [String: RecordFieldValue.Write]
 
     var body: some View {

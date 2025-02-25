@@ -9,7 +9,11 @@ import KintoneAPI
 import SwiftUI
 
 struct FetchAppsView: View {
-    var apps: [KintoneApp]
+    private var apps: [KintoneApp]
+
+    init(appsResponse: FetchAppsResponse?) {
+        apps = appsResponse?.apps ?? []
+    }
 
     var body: some View {
         ScrollView {

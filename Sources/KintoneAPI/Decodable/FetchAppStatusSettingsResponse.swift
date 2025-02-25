@@ -1,11 +1,11 @@
 //
-//  AppStatusSettings.swift
+//  FetchAppStatusSettingsResponse.swift
 //
 //
 //  Created by ky0me22 on 2025/01/31.
 //
 
-public struct AppStatusSettings: Decodable, Sendable {
+public struct FetchAppStatusSettingsResponse: Decodable, Sendable {
     public var enable: Bool
     public var states: [RecordState]
     public var actions: [StatusAction]
