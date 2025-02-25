@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2025/01/31.
 //
 
-public struct FetchAppStatusSettingsResponse: Decodable, Sendable {
+public struct FetchAppStatusSettingsResponse: Decodable, Sendable, Equatable {
     public var enable: Bool
     public var states: [RecordState]
     public var actions: [StatusAction]
@@ -31,5 +31,12 @@ public struct FetchAppStatusSettingsResponse: Decodable, Sendable {
         }
         actions = try container.decodeIfPresent([StatusAction].self, forKey: .actions) ?? []
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
+    }
+
+    init(enable: Bool, states: [RecordState], actions: [StatusAction], revision: Int) {
+        self.enable = enable
+        self.states = states
+        self.actions = actions
+        self.revision = revision
     }
 }
