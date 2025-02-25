@@ -13,7 +13,7 @@ struct FetchAppsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchAppsResponse.self, from: data)
-        #expect(actual.apps.isEmpty)
+        #expect(actual == .init(apps: []))
     }
 
     @Test
@@ -29,12 +29,12 @@ struct FetchAppsResponseTests {
               "createdAt" : "0001-01-01T00:00:00.000Z",
               "creator" : {
                 "code" : "dummy",
-                "name" : "dummy"
+                "name" : "Dummy"
               },
               "modifiedAt" : "0001-01-01T00:00:00.000Z",
               "modifier" : {
                 "code" : "dummy",
-                "name" : "dummy"
+                "name" : "Dummy"
               },
               "spaceId" : null,
               "threadId" : null
@@ -44,20 +44,20 @@ struct FetchAppsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchAppsResponse.self, from: data)
-        #expect(actual.apps.count == 1)
-        let app = try #require(actual.apps.first)
-        #expect(app.appID == 1)
-        #expect(app.code == "dummy")
-        #expect(app.name == "dummy")
-        #expect(app.description == "dummy")
-        #expect(app.createdAt == .distantPast)
-        #expect(app.creator.code == "dummy")
-        #expect(app.creator.name == "dummy")
-        #expect(app.modifiedAt == .distantPast)
-        #expect(app.modifier.code == "dummy")
-        #expect(app.modifier.name == "dummy")
-        #expect(app.spaceID == nil)
-        #expect(app.threadID == nil)
+        #expect(actual == .init(apps: [
+            .init(
+                appID: 1,
+                code: "dummy",
+                name: "dummy",
+                description: "dummy",
+                spaceID: nil,
+                threadID: nil,
+                createdAt: .distantPast,
+                creator: .init(type: .user, code: "dummy", name: "Dummy"),
+                modifiedAt: .distantPast,
+                modifier: .init(type: .user, code: "dummy", name: "Dummy")
+            )
+        ]))
     }
 
     @Test
@@ -73,12 +73,12 @@ struct FetchAppsResponseTests {
               "createdAt" : "0001-01-01T00:00:00.000Z",
               "creator" : {
                 "code" : "dummy",
-                "name" : "dummy"
+                "name" : "Dummy"
               },
               "modifiedAt" : "0001-01-01T00:00:00.000Z",
               "modifier" : {
                 "code" : "dummy",
-                "name" : "dummy"
+                "name" : "Dummy"
               },
               "spaceId" : "2",
               "threadId" : "3"
@@ -88,19 +88,19 @@ struct FetchAppsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchAppsResponse.self, from: data)
-        #expect(actual.apps.count == 1)
-        let app = try #require(actual.apps.first)
-        #expect(app.appID == 1)
-        #expect(app.code == "dummy")
-        #expect(app.name == "dummy")
-        #expect(app.description == "dummy")
-        #expect(app.createdAt == .distantPast)
-        #expect(app.creator.code == "dummy")
-        #expect(app.creator.name == "dummy")
-        #expect(app.modifiedAt == .distantPast)
-        #expect(app.modifier.code == "dummy")
-        #expect(app.modifier.name == "dummy")
-        #expect(app.spaceID == 2)
-        #expect(app.threadID == 3)
+        #expect(actual == .init(apps: [
+            .init(
+                appID: 1,
+                code: "dummy",
+                name: "dummy",
+                description: "dummy",
+                spaceID: 2,
+                threadID: 3,
+                createdAt: .distantPast,
+                creator: .init(type: .user, code: "dummy", name: "Dummy"),
+                modifiedAt: .distantPast,
+                modifier: .init(type: .user, code: "dummy", name: "Dummy")
+            )
+        ]))
     }
 }
