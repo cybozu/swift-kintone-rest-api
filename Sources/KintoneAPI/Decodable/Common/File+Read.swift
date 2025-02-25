@@ -27,7 +27,12 @@ extension File {
             fileSize = try container.decode(String.self, forKey: .fileSize)
         }
 
-        init(fileKey: String, mimeType: String, fileName: String, fileSize: String) {
+        init(
+            fileKey: String,
+            mimeType: String,
+            fileName: String,
+            fileSize: String
+        ) {
             self.fileKey = fileKey
             self.mimeType = mimeType
             self.fileName = fileName

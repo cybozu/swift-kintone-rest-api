@@ -9,10 +9,4 @@ public struct LookupAttribute: Decodable, Sendable, Equatable {
     public var noLabel: Bool
     public var required: Bool
     public var lookup: Lookup
-
-    init(noLabel: Bool, required: Bool, lookup: Lookup) {
-        self.noLabel = noLabel
-        self.required = required
-        self.lookup = lookup
-    }
 }

@@ -36,7 +36,13 @@ extension RecordComment {
             mentions = try container.decode([Entity.Read].self, forKey: .mentions)
         }
 
-        init(id: Int, text: String, createdAt: Date, creator: Entity.Read, mentions: [Entity.Read]) {
+        init(
+            id: Int,
+            text: String,
+            createdAt: Date,
+            creator: Entity.Read,
+            mentions: [Entity.Read]
+        ) {
             self.id = id
             self.text = text
             self.createdAt = createdAt

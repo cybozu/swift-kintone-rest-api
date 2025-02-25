@@ -23,7 +23,11 @@ public struct RecordState: Decodable, Sendable, Equatable {
         assignee = try container.decode(Assignee.self, forKey: .assignee)
     }
 
-    init(name: String, index: Int, assignee: Assignee) {
+    init(
+        name: String,
+        index: Int,
+        assignee: Assignee
+    ) {
         self.name = name
         self.index = index
         self.assignee = assignee

@@ -8,9 +8,4 @@
 public struct Assignee: Decodable, Sendable, Equatable {
     public var type: AssigneeType
     public var entities: [AssigneeEntity]
-
-    init(type: AssigneeType, entities: [AssigneeEntity]) {
-        self.type = type
-        self.entities = entities
-    }
 }

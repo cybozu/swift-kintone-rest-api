@@ -29,7 +29,12 @@ public struct TimeAttribute: Decodable, Sendable, Equatable {
         defaultValue = DateFormatter.kintoneTime.date(from: _defaultValue.normalizedTime) ?? Date.now
     }
 
-    init(noLabel: Bool, required: Bool, defaultNowValue: Bool, defaultValue: Date) {
+    init(
+        noLabel: Bool,
+        required: Bool,
+        defaultNowValue: Bool,
+        defaultValue: Date
+    ) {
         self.noLabel = noLabel
         self.required = required
         self.defaultNowValue = defaultNowValue

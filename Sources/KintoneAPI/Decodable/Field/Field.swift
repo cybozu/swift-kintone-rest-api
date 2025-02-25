@@ -87,7 +87,12 @@ public struct Field: Decodable, Sendable, Equatable {
         }
     }
 
-    init(code: String, label: String, type: FieldType, attribute: FieldAttribute) {
+    init(
+        code: String,
+        label: String,
+        type: FieldType,
+        attribute: FieldAttribute
+    ) {
         self.code = code
         self.label = label
         self.type = type

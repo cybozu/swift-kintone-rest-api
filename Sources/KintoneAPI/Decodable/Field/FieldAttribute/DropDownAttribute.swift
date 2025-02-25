@@ -26,7 +26,12 @@ public struct DropDownAttribute: Decodable, Sendable, Equatable {
         defaultValue = try container.decode(String.self, forKey: .defaultValue)
     }
 
-    init(noLabel: Bool, required: Bool, options: [FieldOption], defaultValue: String) {
+    init(
+        noLabel: Bool,
+        required: Bool,
+        options: [FieldOption],
+        defaultValue: String
+    ) {
         self.noLabel = noLabel
         self.required = required
         self.options = options

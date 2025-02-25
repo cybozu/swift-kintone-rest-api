@@ -54,7 +54,18 @@ public struct KintoneApp: Decodable, Sendable, Equatable {
         }
     }
 
-    init(appID: Int, code: String, name: String, description: String, spaceID: Int?, threadID: Int?, createdAt: Date, creator: Entity.Read, modifiedAt: Date, modifier: Entity.Read) {
+    init(
+        appID: Int,
+        code: String,
+        name: String,
+        description: String,
+        spaceID: Int?,
+        threadID: Int?,
+        createdAt: Date,
+        creator: Entity.Read,
+        modifiedAt: Date,
+        modifier: Entity.Read
+    ) {
         self.appID = appID
         self.code = code
         self.name = name

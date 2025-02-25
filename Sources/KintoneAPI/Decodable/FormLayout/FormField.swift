@@ -17,11 +17,4 @@ public struct FormField: Decodable, Sendable, Equatable {
         case label
         case elementID = "elementId"
     }
-
-    init(type: FormFieldType, code: String?, label: String?, elementID: String?) {
-        self.type = type
-        self.code = code
-        self.label = label
-        self.elementID = elementID
-    }
 }

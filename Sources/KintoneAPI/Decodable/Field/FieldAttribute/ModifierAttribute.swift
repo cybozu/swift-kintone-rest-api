@@ -7,8 +7,4 @@
 
 public struct ModifierAttribute: Decodable, Sendable, Equatable {
     public var noLabel: Bool
-
-    init(noLabel: Bool) {
-        self.noLabel = noLabel
-    }
 }

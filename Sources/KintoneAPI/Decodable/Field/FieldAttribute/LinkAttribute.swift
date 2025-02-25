@@ -35,7 +35,15 @@ public struct LinkAttribute: Decodable, Sendable, Equatable {
         defaultValue = try container.decode(String.self, forKey: .defaultValue)
     }
 
-    init(noLabel: Bool, required: Bool, linkProtocol: LinkProtocol, minLength: Int?, maxLength: Int?, unique: Bool, defaultValue: String) {
+    init(
+        noLabel: Bool,
+        required: Bool,
+        linkProtocol: LinkProtocol,
+        minLength: Int?,
+        maxLength: Int?,
+        unique: Bool,
+        defaultValue: String
+    ) {
         self.noLabel = noLabel
         self.required = required
         self.linkProtocol = linkProtocol

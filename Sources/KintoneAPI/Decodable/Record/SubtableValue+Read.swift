@@ -25,9 +25,13 @@ extension SubtableValue {
                 let _value = try valueContainer.decode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
                 return RecordField.Read(code: key.stringValue, value: _value)
             }
+            .sorted(using: KeyPathComparator(\.code))
         }
 
-        init(id: Int, value: [RecordField.Read]) {
+        init(
+            id: Int,
+            value: [RecordField.Read]
+        ) {
             self.id = id
             self.value = value
         }

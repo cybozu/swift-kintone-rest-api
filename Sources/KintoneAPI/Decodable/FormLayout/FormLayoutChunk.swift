@@ -26,7 +26,12 @@ public struct FormLayoutChunk: Decodable, Sendable, Equatable {
         layoutChunks = try container.decodeIfPresent([FormLayoutChunk].self, forKey: .layoutChunks) ?? []
     }
 
-    init(type: FormLayoutType, code: String?, fields: [FormField], layoutChunks: [FormLayoutChunk]) {
+    init(
+        type: FormLayoutType,
+        code: String?,
+        fields: [FormField],
+        layoutChunks: [FormLayoutChunk]
+    ) {
         self.type = type
         self.code = code
         self.fields = fields

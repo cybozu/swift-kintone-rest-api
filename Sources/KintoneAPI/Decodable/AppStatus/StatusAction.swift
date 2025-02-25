@@ -17,11 +17,4 @@ public struct StatusAction: Decodable, Sendable, Equatable {
         case to
         case filterCondition = "filterCond"
     }
-
-    init(name: String, from: String, to: String, filterCondition: String) {
-        self.name = name
-        self.from = from
-        self.to = to
-        self.filterCondition = filterCondition
-    }
 }

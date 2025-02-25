@@ -29,7 +29,13 @@ public struct CheckBoxAttribute: Decodable, Sendable, Equatable {
         alignment = try container.decode(FieldOptionAlignment.self, forKey: .alignment)
     }
 
-    init(noLabel: Bool, required: Bool, options: [FieldOption], defaultValue: [String], alignment: FieldOptionAlignment) {
+    init(
+        noLabel: Bool,
+        required: Bool,
+        options: [FieldOption],
+        defaultValue: [String],
+        alignment: FieldOptionAlignment
+    ) {
         self.noLabel = noLabel
         self.required = required
         self.options = options

@@ -30,7 +30,11 @@ public struct NumberPrecision: Codable, Sendable, Equatable {
         try container.encode(roundingMode, forKey: .roundingMode)
     }
 
-    init(digits: Int, decimalPlaces: Int, roundingMode: RoundingMode) {
+    init(
+        digits: Int,
+        decimalPlaces: Int,
+        roundingMode: RoundingMode
+    ) {
         self.digits = digits
         self.decimalPlaces = decimalPlaces
         self.roundingMode = roundingMode

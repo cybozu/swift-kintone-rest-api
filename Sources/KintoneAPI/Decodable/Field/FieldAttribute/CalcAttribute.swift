@@ -38,7 +38,16 @@ public struct CalcAttribute: Decodable, Sendable, Equatable {
         unitPosition = try container.decode(UnitPosition.self, forKey: .unitPosition)
     }
 
-    init(noLabel: Bool, required: Bool, expression: String, hideExpression: Bool, format: CalcFormat, displayScale: Int?, unit: String, unitPosition: UnitPosition) {
+    init(
+        noLabel: Bool,
+        required: Bool,
+        expression: String,
+        hideExpression: Bool,
+        format: CalcFormat,
+        displayScale: Int?,
+        unit: String,
+        unitPosition: UnitPosition
+    ) {
         self.noLabel = noLabel
         self.required = required
         self.expression = expression

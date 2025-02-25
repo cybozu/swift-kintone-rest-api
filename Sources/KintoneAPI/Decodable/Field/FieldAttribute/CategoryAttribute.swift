@@ -7,8 +7,4 @@
 
 public struct CategoryAttribute: Decodable, Sendable, Equatable {
     public var enabled: Bool
-
-    init(enabled: Bool) {
-        self.enabled = enabled
-    }
 }

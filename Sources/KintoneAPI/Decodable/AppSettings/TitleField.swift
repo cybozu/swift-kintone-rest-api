@@ -8,9 +8,4 @@
 public struct TitleField: Decodable, Sendable, Equatable {
     public var selectionMode: TitleFieldSelectionMode
     public var code: String
-
-    init(selectionMode: TitleFieldSelectionMode, code: String) {
-        self.selectionMode = selectionMode
-        self.code = code
-    }
 }

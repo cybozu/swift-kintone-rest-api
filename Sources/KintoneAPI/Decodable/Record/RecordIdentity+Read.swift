@@ -21,7 +21,10 @@ extension RecordIdentity {
             revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
         }
 
-        init(id: Int, revision: Int) {
+        init(
+            id: Int,
+            revision: Int
+        ) {
             self.id = id
             self.revision = revision
         }

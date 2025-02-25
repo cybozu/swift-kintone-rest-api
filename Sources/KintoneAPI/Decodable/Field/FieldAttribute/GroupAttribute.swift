@@ -8,9 +8,4 @@
 public struct GroupAttribute: Decodable, Sendable, Equatable {
     public var noLabel: Bool
     public var openGroup: Bool
-
-    init(noLabel: Bool, openGroup: Bool) {
-        self.noLabel = noLabel
-        self.openGroup = openGroup
-    }
 }

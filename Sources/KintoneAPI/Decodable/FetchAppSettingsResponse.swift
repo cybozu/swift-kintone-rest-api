@@ -53,7 +53,21 @@ public struct FetchAppSettingsResponse: Decodable, Sendable, Equatable {
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
     }
 
-    init(name: String, description: String, icon: AppIcon.Read, theme: AppThemeType, titleField: TitleField, enableThumbnails: Bool, enableBulkDeletion: Bool, enableComments: Bool, enableDuplicateRecord: Bool, enableInlineRecordEditing: Bool, numberPrecision: NumberPrecision, firstMonthOfFiscalYear: Int, revision: Int) {
+    init(
+        name: String,
+        description: String,
+        icon: AppIcon.Read,
+        theme: AppThemeType,
+        titleField: TitleField,
+        enableThumbnails: Bool,
+        enableBulkDeletion: Bool,
+        enableComments: Bool,
+        enableDuplicateRecord: Bool,
+        enableInlineRecordEditing: Bool,
+        numberPrecision: NumberPrecision,
+        firstMonthOfFiscalYear: Int,
+        revision: Int
+    ) {
         self.name = name
         self.description = description
         self.icon = icon

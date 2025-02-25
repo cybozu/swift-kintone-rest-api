@@ -21,13 +21,4 @@ public struct Lookup: Decodable, Sendable, Equatable {
         case filterCondition = "filterCond"
         case sort
     }
-
-    init(relatedApp: RelatedApp, relatedKeyField: String, fieldMappings: [FieldMapping], lookupPickerFields: [String], filterCondition: String, sort: String) {
-        self.relatedApp = relatedApp
-        self.relatedKeyField = relatedKeyField
-        self.fieldMappings = fieldMappings
-        self.lookupPickerFields = lookupPickerFields
-        self.filterCondition = filterCondition
-        self.sort = sort
-    }
 }

@@ -7,8 +7,4 @@
 
 public struct FetchAppsResponse: Decodable, Sendable, Equatable {
     public var apps: [KintoneApp]
-
-    init(apps: [KintoneApp]) {
-        self.apps = apps
-    }
 }

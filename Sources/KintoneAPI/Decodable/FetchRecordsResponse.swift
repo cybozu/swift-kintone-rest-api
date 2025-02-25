@@ -8,9 +8,4 @@
 public struct FetchRecordsResponse: Decodable, Sendable, Equatable {
     public var records: [Record.Read]
     public var totalCount: Int?
-
-    init(records: [Record.Read], totalCount: Int?) {
-        self.records = records
-        self.totalCount = totalCount
-    }
 }

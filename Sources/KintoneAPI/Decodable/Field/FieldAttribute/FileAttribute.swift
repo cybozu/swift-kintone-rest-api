@@ -23,7 +23,11 @@ public struct FileAttribute: Decodable, Sendable, Equatable {
         thumbnailSize = try container.customDecode(String.self, forKey: .thumbnailSize) { Int($0) }
     }
 
-    init(noLabel: Bool, required: Bool, thumbnailSize: Int) {
+    init(
+        noLabel: Bool,
+        required: Bool,
+        thumbnailSize: Int
+    ) {
         self.noLabel = noLabel
         self.required = required
         self.thumbnailSize = thumbnailSize

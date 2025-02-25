@@ -20,7 +20,10 @@ public struct RelatedApp: Decodable, Sendable, Equatable {
         code = try container.decode(String.self, forKey: .code)
     }
 
-    init(appID: Int, code: String) {
+    init(
+        appID: Int,
+        code: String
+    ) {
         self.appID = appID
         self.code = code
     }

@@ -20,7 +20,10 @@ public struct FetchFormLayoutResponse: Decodable, Sendable, Equatable {
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
     }
 
-    init(layoutChunks: [FormLayoutChunk], revision: Int) {
+    init(
+        layoutChunks: [FormLayoutChunk],
+        revision: Int
+    ) {
         self.layoutChunks = layoutChunks
         self.revision = revision
     }

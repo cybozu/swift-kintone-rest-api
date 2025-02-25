@@ -44,7 +44,18 @@ public struct NumberAttribute: Decodable, Sendable, Equatable {
         unitPosition = try container.decode(UnitPosition.self, forKey: .unitPosition)
     }
 
-    init(noLabel: Bool, required: Bool, minValue: Int?, maxValue: Int?, digit: Bool, unique: Bool, defaultValue: String, displayScale: Int?, unit: String, unitPosition: UnitPosition) {
+    init(
+        noLabel: Bool,
+        required: Bool,
+        minValue: Int?,
+        maxValue: Int?,
+        digit: Bool,
+        unique: Bool,
+        defaultValue: String,
+        displayScale: Int?,
+        unit: String,
+        unitPosition: UnitPosition
+    ) {
         self.noLabel = noLabel
         self.required = required
         self.minValue = minValue

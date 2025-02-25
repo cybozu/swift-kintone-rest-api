@@ -7,8 +7,4 @@
 
 public struct CreatorAttribute: Decodable, Sendable, Equatable {
     public var noLabel: Bool
-
-    init(noLabel: Bool) {
-        self.noLabel = noLabel
-    }
 }

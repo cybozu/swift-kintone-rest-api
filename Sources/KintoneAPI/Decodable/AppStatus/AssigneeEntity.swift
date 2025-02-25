@@ -25,7 +25,11 @@ public struct AssigneeEntity: Decodable, Sendable, Equatable {
         includeSubs = try container.decode(Bool.self, forKey: .includeSubs)
     }
 
-    init(type: EntityType, code: String?, includeSubs: Bool) {
+    init(
+        type: EntityType,
+        code: String?,
+        includeSubs: Bool
+    ) {
         self.type = type
         self.code = code
         self.includeSubs = includeSubs

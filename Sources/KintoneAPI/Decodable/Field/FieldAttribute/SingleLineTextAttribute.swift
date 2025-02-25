@@ -38,7 +38,16 @@ public struct SingleLineTextAttribute: Decodable, Sendable, Equatable {
         defaultValue = try container.decode(String.self, forKey: .defaultValue)
     }
 
-    init(noLabel: Bool, required: Bool, minLength: Int?, maxLength: Int?, expression: String, hideExpression: Bool, unique: Bool, defaultValue: String) {
+    init(
+        noLabel: Bool,
+        required: Bool,
+        minLength: Int?,
+        maxLength: Int?,
+        expression: String,
+        hideExpression: Bool,
+        unique: Bool,
+        defaultValue: String
+    ) {
         self.noLabel = noLabel
         self.required = required
         self.minLength = minLength

@@ -20,12 +20,16 @@ public struct SubtableAttribute: Decodable, Sendable, Equatable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         noLabel = try container.decode(Bool.self, forKey: .noLabel)
         let fieldsContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .fields)
-        fields = try fieldsContainer.allKeys
-            .map { try fieldsContainer.decode(Field.self, forKey: DynamicCodingKey(stringValue: $0.stringValue)!) }
-            .sorted(using: KeyPathComparator(\.code))
+        fields = try fieldsContainer.allKeys.map {
+            try fieldsContainer.decode(Field.self, forKey: DynamicCodingKey(stringValue: $0.stringValue)!)
+        }
+        .sorted(using: KeyPathComparator(\.code))
     }
 
-    init(noLabel: Bool, fields: [Field]) {
+    init(
+        noLabel: Bool,
+        fields: [Field]
+    ) {
         self.noLabel = noLabel
         self.fields = fields
     }

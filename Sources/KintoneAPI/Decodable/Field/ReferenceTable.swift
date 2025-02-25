@@ -32,7 +32,14 @@ public struct ReferenceTable: Decodable, Sendable, Equatable {
         size = try container.customDecode(String.self, forKey: .size) { Int($0) }
     }
 
-    init(relatedApp: RelatedApp, condition: ReferenceCondition, filterCondition: String, displayFields: [String], sort: String, size: Int) {
+    init(
+        relatedApp: RelatedApp,
+        condition: ReferenceCondition,
+        filterCondition: String,
+        displayFields: [String],
+        sort: String,
+        size: Int
+    ) {
         self.relatedApp = relatedApp
         self.condition = condition
         self.filterCondition = filterCondition
