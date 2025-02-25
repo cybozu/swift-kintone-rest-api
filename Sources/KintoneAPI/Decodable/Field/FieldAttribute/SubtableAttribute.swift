@@ -5,7 +5,9 @@
 //  Created by ky0me22 on 2025/01/21.
 //
 
-public struct SubtableAttribute: Decodable, Sendable {
+import Foundation
+
+public struct SubtableAttribute: Decodable, Sendable, Equatable {
     public var noLabel: Bool
     public var fields: [Field]
 
@@ -18,8 +20,13 @@ public struct SubtableAttribute: Decodable, Sendable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         noLabel = try container.decode(Bool.self, forKey: .noLabel)
         let fieldsContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .fields)
-        fields = try fieldsContainer.allKeys.map { key in
-            try fieldsContainer.decode(Field.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
-        }
+        fields = try fieldsContainer.allKeys
+            .map { try fieldsContainer.decode(Field.self, forKey: DynamicCodingKey(stringValue: $0.stringValue)!) }
+            .sorted(using: KeyPathComparator(\.code))
+    }
+
+    init(noLabel: Bool, fields: [Field]) {
+        self.noLabel = noLabel
+        self.fields = fields
     }
 }

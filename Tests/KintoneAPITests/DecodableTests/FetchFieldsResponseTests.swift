@@ -14,8 +14,7 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.isEmpty)
-        #expect(actual.revision == 1)
+        #expect(actual == .init(fields: [], revision: 1))
     }
 
     @Test(arguments: [
@@ -50,23 +49,26 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .calc)
-        if case let .calc(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.expression == "ROUND(dummy)")
-            #expect(attribute.hideExpression)
-            #expect(attribute.format == calcProperty.expectedFormat)
-            #expect(attribute.unit == "$")
-            #expect(attribute.unitPosition == calcProperty.expectedUnitPosition)
-        } else {
-            Issue.record("attribute must be calc type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .calc,
+                    attribute: .calc(.init(
+                        noLabel: true,
+                        required: true,
+                        expression: "ROUND(dummy)",
+                        hideExpression: true,
+                        format: calcProperty.expectedFormat,
+                        displayScale: 3,
+                        unit: "$",
+                        unitPosition: calcProperty.expectedUnitPosition
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -86,17 +88,17 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .category)
-        if case let .category(attribute) = field.attribute {
-            #expect(attribute.enabled)
-        } else {
-            Issue.record("attribute must be category type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .category,
+                    attribute: .category(.init(enabled: true))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test(arguments: [
@@ -126,27 +128,23 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .checkBox)
-        if case let .checkBox(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.options.count == 2)
-            let option0 = try #require(attribute.options[0])
-            #expect(option0.label == "dummy0")
-            #expect(option0.index == 0)
-            let option1 = try #require(attribute.options[1])
-            #expect(option1.label == "dummy1")
-            #expect(option1.index == 1)
-            #expect(attribute.defaultValue == ["dummy0"])
-            #expect(attribute.alignment == checkBoxProperty.expectedAlignment)
-        } else {
-            Issue.record("attribute must be check box type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .checkBox,
+                    attribute: .checkBox(.init(
+                        noLabel: true,
+                        required: true,
+                        options: [.init(label: "dummy0", index: 0), .init(label: "dummy1", index: 1)],
+                        defaultValue: ["dummy0"],
+                        alignment: checkBoxProperty.expectedAlignment
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -166,17 +164,17 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .createdTime)
-        if case let .createdTime(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-        } else {
-            Issue.record("attribute must be created time type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .createdTime,
+                    attribute: .createdTime(.init(noLabel: true))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -196,17 +194,17 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .creator)
-        if case let .creator(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-        } else {
-            Issue.record("attribute must be creator type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .creator,
+                    attribute: .creator(.init(noLabel: true))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -230,21 +228,23 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .date)
-        if case let .date(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.unique)
-            #expect(attribute.defaultNowValue == false)
-            #expect(attribute.defaultValue == .distantPast)
-        } else {
-            Issue.record("attribute must be date type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .date,
+                    attribute: .date(.init(
+                        noLabel: true,
+                        required: true,
+                        unique: true,
+                        defaultNowValue: false,
+                        defaultValue: .distantPast
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -268,21 +268,23 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .dateTime)
-        if case let .dateTime(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.unique)
-            #expect(attribute.defaultNowValue == false)
-            #expect(attribute.defaultValue == .distantPast)
-        } else {
-            Issue.record("attribute must be date time type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .dateTime,
+                    attribute: .dateTime(.init(
+                        noLabel: true,
+                        required: true,
+                        unique: true,
+                        defaultNowValue: false,
+                        defaultValue: .distantPast
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -308,26 +310,22 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .dropDown)
-        if case let .dropDown(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.options.count == 2)
-            let option0 = try #require(attribute.options[0])
-            #expect(option0.label == "dummy0")
-            #expect(option0.index == 0)
-            let option1 = try #require(attribute.options[1])
-            #expect(option1.label == "dummy1")
-            #expect(option1.index == 1)
-            #expect(attribute.defaultValue == "dummy0")
-        } else {
-            Issue.record("attribute must be drop down type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .dropDown,
+                    attribute: .dropDown(.init(
+                        noLabel: true,
+                        required: true,
+                        options: [.init(label: "dummy0", index: 0), .init(label: "dummy1", index: 1)],
+                        defaultValue: "dummy0"
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -349,19 +347,21 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .file)
-        if case let .file(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.thumbnailSize == 150)
-        } else {
-            Issue.record("attribute must be file type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .file,
+                    attribute: .file(.init(
+                        noLabel: true,
+                        required: true,
+                        thumbnailSize: 150
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -382,18 +382,17 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .group)
-        if case let .group(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.openGroup)
-        } else {
-            Issue.record("attribute must be group type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .group,
+                    attribute: .group(.init(noLabel: true, openGroup: true))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -421,29 +420,27 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .groupSelect)
-        if case let .groupSelect(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.entities.count == 2)
-            let entity0 = try #require(attribute.entities[0])
-            #expect(entity0.type == .group)
-            #expect(entity0.code == "dummy0")
-            let entity1 = try #require(attribute.entities[1])
-            #expect(entity1.type == .group)
-            #expect(entity1.code == "dummy1")
-            #expect(attribute.defaultValue.count == 1)
-            let defaultValue = try #require(attribute.defaultValue.first)
-            #expect(defaultValue.type == .group)
-            #expect(defaultValue.code == "dummy0")
-        } else {
-            Issue.record("attribute must be group select type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .groupSelect,
+                    attribute: .groupSelect(.init(
+                        noLabel: true,
+                        required: true,
+                        entities: [
+                            .init(type: .group, code: "dummy0", name: nil),
+                            .init(type: .group, code: "dummy1", name: nil),
+                        ],
+                        defaultValue: [
+                            .init(type: .group, code: "dummy0", name: nil)
+                        ]
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test(arguments: [
@@ -473,23 +470,25 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .link)
-        if case let .link(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.linkProtocol == linkProperty.expectedLinkProtocol)
-            #expect(attribute.minLength == nil)
-            #expect(attribute.maxLength == 100)
-            #expect(attribute.unique)
-            #expect(attribute.defaultValue == linkProperty.defaultValue)
-        } else {
-            Issue.record("attribute must be link type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .link,
+                    attribute: .link(.init(
+                        noLabel: true,
+                        required: true,
+                        linkProtocol: linkProperty.expectedLinkProtocol,
+                        minLength: nil,
+                        maxLength: 100,
+                        unique: true,
+                        defaultValue: linkProperty.defaultValue
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test(arguments: [
@@ -523,28 +522,28 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == lookupProperty.expectedType)
-        if case let .lookup(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.lookup.relatedApp.appID == 1)
-            #expect(attribute.lookup.relatedApp.code == "")
-            #expect(attribute.lookup.relatedKeyField == "dummy")
-            #expect(attribute.lookup.fieldMappings.count == 1)
-            let fieldMapping = try #require(attribute.lookup.fieldMappings.first)
-            #expect(fieldMapping.field == "dummy")
-            #expect(fieldMapping.relatedField == "related_dummy")
-            #expect(attribute.lookup.lookupPickerFields == ["dummy"])
-            #expect(attribute.lookup.filterCondition == "dummy = \"1\"")
-            #expect(attribute.lookup.sort == "dummy desc")
-        } else {
-            Issue.record("attribute must be lookup type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: lookupProperty.expectedType,
+                    attribute: .lookup(.init(
+                        noLabel: true,
+                        required: true,
+                        lookup: .init(
+                            relatedApp: .init(appID: 1, code: ""),
+                            relatedKeyField: "dummy",
+                            fieldMappings: [.init(field: "dummy", relatedField: "related_dummy")],
+                            lookupPickerFields: ["dummy"],
+                            filterCondition: "dummy = \"1\"",
+                            sort: "dummy desc"
+                        )
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -564,17 +563,17 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .modifier)
-        if case let .modifier(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-        } else {
-            Issue.record("attribute must be modifier type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .modifier,
+                    attribute: .modifier(.init(noLabel: true))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -596,19 +595,21 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .multiLineText)
-        if case let .multiLineText(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.defaultValue == "dummy\ndummy")
-        } else {
-            Issue.record("attribute must be multi line text type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .multiLineText,
+                    attribute: .multiLineText(.init(
+                        noLabel: true,
+                        required: true,
+                        defaultValue: "dummy\ndummy"
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test(arguments: [
@@ -640,26 +641,28 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .number)
-        if case let .number(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.minValue == -10)
-            #expect(attribute.maxValue == nil)
-            #expect(attribute.digit)
-            #expect(attribute.unique)
-            #expect(attribute.defaultValue == "123.456")
-            #expect(attribute.displayScale == 3)
-            #expect(attribute.unit == "¥")
-            #expect(attribute.unitPosition == numberProperty.expectedUnitPosition)
-        } else {
-            Issue.record("attribute must be number type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .number,
+                    attribute: .number(.init(
+                        noLabel: true,
+                        required: true,
+                        minValue: -10,
+                        maxValue: nil,
+                        digit: true,
+                        unique: true,
+                        defaultValue: "123.456",
+                        displayScale: 3,
+                        unit: "¥",
+                        unitPosition: numberProperty.expectedUnitPosition
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -687,29 +690,27 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .organizationSelect)
-        if case let .organizationSelect(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.entities.count == 2)
-            let entity0 = try #require(attribute.entities[0])
-            #expect(entity0.type == .organization)
-            #expect(entity0.code == "dummy0")
-            let entity1 = try #require(attribute.entities[1])
-            #expect(entity1.type == .organization)
-            #expect(entity1.code == "dummy1")
-            #expect(attribute.defaultValue.count == 1)
-            let defaultValue = try #require(attribute.defaultValue.first)
-            #expect(defaultValue.type == .organization)
-            #expect(defaultValue.code == "dummy0")
-        } else {
-            Issue.record("attribute must be organization select type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .organizationSelect,
+                    attribute: .organizationSelect(.init(
+                        noLabel: true,
+                        required: true,
+                        entities: [
+                            .init(type: .organization, code: "dummy0", name: nil),
+                            .init(type: .organization, code: "dummy1", name: nil),
+                        ],
+                        defaultValue: [
+                            .init(type: .organization, code: "dummy0", name: nil)
+                        ]
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test(arguments: [
@@ -739,27 +740,26 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .radioButton)
-        if case let .radioButton(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.options.count == 2)
-            let option0 = try #require(attribute.options[0])
-            #expect(option0.label == "dummy0")
-            #expect(option0.index == 0)
-            let option1 = try #require(attribute.options[1])
-            #expect(option1.label == "dummy1")
-            #expect(option1.index == 1)
-            #expect(attribute.defaultValue == "dummy0")
-            #expect(attribute.alignment == radioButtonProperty.expectedAlignment)
-        } else {
-            Issue.record("attribute must be radio button type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .radioButton,
+                    attribute: .radioButton(.init(
+                        noLabel: true,
+                        required: true,
+                        options: [
+                            .init(label: "dummy0", index: 0),
+                            .init(label: "dummy1", index: 1),
+                        ],
+                        defaultValue: "dummy0",
+                        alignment: radioButtonProperty.expectedAlignment
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -779,17 +779,17 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .recordNumber)
-        if case let .recordNumber(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-        } else {
-            Issue.record("attribute must be record number type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .recordNumber,
+                    attribute: .recordNumber(.init(noLabel: true))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -817,25 +817,27 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .referenceTable)
-        if case let .referenceTable(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.referenceTable.relatedApp.appID == 1)
-            #expect(attribute.referenceTable.relatedApp.code == "")
-            #expect(attribute.referenceTable.condition.field == "dummy")
-            #expect(attribute.referenceTable.condition.relatedField == "related_dummy")
-            #expect(attribute.referenceTable.filterCondition == "dummy = \"1\"")
-            #expect(attribute.referenceTable.displayFields == ["dummy"])
-            #expect(attribute.referenceTable.sort == "dummy desc")
-            #expect(attribute.referenceTable.size == 5)
-        } else {
-            Issue.record("attribute must be reference table type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .referenceTable,
+                    attribute: .referenceTable(.init(
+                        noLabel: true,
+                        referenceTable: .init(
+                            relatedApp: .init(appID: 1, code: ""),
+                            condition: .init(field: "dummy", relatedField: "related_dummy"),
+                            filterCondition: "dummy = \"1\"",
+                            displayFields: ["dummy"],
+                            sort: "dummy desc",
+                            size: 5
+                        )
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -857,19 +859,21 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .richText)
-        if case let .richText(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.defaultValue == "<h1>dummy</h1>")
-        } else {
-            Issue.record("attribute must be rich text type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .richText,
+                    attribute: .richText(.init(
+                        noLabel: true,
+                        required: true,
+                        defaultValue: "<h1>dummy</h1>"
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -896,24 +900,26 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .singleLineText)
-        if case let .singleLineText(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.minLength == nil)
-            #expect(attribute.maxLength == 100)
-            #expect(attribute.expression == "")
-            #expect(attribute.hideExpression)
-            #expect(attribute.unique)
-            #expect(attribute.defaultValue == "dummy")
-        } else {
-            Issue.record("attribute must be single line text type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .singleLineText,
+                    attribute: .singleLineText(.init(
+                        noLabel: true,
+                        required: true,
+                        minLength: nil,
+                        maxLength: 100,
+                        expression: "",
+                        hideExpression: true,
+                        unique: true,
+                        defaultValue: "dummy"
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -933,17 +939,17 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .status)
-        if case let .status(attribute) = field.attribute {
-            #expect(attribute.enabled)
-        } else {
-            Issue.record("attribute must be status type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .status,
+                    attribute: .status(.init(enabled: true))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -963,17 +969,17 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .statusAssignee)
-        if case let .statusAssignee(attribute) = field.attribute {
-            #expect(attribute.enabled)
-        } else {
-            Issue.record("attribute must be status assignee type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .statusAssignee,
+                    attribute: .statusAssignee(.init(enabled: true))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -1023,51 +1029,53 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .subtable)
-        if case let .subtable(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            let fields = attribute.fields.sorted { $0.code < $1.code }
-            #expect(fields.count == 2)
-            #expect(fields[0].code == "dummy0")
-            #expect(fields[0].label == "dummy0")
-            #expect(fields[0].type == .number)
-            if case let .number(numberAttribute) = fields[0].attribute {
-                #expect(numberAttribute.noLabel)
-                #expect(numberAttribute.required)
-                #expect(numberAttribute.minValue == nil)
-                #expect(numberAttribute.maxValue == 100)
-                #expect(numberAttribute.digit)
-                #expect(numberAttribute.unique)
-                #expect(numberAttribute.defaultValue == "123.456")
-                #expect(numberAttribute.displayScale == 3)
-                #expect(numberAttribute.unit == "¥")
-                #expect(numberAttribute.unitPosition == .before)
-            } else {
-                Issue.record("numberAttribute must be number type.")
-            }
-            #expect(fields[1].code == "dummy1")
-            #expect(fields[1].label == "dummy1")
-            #expect(fields[1].type == .singleLineText)
-            if case let .singleLineText(textAttribute) = fields[1].attribute {
-                #expect(textAttribute.noLabel)
-                #expect(textAttribute.required)
-                #expect(textAttribute.minLength == 10)
-                #expect(textAttribute.maxLength == nil)
-                #expect(textAttribute.expression == "")
-                #expect(textAttribute.hideExpression)
-                #expect(textAttribute.unique)
-                #expect(textAttribute.defaultValue == "dummy")
-            } else {
-                Issue.record("textAttribute must be single line text type.")
-            }
-        } else {
-            Issue.record("attribute must be subtable type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .subtable,
+                    attribute: .subtable(.init(
+                        noLabel: true,
+                        fields: [
+                            .init(
+                                code: "dummy0",
+                                label: "dummy0",
+                                type: .number,
+                                attribute: .number(.init(
+                                    noLabel: true,
+                                    required: true,
+                                    minValue: nil,
+                                    maxValue: 100,
+                                    digit: true,
+                                    unique: true,
+                                    defaultValue: "123.456",
+                                    displayScale: 3,
+                                    unit: "¥",
+                                    unitPosition: .before
+                                ))
+                            ),
+                            .init(
+                                code: "dummy1",
+                                label: "dummy1",
+                                type: .singleLineText,
+                                attribute: .singleLineText(.init(
+                                    noLabel: true,
+                                    required: true,
+                                    minLength: 10,
+                                    maxLength: nil,
+                                    expression: "",
+                                    hideExpression: true,
+                                    unique: true,
+                                    defaultValue: "dummy"
+                                ))
+                            )
+                        ]
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -1091,20 +1099,22 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .time)
-        if case let .time(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.defaultNowValue == false)
-            #expect(attribute.defaultValue == .distantReference)
-        } else {
-            Issue.record("attribute must be time type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .time,
+                    attribute: .time(.init(
+                        noLabel: true,
+                        required: true,
+                        defaultNowValue: false,
+                        defaultValue: .distantReference
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -1124,17 +1134,17 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .updatedTime)
-        if case let .updatedTime(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-        } else {
-            Issue.record("attribute must be updated time type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .updatedTime,
+                    attribute: .updatedTime(.init(noLabel: true))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     @Test
@@ -1162,29 +1172,27 @@ struct FetchFieldsResponseTests {
         """
         let data = try #require(input.data(using: .utf8))
         let actual = try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
-        #expect(actual.fields.count == 1)
-        let field = try #require(actual.fields.first)
-        #expect(field.code == "dummy")
-        #expect(field.label == "dummy")
-        #expect(field.type == .userSelect)
-        if case let .userSelect(attribute) = field.attribute {
-            #expect(attribute.noLabel)
-            #expect(attribute.required)
-            #expect(attribute.entities.count == 2)
-            let entity0 = try #require(attribute.entities[0])
-            #expect(entity0.type == .user)
-            #expect(entity0.code == "dummy0")
-            let entity1 = try #require(attribute.entities[1])
-            #expect(entity1.type == .user)
-            #expect(entity1.code == "dummy1")
-            #expect(attribute.defaultValue.count == 1)
-            let defaultValue = try #require(attribute.defaultValue.first)
-            #expect(defaultValue.type == .user)
-            #expect(defaultValue.code == "dummy0")
-        } else {
-            Issue.record("attribute must be user select type.")
-        }
-        #expect(actual.revision == 1)
+        #expect(actual == .init(
+            fields: [
+                .init(
+                    code: "dummy",
+                    label: "dummy",
+                    type: .userSelect,
+                    attribute: .userSelect(.init(
+                        noLabel: true,
+                        required: true,
+                        entities: [
+                            .init(type: .user, code: "dummy0", name: nil),
+                            .init(type: .user, code: "dummy1", name: nil),
+                        ],
+                        defaultValue: [
+                            .init(type: .user, code: "dummy0", name: nil)
+                        ]
+                    ))
+                )
+            ],
+            revision: 1
+        ))
     }
 
     struct CalcProperty {

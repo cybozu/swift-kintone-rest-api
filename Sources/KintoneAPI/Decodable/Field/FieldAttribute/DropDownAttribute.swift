@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public struct DropDownAttribute: Decodable, Sendable {
+public struct DropDownAttribute: Decodable, Sendable, Equatable {
     public var noLabel: Bool
     public var required: Bool
     public var options: [FieldOption]
@@ -24,5 +24,12 @@ public struct DropDownAttribute: Decodable, Sendable {
         required = try container.decode(Bool.self, forKey: .required)
         options = try FieldOptions(from: decoder).values
         defaultValue = try container.decode(String.self, forKey: .defaultValue)
+    }
+
+    init(noLabel: Bool, required: Bool, options: [FieldOption], defaultValue: String) {
+        self.noLabel = noLabel
+        self.required = required
+        self.options = options
+        self.defaultValue = defaultValue
     }
 }

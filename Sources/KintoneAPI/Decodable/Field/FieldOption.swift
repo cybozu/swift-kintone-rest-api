@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public struct FieldOption: Decodable, Sendable {
+public struct FieldOption: Decodable, Sendable, Equatable {
     public var label: String
     public var index: Int
 
@@ -18,6 +18,11 @@ public struct FieldOption: Decodable, Sendable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         label = try container.decode(String.self, forKey: .label)
         index = try container.customDecode(String.self, forKey: .index) { Int($0) }
+    }
+
+    init(label: String, index: Int) {
+        self.label = label
+        self.index = index
     }
 }
 

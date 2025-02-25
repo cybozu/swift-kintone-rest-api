@@ -5,7 +5,9 @@
 //  Created by ky0me22 on 2024/12/04.
 //
 
-public struct FetchFieldsResponse: Decodable, Sendable {
+import Foundation
+
+public struct FetchFieldsResponse: Decodable, Sendable, Equatable {
     public var fields: [Field]
     public var revision: Int
 
@@ -17,9 +19,14 @@ public struct FetchFieldsResponse: Decodable, Sendable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let fieldsContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .fields)
-        fields = try fieldsContainer.allKeys.map { key in
-            try fieldsContainer.decode(Field.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
-        }
+        fields = try fieldsContainer.allKeys
+            .map { try fieldsContainer.decode(Field.self, forKey: DynamicCodingKey(stringValue: $0.stringValue)!) }
+            .sorted(using: KeyPathComparator(\.code))
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
+    }
+
+    init(fields: [Field], revision: Int) {
+        self.fields = fields
+        self.revision = revision
     }
 }

@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public struct CheckBoxAttribute: Decodable, Sendable {
+public struct CheckBoxAttribute: Decodable, Sendable, Equatable {
     public var noLabel: Bool
     public var required: Bool
     public var options: [FieldOption]
@@ -27,5 +27,13 @@ public struct CheckBoxAttribute: Decodable, Sendable {
         options = try FieldOptions(from: decoder).values
         defaultValue = try container.decode([String].self, forKey: .defaultValue)
         alignment = try container.decode(FieldOptionAlignment.self, forKey: .alignment)
+    }
+
+    init(noLabel: Bool, required: Bool, options: [FieldOption], defaultValue: [String], alignment: FieldOptionAlignment) {
+        self.noLabel = noLabel
+        self.required = required
+        self.options = options
+        self.defaultValue = defaultValue
+        self.alignment = alignment
     }
 }
