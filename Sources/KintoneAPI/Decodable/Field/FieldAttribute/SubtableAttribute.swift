@@ -21,7 +21,7 @@ public struct SubtableAttribute: Decodable, Sendable, Equatable {
         noLabel = try container.decode(Bool.self, forKey: .noLabel)
         let fieldsContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .fields)
         fields = try fieldsContainer.allKeys
-            .map { try fieldsContainer.decode(Field.self, forKey: DynamicCodingKey(stringValue: $0.stringValue)!) }
+            .map { try fieldsContainer.decode(Field.self, forKey: .init(stringValue: $0.stringValue)!) }
             .sorted(using: KeyPathComparator(\.code))
     }
 

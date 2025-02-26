@@ -43,7 +43,7 @@ struct FieldOptions: Decodable, Sendable {
         if container.allKeys.contains(.options) {
             let optionsContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .options)
             values = try optionsContainer.allKeys
-                .compactMap { try optionsContainer.decodeIfPresent(FieldOption.self, forKey: DynamicCodingKey(stringValue: $0.stringValue)!) }
+                .compactMap { try optionsContainer.decodeIfPresent(FieldOption.self, forKey: .init(stringValue: $0.stringValue)!) }
                 .sorted(using: KeyPathComparator(\.index))
         } else {
             values = []

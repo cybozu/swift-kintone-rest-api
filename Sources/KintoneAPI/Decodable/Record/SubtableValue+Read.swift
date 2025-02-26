@@ -22,7 +22,7 @@ extension SubtableValue {
             id = try container.customDecode(String.self, forKey: .id) { Int($0) }
             let valueContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .value)
             value = try valueContainer.allKeys.map { key in
-                let _value = try valueContainer.decode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
+                let _value = try valueContainer.decode(RecordFieldValue.Read.self, forKey: .init(stringValue: key.stringValue)!)
                 return RecordField.Read(code: key.stringValue, value: _value)
             }
             .sorted(using: KeyPathComparator(\.code))
