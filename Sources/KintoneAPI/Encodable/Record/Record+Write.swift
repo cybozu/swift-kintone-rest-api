@@ -16,7 +16,7 @@ extension Record {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: DynamicCodingKey.self)
             try fields.forEach { field in
-                try container.encode(field.value, forKey: DynamicCodingKey(stringValue: field.code)!)
+                try container.encode(field.value, forKey: .init(stringValue: field.code)!)
             }
         }
     }

@@ -16,8 +16,7 @@ public struct FetchRecordsResponse: Decodable, Sendable, Equatable {
 
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        records = try container.decode([RecordReadOrEmpty].self, forKey: .records)
-            .compactMap(\.value)
+        records = try container.decode([RecordReadOrEmpty].self, forKey: .records).compactMap(\.value)
         totalCount = try container.decodeIfPresent(Int.self, forKey: .totalCount)
     }
 
