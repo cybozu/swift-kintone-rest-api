@@ -19,8 +19,10 @@ extension Record {
             identity = RecordIdentity.Read(id: id, revision: revision)
             let keys = container.allKeys.filter { !["$id", "$revision"].contains($0.stringValue) }
             fields = try keys.map { key in
-                let value = try container.decode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
-                return RecordField.Read(code: key.stringValue, value: value)
+                RecordField.Read(
+                    code: key.stringValue,
+                    value: try container.decode(RecordFieldValue.Read.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
+                )
             }
             .sorted(using: KeyPathComparator(\.code))
         }

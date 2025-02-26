@@ -18,6 +18,19 @@ struct FetchRecordsResponseTests {
     }
 
     @Test
+    func response_records_empty_object() async throws {
+        let input = """
+        {
+          "records" : [{}],
+          "totalCount" : null
+        }
+        """
+        let data = try #require(input.data(using: .utf8))
+        let actual = try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
+        #expect(actual == .init(records: [], totalCount: nil))
+    }
+
+    @Test
     func response_fields_empty() throws {
         let input = """
         {
