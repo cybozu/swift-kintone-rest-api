@@ -27,10 +27,9 @@ public struct FetchAppStatusSettingsResponse: Decodable, Sendable, Equatable {
             states = []
         } else {
             let statesContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .states)
-            states = try statesContainer.allKeys.map { key in
-                try statesContainer.decode(RecordState.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
-            }
-            .sorted(using: KeyPathComparator(\.index))
+            states = try statesContainer.allKeys
+                .map { try statesContainer.decode(RecordState.self, forKey: DynamicCodingKey(stringValue: $0.stringValue)!) }
+                .sorted(using: KeyPathComparator(\.index))
         }
         actions = try container.decodeIfPresent([StatusAction].self, forKey: .actions) ?? []
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
