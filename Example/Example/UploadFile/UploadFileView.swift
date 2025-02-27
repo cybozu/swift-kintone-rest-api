@@ -10,7 +10,8 @@ import PhotosUI
 import SwiftUI
 
 struct UploadFileView: View {
-    @State private var isPresented = false
+    @State private var isPresentedFileImporter = false
+    @State private var isPresentedPhotosPicker = false
     @State private var pickerItem: PhotosPickerItem?
     @State private var fileArguments: FileArguments?
     @State private var fileKey: String?
@@ -27,11 +28,13 @@ struct UploadFileView: View {
                 LabeledContent {
                     HStack {
                         Button {
-                            isPresented = true
+                            isPresentedFileImporter = true
                         } label: {
                             Text("Select File")
                         }
-                        PhotosPicker(selection: $pickerItem, matching: .images) {
+                        Button {
+                            isPresentedPhotosPicker = true
+                        } label: {
                             Text("Select Image")
                         }
                         Button {
@@ -49,7 +52,7 @@ struct UploadFileView: View {
             }
         }
         .fileImporter(
-            isPresented: $isPresented,
+            isPresented: $isPresentedFileImporter,
             allowedContentTypes: [.text],
             onCompletion: { result in
                 switch result {
@@ -59,6 +62,11 @@ struct UploadFileView: View {
                     print(error.localizedDescription)
                 }
             }
+        )
+        .photosPicker(
+            isPresented: $isPresentedPhotosPicker,
+            selection: $pickerItem,
+            matching: .images
         )
         .onChange(of: pickerItem) { _, newValue in
             onChange(pickerItem: newValue)
