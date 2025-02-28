@@ -28,6 +28,7 @@ Providing kintone REST API with Swift interface.
 | `fetchAppStatusSettings` | GET    | [/k/v1/app/status.json](https://kintone.dev/en/docs/kintone/rest-api/apps/get-process-management-settings/) |
 | `fetchRecords`           | GET    | [/k/v1/records.json](https://kintone.dev/en/docs/kintone/rest-api/records/get-records/)                     |
 | `removeRecords`          | DELETE | [/k/v1/records.json](https://kintone.dev/en/docs/kintone/rest-api/records/delete-records/)                  |
+| `fetchRecord`            | GET    | [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/get-record/)                       |
 | `submitRecord`           | POST   | [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/add-record/)                       |
 | `updateRecord`           | PUT    | [/k/v1/record.json](https://kintone.dev/en/docs/kintone/rest-api/records/update-record/)                    |
 | `fetchRecordComments`    | GET    | [/k/v1/record/comments.json](https://kintone.dev/en/docs/kintone/rest-api/records/get-comments/)            |

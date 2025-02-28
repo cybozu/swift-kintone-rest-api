@@ -155,6 +155,23 @@ public struct KintoneAPI: Sendable {
         try check(response: response)
     }
 
+    public func fetchRecord(
+        appID: Int,
+        recordID: Int
+    ) async throws -> FetchRecordResponse {
+        let queryItems = [
+            URLQueryItem(name: "app", value: appID.description),
+            URLQueryItem(name: "id", value: recordID.description),
+        ]
+        let request = makeRequest(httpMethod: .get, endpoint: .record, queryItems: queryItems)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response)
+        if let str = String(data: data, encoding: .utf8) {
+            print(str)
+        }
+        return try JSONDecoder().decode(FetchRecordResponse.self, from: data)
+    }
+
     @discardableResult
     public func submitRecord(
         appID: Int,
