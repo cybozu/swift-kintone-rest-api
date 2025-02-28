@@ -83,19 +83,26 @@ struct UploadFileView: View {
               let data = try? Data(contentsOf: url) else {
             return
         }
-        fileArguments = FileArguments(fileName: fileName, mimeType: mimeType, data: data)
+        fileArguments = FileArguments(
+            fileName: fileName,
+            mimeType: mimeType,
+            data: data
+        )
     }
 
     private func onChange(pickerItem: PhotosPickerItem?) {
         guard let pickerItem else { return }
         Task {
-            guard let url = try await pickerItem.loadTransferable(type: DataURL.self)?.url else { return }
-            let fileName = url.lastPathComponent
-            guard let mimeType = UTType(filenameExtension: url.pathExtension)?.preferredMIMEType,
-                  let data = try await pickerItem.loadTransferable(type: Data.self) else {
+            guard let data = try await pickerItem.loadTransferable(type: Data.self),
+                  let image = UIImage(data: data),
+                  let jpegData = image.jpegData(compressionQuality: 1.0) else {
                 return
             }
-            fileArguments = FileArguments(fileName: fileName, mimeType: mimeType, data: data)
+            fileArguments = FileArguments(
+                fileName: "IMG_\(Date.now).jpeg",
+                mimeType: UTType.jpeg.preferredMIMEType!,
+                data: jpegData
+            )
         }
     }
 }
