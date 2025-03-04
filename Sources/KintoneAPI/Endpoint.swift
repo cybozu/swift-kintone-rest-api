@@ -11,6 +11,7 @@ enum Endpoint: String {
     case fields =         "/k/v1/app/form/fields.json"
     case appSettings =    "/k/v1/app/settings.json"
     case appStatus =      "/k/v1/app/status.json"
+    case appViews =       "/k/v1/app/views.json"
     case records =        "/k/v1/records.json"
     case record =         "/k/v1/record.json"
     case recordComments = "/k/v1/record/comments.json"

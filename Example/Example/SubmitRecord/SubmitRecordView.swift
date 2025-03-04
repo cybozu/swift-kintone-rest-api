@@ -27,7 +27,7 @@ struct SubmitRecordView: View {
         self.onSubmitRecordHandler = onSubmitRecordHandler
         self.onUpdateRecordHandler = onUpdateRecordHandler
         self.onRemoveRecordHandler = onRemoveRecordHandler
-        self.fieldValues = fields.reduce(into: [String: RecordFieldValue.Write]()) {
+        fieldValues = fields.reduce(into: [String: RecordFieldValue.Write]()) {
             $0[$1.code] = switch $1.attribute {
             case let .checkBox(value):
                 RecordFieldValue.Write.checkBox(value.defaultValue)
