@@ -7,10 +7,12 @@
 
 import Foundation
 
-public struct FieldOption: Decodable, Sendable, Equatable {
+public struct FieldOption: Sendable, Equatable {
     public var label: String
     public var index: Int
+}
 
+extension FieldOption: Decodable {
     enum CodingKeys: CodingKey {
         case label
         case index
@@ -20,14 +22,6 @@ public struct FieldOption: Decodable, Sendable, Equatable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         label = try container.decode(String.self, forKey: .label)
         index = try container.customDecode(String.self, forKey: .index) { Int($0) }
-    }
-
-    init(
-        label: String,
-        index: Int
-    ) {
-        self.label = label
-        self.index = index
     }
 }
 

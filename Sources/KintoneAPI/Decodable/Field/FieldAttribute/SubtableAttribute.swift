@@ -7,10 +7,12 @@
 
 import Foundation
 
-public struct SubtableAttribute: Decodable, Sendable, Equatable {
+public struct SubtableAttribute: Sendable, Equatable {
     public var noLabel: Bool
     public var fields: [Field]
+}
 
+extension SubtableAttribute: Decodable {
     enum CodingKeys: CodingKey {
         case noLabel
         case fields
@@ -23,13 +25,5 @@ public struct SubtableAttribute: Decodable, Sendable, Equatable {
         fields = try fieldsContainer.allKeys
             .map { try fieldsContainer.decode(Field.self, forKey: .init(stringValue: $0.stringValue)!) }
             .sorted(using: KeyPathComparator(\.code))
-    }
-
-    init(
-        noLabel: Bool,
-        fields: [Field]
-    ) {
-        self.noLabel = noLabel
-        self.fields = fields
     }
 }

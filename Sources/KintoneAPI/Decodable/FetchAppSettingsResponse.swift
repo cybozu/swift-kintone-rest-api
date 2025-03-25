@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2025/01/31.
 //
 
-public struct FetchAppSettingsResponse: Decodable, Sendable, Equatable {
+public struct FetchAppSettingsResponse: Sendable, Equatable {
     public var name: String
     public var description: String
     public var icon: AppIcon.Read
@@ -19,7 +19,9 @@ public struct FetchAppSettingsResponse: Decodable, Sendable, Equatable {
     public var numberPrecision: NumberPrecision
     public var firstMonthOfFiscalYear: Int
     public var revision: Int
+}
 
+extension FetchAppSettingsResponse: Decodable {
     enum CodingKeys: CodingKey {
         case name
         case description
@@ -51,35 +53,5 @@ public struct FetchAppSettingsResponse: Decodable, Sendable, Equatable {
         numberPrecision = try container.decode(NumberPrecision.self, forKey: .numberPrecision)
         firstMonthOfFiscalYear = try container.customDecode(String.self, forKey: .firstMonthOfFiscalYear) { Int($0) }
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
-    }
-
-    init(
-        name: String,
-        description: String,
-        icon: AppIcon.Read,
-        theme: AppThemeType,
-        titleField: TitleField,
-        enableThumbnails: Bool,
-        enableBulkDeletion: Bool,
-        enableComments: Bool,
-        enableDuplicateRecord: Bool,
-        enableInlineRecordEditing: Bool,
-        numberPrecision: NumberPrecision,
-        firstMonthOfFiscalYear: Int,
-        revision: Int
-    ) {
-        self.name = name
-        self.description = description
-        self.icon = icon
-        self.theme = theme
-        self.titleField = titleField
-        self.enableThumbnails = enableThumbnails
-        self.enableBulkDeletion = enableBulkDeletion
-        self.enableComments = enableComments
-        self.enableDuplicateRecord = enableDuplicateRecord
-        self.enableInlineRecordEditing = enableInlineRecordEditing
-        self.numberPrecision = numberPrecision
-        self.firstMonthOfFiscalYear = firstMonthOfFiscalYear
-        self.revision = revision
     }
 }

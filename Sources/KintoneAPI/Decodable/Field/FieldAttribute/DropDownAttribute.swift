@@ -5,12 +5,14 @@
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public struct DropDownAttribute: Decodable, Sendable, Equatable {
+public struct DropDownAttribute: Sendable, Equatable {
     public var noLabel: Bool
     public var required: Bool
     public var options: [FieldOption]
     public var defaultValue: String
+}
 
+extension DropDownAttribute: Decodable {
     enum CodingKeys: CodingKey {
         case noLabel
         case required
@@ -24,17 +26,5 @@ public struct DropDownAttribute: Decodable, Sendable, Equatable {
         required = try container.decode(Bool.self, forKey: .required)
         options = try FieldOptions(from: decoder).values
         defaultValue = try container.decode(String.self, forKey: .defaultValue)
-    }
-
-    init(
-        noLabel: Bool,
-        required: Bool,
-        options: [FieldOption],
-        defaultValue: String
-    ) {
-        self.noLabel = noLabel
-        self.required = required
-        self.options = options
-        self.defaultValue = defaultValue
     }
 }

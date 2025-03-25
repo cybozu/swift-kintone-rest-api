@@ -5,9 +5,11 @@
 //  Created by ky0me22 on 2025/02/28.
 //
 
-public struct FetchRecordResponse: Decodable, Sendable, Equatable {
+public struct FetchRecordResponse: Sendable, Equatable {
     public var record: Record.Read
+}
 
+extension FetchRecordResponse: Decodable {
     enum CodingKeys: CodingKey {
         case record
     }
@@ -15,9 +17,5 @@ public struct FetchRecordResponse: Decodable, Sendable, Equatable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         record = try container.decode(Record.Read.self, forKey: .record)
-    }
-
-    init(record: Record.Read) {
-        self.record = record
     }
 }

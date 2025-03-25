@@ -5,14 +5,16 @@
 //  Created by ky0me22 on 2024/12/07.
 //
 
-public struct ReferenceTable: Decodable, Sendable, Equatable {
+public struct ReferenceTable: Sendable, Equatable {
     public var relatedApp: RelatedApp
     public var condition: ReferenceCondition
     public var filterCondition: String
     public var displayFields: [String]
     public var sort: String
     public var size: Int
+}
 
+extension ReferenceTable: Decodable {
     enum CodingKeys: String, CodingKey {
         case relatedApp
         case condition
@@ -30,21 +32,5 @@ public struct ReferenceTable: Decodable, Sendable, Equatable {
         displayFields = try container.decode([String].self, forKey: .displayFields)
         sort = try container.decode(String.self, forKey: .sort)
         size = try container.customDecode(String.self, forKey: .size) { Int($0) }
-    }
-
-    init(
-        relatedApp: RelatedApp,
-        condition: ReferenceCondition,
-        filterCondition: String,
-        displayFields: [String],
-        sort: String,
-        size: Int
-    ) {
-        self.relatedApp = relatedApp
-        self.condition = condition
-        self.filterCondition = filterCondition
-        self.displayFields = displayFields
-        self.sort = sort
-        self.size = size
     }
 }

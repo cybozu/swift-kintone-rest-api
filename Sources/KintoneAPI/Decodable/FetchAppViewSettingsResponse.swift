@@ -7,10 +7,12 @@
 
 import Foundation
 
-public struct FetchAppViewSettingsResponse: Decodable, Sendable, Equatable {
+public struct FetchAppViewSettingsResponse: Sendable, Equatable {
     public var views: [AppView]
     public var revision: Int
+}
 
+extension FetchAppViewSettingsResponse: Decodable {
     enum CodingKeys: CodingKey {
         case views
         case revision
@@ -23,10 +25,5 @@ public struct FetchAppViewSettingsResponse: Decodable, Sendable, Equatable {
             .map { try viewsContainer.decode(AppView.self, forKey: .init(stringValue: $0.stringValue)!) }
             .sorted(using: KeyPathComparator(\.id))
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
-    }
-
-    init(views: [AppView], revision: Int) {
-        self.views = views
-        self.revision = revision
     }
 }

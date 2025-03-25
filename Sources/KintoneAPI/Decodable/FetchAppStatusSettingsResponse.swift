@@ -7,12 +7,14 @@
 
 import Foundation
 
-public struct FetchAppStatusSettingsResponse: Decodable, Sendable, Equatable {
+public struct FetchAppStatusSettingsResponse: Sendable, Equatable {
     public var enable: Bool
     public var states: [RecordState]
     public var actions: [StatusAction]
     public var revision: Int
+}
 
+extension FetchAppStatusSettingsResponse: Decodable {
     enum CodingKeys: CodingKey {
         case enable
         case states
@@ -33,17 +35,5 @@ public struct FetchAppStatusSettingsResponse: Decodable, Sendable, Equatable {
         }
         actions = try container.decodeIfPresent([StatusAction].self, forKey: .actions) ?? []
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
-    }
-
-    init(
-        enable: Bool,
-        states: [RecordState],
-        actions: [StatusAction],
-        revision: Int
-    ) {
-        self.enable = enable
-        self.states = states
-        self.actions = actions
-        self.revision = revision
     }
 }
