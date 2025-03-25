@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct KintoneApp: Decodable, Sendable, Equatable {
+public struct KintoneApp: Sendable, Equatable {
     public var appID: Int
     public var code: String
     public var name: String
@@ -18,7 +18,9 @@ public struct KintoneApp: Decodable, Sendable, Equatable {
     public var creator: Entity.Read
     public var modifiedAt: Date
     public var modifier: Entity.Read
+}
 
+extension KintoneApp: Decodable {
     enum CodingKeys: String, CodingKey {
         case appID = "appId"
         case code
@@ -52,29 +54,5 @@ public struct KintoneApp: Decodable, Sendable, Equatable {
         modifier = try container.customDecode(EntityValue.self, forKey: .modifier) {
             Entity.Read(type: .user, code: $0.code, name: $0.name)
         }
-    }
-
-    init(
-        appID: Int,
-        code: String,
-        name: String,
-        description: String,
-        spaceID: Int?,
-        threadID: Int?,
-        createdAt: Date,
-        creator: Entity.Read,
-        modifiedAt: Date,
-        modifier: Entity.Read
-    ) {
-        self.appID = appID
-        self.code = code
-        self.name = name
-        self.description = description
-        self.spaceID = spaceID
-        self.threadID = threadID
-        self.createdAt = createdAt
-        self.creator = creator
-        self.modifiedAt = modifiedAt
-        self.modifier = modifier
     }
 }
