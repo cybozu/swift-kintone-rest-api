@@ -21,5 +21,4 @@ extension RelatedApp: Decodable {
         appID = try container.customDecode(String.self, forKey: .appID) { Int($0) }
         code = try container.decode(String.self, forKey: .code)
     }
-
 }

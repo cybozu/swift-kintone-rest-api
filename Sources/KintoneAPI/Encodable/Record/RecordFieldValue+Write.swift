@@ -70,51 +70,53 @@ extension RecordFieldValue {
                 try container.encode(entityArray, forKey: .value)
             }
         }
+    }
+}
 
-        public var string: String? {
-            switch self {
-            case let .dropDown(value): value
-            case let .link(value): value
-            case let .multiLineText(value): value
-            case let .number(value): value
-            case let .radioButton(value): value
-            case let .richText(value): value
-            case let .singleLineText(value): value
-            default: nil
-            }
+extension RecordFieldValue.Write {
+    public var string: String? {
+        switch self {
+        case let .dropDown(value): value
+        case let .link(value): value
+        case let .multiLineText(value): value
+        case let .number(value): value
+        case let .radioButton(value): value
+        case let .richText(value): value
+        case let .singleLineText(value): value
+        default: nil
         }
+    }
 
-        public var strings: [String]? {
-            switch self {
-            case let .checkBox(value): value
-            case let .multiSelect(value): value
-            default: nil
-            }
+    public var strings: [String]? {
+        switch self {
+        case let .checkBox(value): value
+        case let .multiSelect(value): value
+        default: nil
         }
+    }
 
-        public var date: Date? {
-            switch self {
-            case let .date(value): value
-            case let .dateTime(value): value
-            case let .time(value): value
-            default: nil
-            }
+    public var date: Date? {
+        switch self {
+        case let .date(value): value
+        case let .dateTime(value): value
+        case let .time(value): value
+        default: nil
         }
+    }
 
-        public var file: [File.Write]? {
-            switch self {
-            case let .file(value): value
-            default: nil
-            }
+    public var file: [File.Write]? {
+        switch self {
+        case let .file(value): value
+        default: nil
         }
+    }
 
-        public var entities: [Entity.Write]? {
-            switch self {
-            case let .groupSelect(value): value
-            case let .organizationSelect(value): value
-            case let .userSelect(value): value
-            default: nil
-            }
+    public var entities: [Entity.Write]? {
+        switch self {
+        case let .groupSelect(value): value
+        case let .organizationSelect(value): value
+        case let .userSelect(value): value
+        default: nil
         }
     }
 }
