@@ -5,10 +5,12 @@
 //  Created by ky0me22 on 2025/01/22.
 //
 
-public struct FetchRecordsResponse: Decodable, Sendable, Equatable {
+public struct FetchRecordsResponse: Sendable, Equatable {
     public var records: [Record.Read]
     public var totalCount: Int?
+}
 
+extension FetchRecordsResponse: Decodable {
     enum CodingKeys: CodingKey {
         case records
         case totalCount
@@ -18,11 +20,6 @@ public struct FetchRecordsResponse: Decodable, Sendable, Equatable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         records = try container.decode([RecordReadOrEmpty].self, forKey: .records).compactMap(\.value)
         totalCount = try container.decodeIfPresent(Int.self, forKey: .totalCount)
-    }
-
-    init(records: [Record.Read], totalCount: Int?) {
-        self.records = records
-        self.totalCount = totalCount
     }
 }
 

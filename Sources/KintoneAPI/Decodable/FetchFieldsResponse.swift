@@ -7,10 +7,12 @@
 
 import Foundation
 
-public struct FetchFieldsResponse: Decodable, Sendable, Equatable {
+public struct FetchFieldsResponse: Sendable, Equatable {
     public var fields: [Field]
     public var revision: Int
+}
 
+extension FetchFieldsResponse: Decodable {
     enum CodingKeys: String, CodingKey {
         case fields = "properties"
         case revision
@@ -23,13 +25,5 @@ public struct FetchFieldsResponse: Decodable, Sendable, Equatable {
             .map { try fieldsContainer.decode(Field.self, forKey: .init(stringValue: $0.stringValue)!) }
             .sorted(using: KeyPathComparator(\.code))
         revision = try container.customDecode(String.self, forKey: .revision) { Int($0) }
-    }
-
-    init(
-        fields: [Field],
-        revision: Int
-    ) {
-        self.fields = fields
-        self.revision = revision
     }
 }
