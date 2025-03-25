@@ -5,7 +5,7 @@
 //  Created by okayu on 2024/12/06.
 //
 
-public struct NumberAttribute: Decodable, Sendable, Equatable {
+public struct NumberAttribute: Sendable, Equatable {
     public var noLabel: Bool
     public var required: Bool
     public var minValue: Int?
@@ -16,7 +16,9 @@ public struct NumberAttribute: Decodable, Sendable, Equatable {
     public var displayScale: Int?
     public var unit: String
     public var unitPosition: UnitPosition
+}
 
+extension NumberAttribute: Decodable {
     enum CodingKeys: CodingKey {
         case noLabel
         case required
@@ -42,29 +44,5 @@ public struct NumberAttribute: Decodable, Sendable, Equatable {
         displayScale = Int(try container.decode(String.self, forKey: .displayScale))
         unit = try container.decode(String.self, forKey: .unit)
         unitPosition = try container.decode(UnitPosition.self, forKey: .unitPosition)
-    }
-
-    init(
-        noLabel: Bool,
-        required: Bool,
-        minValue: Int?,
-        maxValue: Int?,
-        digit: Bool,
-        unique: Bool,
-        defaultValue: String,
-        displayScale: Int?,
-        unit: String,
-        unitPosition: UnitPosition
-    ) {
-        self.noLabel = noLabel
-        self.required = required
-        self.minValue = minValue
-        self.maxValue = maxValue
-        self.digit = digit
-        self.unique = unique
-        self.defaultValue = defaultValue
-        self.displayScale = displayScale
-        self.unit = unit
-        self.unitPosition = unitPosition
     }
 }
