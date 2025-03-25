@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2025/03/04.
 //
 
-public struct AppView: Decodable, Sendable, Equatable {
+public struct AppView: Sendable, Equatable {
     public var id: Int
     public var name: String
     public var filterCondition: String
@@ -14,7 +14,9 @@ public struct AppView: Decodable, Sendable, Equatable {
     public var type: ViewType
     public var attribute: ViewAttribute
     public var builtinType: BuiltinType?
+}
 
+extension AppView: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -42,25 +44,5 @@ public struct AppView: Decodable, Sendable, Equatable {
             try ViewAttribute.custom(CustomAttribute(from: decoder))
         }
         builtinType = try container.decodeIfPresent(BuiltinType.self, forKey: .builtinType)
-    }
-
-    init(
-        id: Int,
-        name: String,
-        filterCondition: String,
-        sort: String,
-        index: Int,
-        type: ViewType,
-        attribute: ViewAttribute,
-        builtinType: BuiltinType?
-    ) {
-        self.id = id
-        self.name = name
-        self.filterCondition = filterCondition
-        self.sort = sort
-        self.index = index
-        self.type = type
-        self.attribute = attribute
-        self.builtinType = builtinType
     }
 }
