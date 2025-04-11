@@ -1159,11 +1159,13 @@ struct FetchFieldsResponseTests {
               "noLabel" : true,
               "required" : true,
               "entities" : [
-                { "type" : "USER", "code" : "dummy0" },
-                { "type" : "USER", "code" : "dummy1" }
+                { "type" : "USER", "code" : "user" },
+                { "type" : "GROUP", "code" : "group" },
+                { "type" : "ORGANIZATION", "code" : "organization" },
               ],
               "defaultValue" : [
-                { "type" : "USER", "code" : "dummy0" }
+                { "type" : "USER", "code" : "user" },
+                { "type" : "FUNCTION", "code" : "LOGINUSER()" }
               ]
             }
           },
@@ -1182,11 +1184,13 @@ struct FetchFieldsResponseTests {
                         noLabel: true,
                         required: true,
                         entities: [
-                            .init(type: .user, code: "dummy0", name: nil),
-                            .init(type: .user, code: "dummy1", name: nil),
+                            .init(type: .user, code: "user", name: nil),
+                            .init(type: .group, code: "group", name: nil),
+                            .init(type: .organization, code: "organization", name: nil),
                         ],
                         defaultValue: [
-                            .init(type: .user, code: "dummy0", name: nil)
+                            .init(type: .user, code: "user", name: nil),
+                            .init(type: .function, code: "LOGINUSER()", name: nil)
                         ]
                     ))
                 )

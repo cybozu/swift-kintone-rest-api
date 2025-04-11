@@ -9,6 +9,7 @@ public enum EntityType: String, Codable, Sendable {
     case user = "USER"
     case group = "GROUP"
     case organization = "ORGANIZATION"
+    case function = "FUNCTION"
     case fieldEntity = "FIELD_ENTITY"
     case creator = "CREATOR"
     case customField = "CUSTOM_FIELD"
