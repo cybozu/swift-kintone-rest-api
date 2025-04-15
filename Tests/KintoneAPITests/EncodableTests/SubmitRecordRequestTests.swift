@@ -63,7 +63,7 @@ struct SubmitRecordRequestTests {
 
     @Test(arguments: [
         ArrayValueFieldProperty(value: .checkBox(["dummy1", "dummy2"])),
-        ArrayValueFieldProperty(value: .multiSelect(["dummy1", "dummy2"])),
+        ArrayValueFieldProperty(value: .multiSelection(["dummy1", "dummy2"])),
     ])
     func request_array_value(_ fieldProperty: ArrayValueFieldProperty) throws {
         let sut = SubmitRecordRequest(
@@ -94,19 +94,19 @@ struct SubmitRecordRequestTests {
 
     @Test(arguments: [
         EntityValueFieldProperty(
-            value: .groupSelect([.init(type: .group, code: "dummy")]),
+            value: .groupSelection([.init(type: .group, code: "dummy")]),
             expectedType: "GROUP"
         ),
         EntityValueFieldProperty(
-            value: .organizationSelect([.init(type: .organization, code: "dummy")]),
+            value: .organizationSelection([.init(type: .organization, code: "dummy")]),
             expectedType: "ORGANIZATION"
         ),
         EntityValueFieldProperty(
-            value: .userSelect([.init(type: .user, code: "dummy")]),
+            value: .userSelection([.init(type: .user, code: "dummy")]),
             expectedType: "USER"
         ),
     ])
-    func request_entity_select(_ fieldProperty: EntityValueFieldProperty) throws {
+    func request_entity_Selection(_ fieldProperty: EntityValueFieldProperty) throws {
         let sut = SubmitRecordRequest(
             appID: 0,
             record: .init(fields: [

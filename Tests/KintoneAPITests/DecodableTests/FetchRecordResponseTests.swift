@@ -315,7 +315,7 @@ struct FetchRecordResponseTests {
     }
 
     @Test
-    func response_groupSelect() throws {
+    func response_groupSelection() throws {
         let input = """
         {
           "record" : {
@@ -344,7 +344,7 @@ struct FetchRecordResponseTests {
         #expect(actual == .init(record: .init(
             identity: .init(id: 1, revision: 1),
             fields: [
-                .init(code: "dummy", value: .groupSelect([.init(type: .group, code: "dummy", name: "Dummy")]))
+                .init(code: "dummy", value: .groupSelection([.init(type: .group, code: "dummy", name: "Dummy")]))
             ]
         )))
     }
@@ -443,7 +443,7 @@ struct FetchRecordResponseTests {
     }
 
     @Test
-    func response_multiSelect() throws {
+    func response_multiSelection() throws {
         let input = """
         {
           "record" : {
@@ -467,7 +467,7 @@ struct FetchRecordResponseTests {
         #expect(actual == .init(record: .init(
             identity: .init(id: 1, revision: 1),
             fields: [
-                .init(code: "dummy", value: .multiSelect(["dummy0", "dummy1"]))
+                .init(code: "dummy", value: .multiSelection(["dummy0", "dummy1"]))
             ]
         )))
     }
@@ -503,7 +503,7 @@ struct FetchRecordResponseTests {
     }
 
     @Test
-    func response_organizationSelect() throws {
+    func response_organizationSelection() throws {
         let input = """
         {
           "record" : {
@@ -532,7 +532,7 @@ struct FetchRecordResponseTests {
         #expect(actual == .init(record: .init(
             identity: .init(id: 1, revision: 1),
             fields: [
-                .init(code: "dummy", value: .organizationSelect([.init(type: .organization, code: "dummy", name: "Dummy")]))
+                .init(code: "dummy", value: .organizationSelection([.init(type: .organization, code: "dummy", name: "Dummy")]))
             ]
         )))
     }
@@ -830,7 +830,7 @@ struct FetchRecordResponseTests {
     }
 
     @Test
-    func response_userSelect() throws {
+    func response_userSelection() throws {
         let input = """
         {
           "record" : {
@@ -859,7 +859,7 @@ struct FetchRecordResponseTests {
         #expect(actual == .init(record: .init(
             identity: .init(id: 1, revision: 1),
             fields: [
-                .init(code: "dummy", value: .userSelect([.init(type: .user, code: "dummy", name: "Dummy")]))
+                .init(code: "dummy", value: .userSelection([.init(type: .user, code: "dummy", name: "Dummy")]))
             ]
         )))
     }

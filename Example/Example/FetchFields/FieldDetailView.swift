@@ -77,7 +77,7 @@ struct FieldDetailView: View {
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Open Group: \(attribute.openGroup)")
 
-                case let .groupSelect(attribute):
+                case let .groupSelection(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
                     EntitiesView(label: "Entities:", entities: attribute.entities)
@@ -111,7 +111,7 @@ struct FieldDetailView: View {
                     CornerRadiusText("Required: \(attribute.required)")
                     CornerRadiusText("Default Value: \(attribute.defaultValue)")
 
-                case let .multiSelect(attribute):
+                case let .multiSelection(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
                     OptionsView(options: attribute.options)
@@ -129,7 +129,7 @@ struct FieldDetailView: View {
                     CornerRadiusText("Unit: \(attribute.unit)")
                     CornerRadiusText("Unit Position: \(attribute.unitPosition)")
 
-                case let .organizationSelect(attribute):
+                case let .organizationSelection(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
                     EntitiesView(label: "Entities:", entities: attribute.entities)
@@ -194,7 +194,7 @@ struct FieldDetailView: View {
                 case let .updatedTime(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
 
-                case let .userSelect(attribute):
+                case let .userSelection(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
                     EntitiesView(label: "Entities:", entities: attribute.entities)

@@ -14,17 +14,17 @@ extension RecordFieldValue {
         case dateTime(Date)
         case dropDown(String)
         case file([File.Write])
-        case groupSelect([Entity.Write])
+        case groupSelection([Entity.Write])
         case link(String)
         case multiLineText(String)
-        case multiSelect([String])
+        case multiSelection([String])
         case number(String)
-        case organizationSelect([Entity.Write])
+        case organizationSelection([Entity.Write])
         case radioButton(String)
         case richText(String)
         case singleLineText(String)
         case time(Date)
-        case userSelect([Entity.Write])
+        case userSelection([Entity.Write])
 
         enum CodingKeys: CodingKey {
             case value
@@ -45,17 +45,17 @@ extension RecordFieldValue {
                 try container.encode(stringArray, forKey: .value)
             case let .file(fileArray):
                 try container.encode(fileArray, forKey: .value)
-            case let .groupSelect(entityArray):
+            case let .groupSelection(entityArray):
                 try container.encode(entityArray, forKey: .value)
             case let .link(string):
                 try container.encode(string, forKey: .value)
             case let .multiLineText(string):
                 try container.encode(string, forKey: .value)
-            case let .multiSelect(stringArray):
+            case let .multiSelection(stringArray):
                 try container.encode(stringArray, forKey: .value)
             case let .number(string):
                 try container.encode(string, forKey: .value)
-            case let .organizationSelect(entityArray):
+            case let .organizationSelection(entityArray):
                 try container.encode(entityArray, forKey: .value)
             case let .radioButton(string):
                 try container.encode(string, forKey: .value)
@@ -66,7 +66,7 @@ extension RecordFieldValue {
             case let .time(date):
                 let dateString = DateFormatter.kintoneTime.string(from: date)
                 try container.encode(dateString, forKey: .value)
-            case let .userSelect(entityArray):
+            case let .userSelection(entityArray):
                 try container.encode(entityArray, forKey: .value)
             }
         }
@@ -90,7 +90,7 @@ extension RecordFieldValue.Write {
     public var strings: [String]? {
         switch self {
         case let .checkBox(value): value
-        case let .multiSelect(value): value
+        case let .multiSelection(value): value
         default: nil
         }
     }
@@ -113,9 +113,9 @@ extension RecordFieldValue.Write {
 
     public var entities: [Entity.Write]? {
         switch self {
-        case let .groupSelect(value): value
-        case let .organizationSelect(value): value
-        case let .userSelect(value): value
+        case let .groupSelection(value): value
+        case let .organizationSelection(value): value
+        case let .userSelection(value): value
         default: nil
         }
     }
