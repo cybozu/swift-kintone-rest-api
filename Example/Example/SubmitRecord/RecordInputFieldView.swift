@@ -141,13 +141,13 @@ struct RecordInputFieldView: View {
                     label: { Text(field.label) }
                 )
             }
-        case .multiSelect:
-            if case let .multiSelect(attribute) = field.attribute {
+        case .multiSelection:
+            if case let .multiSelection(attribute) = field.attribute {
                 Checkboxes(
                     axis: .vertical,
                     selection: Binding<Set<String>>(
                         get: { .init(fieldValues[field.code]?.strings ?? attribute.defaultValue) },
-                        set: { fieldValues[field.code] = .multiSelect($0.map({ $0 })) }
+                        set: { fieldValues[field.code] = .multiSelection($0.map({ $0 })) }
                     ),
                     content: {
                         ForEach(attribute.options) { option in
@@ -157,13 +157,13 @@ struct RecordInputFieldView: View {
                     label: { Text(field.label) }
                 )
             }
-        case .userSelect:
-            if case let .userSelect(attribute) = field.attribute {
+        case .userSelection:
+            if case let .userSelection(attribute) = field.attribute {
                 Checkboxes(
                     axis: .vertical,
                     selection: Binding<Set<String>>(
                         get: { .init(fieldValues[field.code]?.entities?.map(\.code) ?? attribute.defaultValue.map(\.code)) },
-                        set: { fieldValues[field.code] = .userSelect($0.map { Entity.Write(type: .user, code: $0) }) }
+                        set: { fieldValues[field.code] = .userSelection($0.map { Entity.Write(type: .user, code: $0) }) }
                     ),
                     content: {
                         ForEach(attribute.entities) { entity in
@@ -173,13 +173,13 @@ struct RecordInputFieldView: View {
                     label: { Text(field.code) }
                 )
             }
-        case .organizationSelect:
-            if case let .organizationSelect(attribute) = field.attribute {
+        case .organizationSelection:
+            if case let .organizationSelection(attribute) = field.attribute {
                 Checkboxes(
                     axis: .vertical,
                     selection: Binding<Set<String>>(
                         get: { .init(fieldValues[field.code]?.entities?.map(\.code) ?? attribute.defaultValue.map(\.code)) },
-                        set: { fieldValues[field.code] = .organizationSelect($0.map { Entity.Write(type: .organization, code: $0) }) }
+                        set: { fieldValues[field.code] = .organizationSelection($0.map { Entity.Write(type: .organization, code: $0) }) }
                     ),
                     content: {
                         ForEach(attribute.entities) { entity in
@@ -189,13 +189,13 @@ struct RecordInputFieldView: View {
                     label: { Text(field.code) }
                 )
             }
-        case .groupSelect:
-            if case let .groupSelect(attribute) = field.attribute {
+        case .groupSelection:
+            if case let .groupSelection(attribute) = field.attribute {
                 Checkboxes(
                     axis: .vertical,
                     selection: Binding<Set<String>>(
                         get: { .init(fieldValues[field.code]?.entities?.map(\.code) ?? attribute.defaultValue.map(\.code)) },
-                        set: { fieldValues[field.code] = .groupSelect($0.map { Entity.Write(type: .group, code: $0) }) }
+                        set: { fieldValues[field.code] = .groupSelection($0.map { Entity.Write(type: .group, code: $0) }) }
                     ),
                     content: {
                         ForEach(attribute.entities) { entity in

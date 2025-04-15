@@ -1,18 +1,18 @@
 //
-//  MultiSelectAttribute.swift
+//  MultiSelectionAttribute.swift
 //
 //
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public struct MultiSelectAttribute: Sendable, Equatable {
+public struct MultiSelectionAttribute: Sendable, Equatable {
     public var noLabel: Bool
     public var required: Bool
     public var options: [FieldOption]
     public var defaultValue: [String]
 }
 
-extension MultiSelectAttribute: Decodable {
+extension MultiSelectionAttribute: Decodable {
     enum CodingKeys: CodingKey {
         case noLabel
         case required

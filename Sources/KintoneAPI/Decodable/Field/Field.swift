@@ -49,20 +49,20 @@ extension Field: Decodable {
                 try FieldAttribute.file(FileAttribute(from: decoder))
             case .group:
                 try FieldAttribute.group(GroupAttribute(from: decoder))
-            case .groupSelect:
-                try FieldAttribute.groupSelect(GroupSelectAttribute(from: decoder))
+            case .groupSelection:
+                try FieldAttribute.groupSelection(GroupSelectionAttribute(from: decoder))
             case .link:
                 try FieldAttribute.link(LinkAttribute(from: decoder))
             case .modifier:
                 try FieldAttribute.modifier(ModifierAttribute(from: decoder))
             case .multiLineText:
                 try FieldAttribute.multiLineText(MultiLineTextAttribute(from: decoder))
-            case .multiSelect:
-                try FieldAttribute.multiSelect(MultiSelectAttribute(from: decoder))
+            case .multiSelection:
+                try FieldAttribute.multiSelection(MultiSelectionAttribute(from: decoder))
             case .number:
                 try FieldAttribute.number(NumberAttribute(from: decoder))
-            case .organizationSelect:
-                try FieldAttribute.organizationSelect(OrganizationSelectAttribute(from: decoder))
+            case .organizationSelection:
+                try FieldAttribute.organizationSelection(OrganizationSelectionAttribute(from: decoder))
             case .radioButton:
                 try FieldAttribute.radioButton(RadioButtonAttribute(from: decoder))
             case .recordNumber:
@@ -83,8 +83,8 @@ extension Field: Decodable {
                 try FieldAttribute.time(TimeAttribute(from: decoder))
             case .updatedTime:
                 try FieldAttribute.updatedTime(UpdatedTimeAttribute(from: decoder))
-            case .userSelect:
-                try FieldAttribute.userSelect(UserSelectAttribute(from: decoder))
+            case .userSelection:
+                try FieldAttribute.userSelection(UserSelectionAttribute(from: decoder))
             }
         }
     }

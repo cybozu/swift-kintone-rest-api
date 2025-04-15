@@ -45,7 +45,7 @@ struct RecordFieldView: View {
 
             case let .category(stringArray),
                 let .checkBox(stringArray),
-                let .multiSelect(stringArray):
+                let .multiSelection(stringArray):
                 ArrayValueView(stringArray.indices, id: \.self) { i in
                     CornerRadiusText(stringArray[i])
                 }
@@ -68,10 +68,10 @@ struct RecordFieldView: View {
                     FileView(file: file, downloadFileHandler: downloadFileHandler)
                 }
 
-            case let .groupSelect(entityArray),
-                let .organizationSelect(entityArray),
+            case let .groupSelection(entityArray),
+                let .organizationSelection(entityArray),
                 let .statusAssignee(entityArray),
-                let .userSelect(entityArray):
+                let .userSelection(entityArray):
                 ArrayValueView(entityArray) { entity in
                     EntityView(entity: entity)
                 }

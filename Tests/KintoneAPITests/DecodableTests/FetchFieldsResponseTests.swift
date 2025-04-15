@@ -396,7 +396,7 @@ struct FetchFieldsResponseTests {
     }
 
     @Test
-    func response_groupSelect() throws {
+    func response_groupSelection() throws {
         let input = """
         {
           "properties" : {
@@ -425,8 +425,8 @@ struct FetchFieldsResponseTests {
                 .init(
                     code: "dummy",
                     label: "dummy",
-                    type: .groupSelect,
-                    attribute: .groupSelect(.init(
+                    type: .groupSelection,
+                    attribute: .groupSelection(.init(
                         noLabel: true,
                         required: true,
                         entities: [
@@ -666,7 +666,7 @@ struct FetchFieldsResponseTests {
     }
 
     @Test
-    func response_organizationSelect() throws {
+    func response_organizationSelection() throws {
         let input = """
         {
           "properties" : {
@@ -695,8 +695,8 @@ struct FetchFieldsResponseTests {
                 .init(
                     code: "dummy",
                     label: "dummy",
-                    type: .organizationSelect,
-                    attribute: .organizationSelect(.init(
+                    type: .organizationSelection,
+                    attribute: .organizationSelection(.init(
                         noLabel: true,
                         required: true,
                         entities: [
@@ -1148,7 +1148,7 @@ struct FetchFieldsResponseTests {
     }
 
     @Test
-    func response_userSelect() throws {
+    func response_userSelection() throws {
         let input = """
         {
           "properties" : {
@@ -1179,8 +1179,8 @@ struct FetchFieldsResponseTests {
                 .init(
                     code: "dummy",
                     label: "dummy",
-                    type: .userSelect,
-                    attribute: .userSelect(.init(
+                    type: .userSelection,
+                    attribute: .userSelection(.init(
                         noLabel: true,
                         required: true,
                         entities: [

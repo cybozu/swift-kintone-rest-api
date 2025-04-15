@@ -18,14 +18,14 @@ extension RecordFieldValue {
         case dateTime(Date?)
         case dropDown(String?)
         case file([File.Read])
-        case groupSelect([Entity.Read])
+        case groupSelection([Entity.Read])
         case id(Int)
         case link(String)
         case modifier(Entity.Read)
         case multiLineText(String)
-        case multiSelect([String])
+        case multiSelection([String])
         case number(String)
-        case organizationSelect([Entity.Read])
+        case organizationSelection([Entity.Read])
         case radioButton(String?)
         case recordNumber(String)
         case revision(Int)
@@ -36,7 +36,7 @@ extension RecordFieldValue {
         case subtable([SubtableValue.Read])
         case time(Date?)
         case updatedTime(Date)
-        case userSelect([Entity.Read])
+        case userSelection([Entity.Read])
     }
 }
 
@@ -74,11 +74,11 @@ extension RecordFieldValue.Read: Decodable {
             self = .dropDown(try container.decode(String?.self, forKey: .value))
         case .file:
             self = .file(try container.decode([File.Read].self, forKey: .value))
-        case .groupSelect:
+        case .groupSelection:
             let entities = try container.customDecode([EntityValue].self, forKey: .value) {
                 $0.map { Entity.Read(type: .group, code: $0.code, name: $0.name) }
             }
-            self = .groupSelect(entities)
+            self = .groupSelection(entities)
         case .id:
             self = .id(try container.customDecode(String.self, forKey: .value, initializer: { Int($0) }))
         case .link:
@@ -90,15 +90,15 @@ extension RecordFieldValue.Read: Decodable {
             self = .modifier(entities)
         case .multiLineText:
             self = .multiLineText(try container.decode(String.self, forKey: .value))
-        case .multiSelect:
-            self = .multiSelect(try container.decode([String].self, forKey: .value))
+        case .multiSelection:
+            self = .multiSelection(try container.decode([String].self, forKey: .value))
         case .number:
             self = .number(try container.decode(String.self, forKey: .value))
-        case .organizationSelect:
+        case .organizationSelection:
             let entities = try container.customDecode([EntityValue].self, forKey: .value) {
                 $0.map { Entity.Read(type: .organization, code: $0.code, name: $0.name) }
             }
-            self = .organizationSelect(entities)
+            self = .organizationSelection(entities)
         case .radioButton:
             self = .radioButton(try container.decode(String?.self, forKey: .value))
         case .recordNumber:
@@ -124,11 +124,11 @@ extension RecordFieldValue.Read: Decodable {
         case .updatedTime:
             let dateString = try container.decode(String.self, forKey: .value)
             self = .updatedTime(DateFormatter.kintoneDateTime.date(from: dateString)!)
-        case .userSelect:
+        case .userSelection:
             let entities = try container.customDecode([EntityValue].self, forKey: .value) {
                 $0.map { Entity.Read(type: .user, code: $0.code, name: $0.name) }
             }
-            self = .userSelect(entities)
+            self = .userSelection(entities)
         }
     }
 }
@@ -162,7 +162,7 @@ extension RecordFieldValue.Read {
         switch self {
         case let .category(value): value
         case let .checkBox(value): value
-        case let .multiSelect(value): value
+        case let .multiSelection(value): value
         default: nil
         }
     }
@@ -195,10 +195,10 @@ extension RecordFieldValue.Read {
 
     public var entities: [Entity.Read]? {
         switch self {
-        case let .groupSelect(value): value
-        case let .organizationSelect(value): value
+        case let .groupSelection(value): value
+        case let .organizationSelection(value): value
         case let .statusAssignee(value): value
-        case let .userSelect(value): value
+        case let .userSelection(value): value
         default: nil
         }
     }
