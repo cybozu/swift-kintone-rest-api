@@ -64,10 +64,10 @@ public struct KintoneAPI: Sendable {
         limit: Int? = nil
     ) async throws -> FetchAppsResponse {
         var queryItems = [URLQueryItem]()
-        queryItems.appendQueryItem(name: "ids", value: appIDs?.arrayString)
-        queryItems.appendQueryItem(name: "codes", value: codes?.arrayString)
+        queryItems.appendQueryItems(name: "ids", values: appIDs?.compactMap(String.init))
+        queryItems.appendQueryItems(name: "codes", values: codes)
         queryItems.appendQueryItem(name: "name", value: name)
-        queryItems.appendQueryItem(name: "spaceIds", value: spaceIDs?.arrayString)
+        queryItems.appendQueryItems(name: "spaceIds", values: spaceIDs?.compactMap(String.init))
         queryItems.appendQueryItem(name: "offset", value: offset?.description)
         queryItems.appendQueryItem(name: "limit", value: limit?.description)
         let request = makeRequest(httpMethod: .get, endpoint: .apps, queryItems: queryItems)
@@ -150,7 +150,7 @@ public struct KintoneAPI: Sendable {
     ) async throws -> FetchRecordsResponse {
         var queryItems = [URLQueryItem]()
         queryItems.appendQueryItem(name: "app", value: appID.description)
-        queryItems.appendQueryItem(name: "fields", value: fields?.arrayString)
+        queryItems.appendQueryItems(name: "fields", values: fields)
         queryItems.appendQueryItem(name: "query", value: query)
         queryItems.appendQueryItem(name: "totalCount", value: totalCount?.description)
         let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)

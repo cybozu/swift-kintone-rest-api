@@ -9,7 +9,7 @@ import Foundation
 
 extension Record {
     public struct Read: Sendable, Equatable {
-        public var identity: RecordIdentity.Read
+        public var identity: RecordIdentity.Read?
         public var fields: [RecordField.Read]
     }
 }
@@ -17,16 +17,19 @@ extension Record {
 extension Record.Read: Decodable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicCodingKey.self)
-        let id = try container.customDecode(RecordFieldValue.Read.self, forKey: .init(stringValue: "$id")!) { $0.integer }
-        let revision = try container.customDecode(RecordFieldValue.Read.self, forKey: .init(stringValue: "$revision")!) { $0.integer }
-        identity = RecordIdentity.Read(id: id, revision: revision)
-        let keys = container.allKeys.filter { !["$id", "$revision"].contains($0.stringValue) }
-        fields = try keys.map { key in
+        fields = try container.allKeys.map { key in
             RecordField.Read(
                 code: key.stringValue,
                 value: try container.decode(RecordFieldValue.Read.self, forKey: .init(stringValue: key.stringValue)!)
             )
         }
         .sorted(using: KeyPathComparator(\.code))
+
+        identity = if let id = fields.first(where: { $0.code == "$id" })?.value.integer,
+                      let revision = fields.first(where: { $0.code == "$revision" })?.value.integer {
+            RecordIdentity.Read(id: id, revision: revision)
+        } else {
+            nil
+        }
     }
 }

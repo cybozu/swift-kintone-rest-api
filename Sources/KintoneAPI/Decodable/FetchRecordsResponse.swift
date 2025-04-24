@@ -19,7 +19,7 @@ extension FetchRecordsResponse: Decodable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         records = try container.decode([RecordReadOrEmpty].self, forKey: .records).compactMap(\.value)
-        totalCount = try container.decodeIfPresent(Int.self, forKey: .totalCount)
+        totalCount = try container.customDecodeIfPresent(String.self, forKey: .totalCount) { Int($0) }
     }
 }
 
@@ -32,7 +32,11 @@ private enum RecordReadOrEmpty: Decodable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         self = if let record = try? container.decode(Record.Read.self) {
-            .record(record)
+            if record.fields.isEmpty, record.identity == nil {
+                .empty
+            } else {
+                .record(record)
+            }
         } else {
             .empty
         }

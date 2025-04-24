@@ -22,14 +22,16 @@ struct RecordDetailView: View {
                     recordField: recordField,
                     actions: actions,
                     updateStatusHandler: {
-                        let recordIdentity = RecordIdentity.Write(id: record.identity.id)
-                        await updateStatusHandler(recordIdentity, $0)
+                        if let id = record.identity?.id {
+                            await updateStatusHandler(RecordIdentity.Write(id: id), $0)
+                        }
                     },
                     downloadFileHandler: downloadFileHandler
                 )
             }
             FetchRecordCommentsView {
-                await fetchRecordCommentsHandler(record.identity.id)
+                guard let id = record.identity?.id else { return nil }
+                return await fetchRecordCommentsHandler(id)
             }
         }
         .cornerRadiusBorder()
