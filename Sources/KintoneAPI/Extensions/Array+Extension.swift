@@ -7,18 +7,6 @@
 
 import Foundation
 
-extension [Int] {
-    var arrayString: String {
-        "[" + map(\.description).joined(separator: ",") + "]"
-    }
-}
-
-extension [String] {
-    var arrayString: String {
-        "[" + joined(separator: ",") + "]"
-    }
-}
-
 extension [URLQueryItem] {
     mutating func appendQueryItem(name: String, value: String?) {
         if let value {

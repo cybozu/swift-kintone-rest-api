@@ -150,7 +150,7 @@ public struct KintoneAPI: Sendable {
     ) async throws -> FetchRecordsResponse {
         var queryItems = [URLQueryItem]()
         queryItems.appendQueryItem(name: "app", value: appID.description)
-        queryItems.appendQueryItem(name: "fields", value: fields?.arrayString)
+        queryItems.appendQueryItems(name: "fields", values: fields)
         queryItems.appendQueryItem(name: "query", value: query)
         queryItems.appendQueryItem(name: "totalCount", value: totalCount?.description)
         let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
