@@ -12,7 +12,7 @@ extension RecordFieldValue {
         case checkBox([String])
         case date(Date)
         case dateTime(Date)
-        case dropDown(String)
+        case dropDown(String?)
         case file([File.Write])
         case groupSelection([Entity.Write])
         case link(String)
