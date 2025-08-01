@@ -41,8 +41,8 @@ extension RecordFieldValue {
             case let .dateTime(date):
                 let dateString = date.map { DateFormatter.kintoneDateTime.string(from: $0) }
                 try container.encode(dateString, forKey: .value)
-            case let .dropDown(stringArray):
-                try container.encode(stringArray, forKey: .value)
+            case let .dropDown(string):
+                try container.encode(string, forKey: .value)
             case let .file(fileArray):
                 try container.encode(fileArray, forKey: .value)
             case let .groupSelection(entityArray):
