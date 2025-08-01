@@ -10,8 +10,8 @@ import Foundation
 extension RecordFieldValue {
     public enum Write: Encodable, Sendable {
         case checkBox([String])
-        case date(Date)
-        case dateTime(Date)
+        case date(Date?)
+        case dateTime(Date?)
         case dropDown(String?)
         case file([File.Write])
         case groupSelection([Entity.Write])
@@ -23,7 +23,7 @@ extension RecordFieldValue {
         case radioButton(String)
         case richText(String)
         case singleLineText(String)
-        case time(Date)
+        case time(Date?)
         case userSelection([Entity.Write])
 
         enum CodingKeys: CodingKey {
@@ -36,10 +36,10 @@ extension RecordFieldValue {
             case let .checkBox(stringArray):
                 try container.encode(stringArray, forKey: .value)
             case let .date(date):
-                let dateString = DateFormatter.kintoneDate.string(from: date)
+                let dateString = date.map { DateFormatter.kintoneDate.string(from: $0) }
                 try container.encode(dateString, forKey: .value)
             case let .dateTime(date):
-                let dateString = DateFormatter.kintoneDateTime.string(from: date)
+                let dateString = date.map { DateFormatter.kintoneDateTime.string(from: $0) }
                 try container.encode(dateString, forKey: .value)
             case let .dropDown(stringArray):
                 try container.encode(stringArray, forKey: .value)
@@ -64,7 +64,7 @@ extension RecordFieldValue {
             case let .singleLineText(string):
                 try container.encode(string, forKey: .value)
             case let .time(date):
-                let dateString = DateFormatter.kintoneTime.string(from: date)
+                let dateString = date.map { DateFormatter.kintoneTime.string(from: $0) }
                 try container.encode(dateString, forKey: .value)
             case let .userSelection(entityArray):
                 try container.encode(entityArray, forKey: .value)

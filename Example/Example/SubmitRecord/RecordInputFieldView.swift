@@ -184,7 +184,7 @@ struct RecordInputFieldView: View {
         case (.date, .date, let .date(value)):
             DatePicker(
                 selection: Binding<Date>(
-                    get: { value },
+                    get: { value ?? Date.now },
                     set: { fieldValues[field.code] = .date($0) }
                 ),
                 displayedComponents: .date,
@@ -193,7 +193,7 @@ struct RecordInputFieldView: View {
         case (.dateTime, .dateTime, let .dateTime(value)):
             DatePicker(
                 selection: Binding<Date>(
-                    get: { value },
+                    get: { value ?? Date.now },
                     set: { fieldValues[field.code] = .dateTime($0) }
                 ),
                 displayedComponents: [.date, .hourAndMinute],
@@ -202,7 +202,7 @@ struct RecordInputFieldView: View {
         case (.time, .time, let .time(value)):
             DatePicker(
                 selection: Binding<Date>(
-                    get: { value },
+                    get: { value ?? Date.now },
                     set: { fieldValues[field.code] = .time($0) }
                 ),
                 displayedComponents: .hourAndMinute,
