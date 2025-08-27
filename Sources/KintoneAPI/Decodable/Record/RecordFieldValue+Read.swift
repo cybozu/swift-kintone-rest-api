@@ -11,7 +11,7 @@ extension RecordFieldValue {
     public enum Read: Sendable, Equatable {
         case calc(String)
         case category([String])
-        case checkBox([String])
+        case checkbox([String])
         case createdTime(Date)
         case creator(Entity.Read)
         case date(Date?)
@@ -54,8 +54,8 @@ extension RecordFieldValue.Read: Decodable {
             self = .calc(try container.decode(String.self, forKey: .value))
         case .category:
             self = .category(try container.decode([String].self, forKey: .value))
-        case .checkBox:
-            self = .checkBox(try container.decode([String].self, forKey: .value))
+        case .checkbox:
+            self = .checkbox(try container.decode([String].self, forKey: .value))
         case .createdTime:
             let dateString = try container.decode(String.self, forKey: .value)
             self = .createdTime(DateFormatter.kintoneDateTime.date(from: dateString)!)
@@ -161,7 +161,7 @@ extension RecordFieldValue.Read {
     public var strings: [String]? {
         switch self {
         case let .category(value): value
-        case let .checkBox(value): value
+        case let .checkbox(value): value
         case let .multiSelection(value): value
         default: nil
         }

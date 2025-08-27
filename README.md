@@ -74,7 +74,7 @@ func submitRecord() async throws {
     let fields: [RecordField.Write] = [
         RecordField.Write(code: "User Number", value: .number("12345")),
         RecordField.Write(code: "Comment", value: .singleLineText("Hello World!")),
-        RecordField.Write(code: "Favorites", value: .checkBox(["Apple", "Banana"])),
+        RecordField.Write(code: "Favorites", value: .checkbox(["Apple", "Banana"])),
     ]
     let record = Record.Write(fields: fields)
     try await kintoneAPI.submitRecord(appID: 1, record: record)

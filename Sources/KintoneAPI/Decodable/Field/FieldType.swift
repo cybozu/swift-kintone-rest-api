@@ -8,7 +8,7 @@
 public enum FieldType: String, Decodable, Sendable {
     case calc = "CALC"
     case category = "CATEGORY"
-    case checkBox = "CHECK_BOX"
+    case checkbox = "CHECK_BOX"
     case createdTime = "CREATED_TIME"
     case creator = "CREATOR"
     case date = "DATE"

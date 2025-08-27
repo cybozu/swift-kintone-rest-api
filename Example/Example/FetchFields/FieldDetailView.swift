@@ -34,7 +34,7 @@ struct FieldDetailView: View {
                 case let .category(attribute):
                     CornerRadiusText("Enabled: \(attribute.enabled)")
 
-                case let .checkBox(attribute):
+                case let .checkbox(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
                     OptionsView(options: attribute.options)

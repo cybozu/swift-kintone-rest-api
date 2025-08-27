@@ -1,11 +1,11 @@
 //
-//  CheckBoxAttribute.swift
+//  CheckboxAttribute.swift
 //
 //
 //  Created by ky0me22 on 2024/12/06.
 //
 
-public struct CheckBoxAttribute: Sendable, Equatable {
+public struct CheckboxAttribute: Sendable, Equatable {
     public var noLabel: Bool
     public var required: Bool
     public var options: [FieldOption]
@@ -13,7 +13,7 @@ public struct CheckBoxAttribute: Sendable, Equatable {
     public var alignment: FieldOptionAlignment
 }
 
-extension CheckBoxAttribute: Decodable {
+extension CheckboxAttribute: Decodable {
     enum CodingKeys: String, CodingKey {
         case noLabel
         case required

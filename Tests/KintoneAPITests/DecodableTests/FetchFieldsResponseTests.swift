@@ -102,10 +102,10 @@ struct FetchFieldsResponseTests {
     }
 
     @Test(arguments: [
-        CheckBoxProperty(alignment: "HORIZONTAL", expectedAlignment: .horizontal),
-        CheckBoxProperty(alignment: "VERTICAL", expectedAlignment: .vertical),
+        CheckboxProperty(alignment: "HORIZONTAL", expectedAlignment: .horizontal),
+        CheckboxProperty(alignment: "VERTICAL", expectedAlignment: .vertical),
     ])
-    func response_checkBox(_ checkBoxProperty: CheckBoxProperty) throws {
+    func response_checkbox(_ checkboxProperty: CheckboxProperty) throws {
         let input = """
         {
           "properties" : {
@@ -120,7 +120,7 @@ struct FetchFieldsResponseTests {
                   "dummy1" : { "label" : "dummy1", "index" : "1" }
               },
               "defaultValue" : ["dummy0"],
-              "align" : "\(checkBoxProperty.alignment)"
+              "align" : "\(checkboxProperty.alignment)"
             }
           },
           "revision" : "1"
@@ -133,13 +133,13 @@ struct FetchFieldsResponseTests {
                 .init(
                     code: "dummy",
                     label: "dummy",
-                    type: .checkBox,
-                    attribute: .checkBox(.init(
+                    type: .checkbox,
+                    attribute: .checkbox(.init(
                         noLabel: true,
                         required: true,
                         options: [.init(label: "dummy0", index: 0), .init(label: "dummy1", index: 1)],
                         defaultValue: ["dummy0"],
-                        alignment: checkBoxProperty.expectedAlignment
+                        alignment: checkboxProperty.expectedAlignment
                     ))
                 )
             ],
@@ -1206,7 +1206,7 @@ struct FetchFieldsResponseTests {
         var expectedUnitPosition: UnitPosition
     }
 
-    struct CheckBoxProperty {
+    struct CheckboxProperty {
         var alignment: String
         var expectedAlignment: FieldOptionAlignment
     }

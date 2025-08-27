@@ -91,7 +91,7 @@ struct UpdateRecordRequestTests {
     }
 
     @Test(arguments: [
-        ArrayValueFieldProperty(value: .checkBox(["dummy1", "dummy2"])),
+        ArrayValueFieldProperty(value: .checkbox(["dummy1", "dummy2"])),
         ArrayValueFieldProperty(value: .multiSelection(["dummy1", "dummy2"])),
     ])
     func request_array_value(_ fieldProperty: ArrayValueFieldProperty) throws {

@@ -9,7 +9,7 @@ import Foundation
 
 extension RecordFieldValue {
     public enum Write: Encodable, Sendable {
-        case checkBox([String])
+        case checkbox([String])
         case date(Date?)
         case dateTime(Date?)
         case dropDown(String?)
@@ -33,7 +33,7 @@ extension RecordFieldValue {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case let .checkBox(stringArray):
+            case let .checkbox(stringArray):
                 try container.encode(stringArray, forKey: .value)
             case let .date(date):
                 let dateString = date.map { DateFormatter.kintoneDate.string(from: $0) }
@@ -89,7 +89,7 @@ extension RecordFieldValue.Write {
 
     public var strings: [String]? {
         switch self {
-        case let .checkBox(value): value
+        case let .checkbox(value): value
         case let .multiSelection(value): value
         default: nil
         }

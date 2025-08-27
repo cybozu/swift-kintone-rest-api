@@ -44,7 +44,7 @@ struct RecordFieldView: View {
                 CornerRadiusText("Value: \(String(optional: string))")
 
             case let .category(stringArray),
-                let .checkBox(stringArray),
+                let .checkbox(stringArray),
                 let .multiSelection(stringArray):
                 ArrayValueView(stringArray.indices, id: \.self) { i in
                     CornerRadiusText(stringArray[i])

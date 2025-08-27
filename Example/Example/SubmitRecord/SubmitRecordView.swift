@@ -81,8 +81,8 @@ struct SubmitRecordView: View {
         .onAppear {
             fieldValues = fields.reduce(into: [String: RecordFieldValue.Write]()) {
                 $0[$1.code] = switch $1.attribute {
-                case let .checkBox(value):
-                    RecordFieldValue.Write.checkBox(value.defaultValue)
+                case let .checkbox(value):
+                    RecordFieldValue.Write.checkbox(value.defaultValue)
                 case let .date(value):
                     RecordFieldValue.Write.date(value.defaultValue)
                 case let .dateTime(value):

@@ -33,8 +33,8 @@ extension Field: Decodable {
                 try FieldAttribute.calc(CalcAttribute(from: decoder))
             case .category:
                 try FieldAttribute.category(CategoryAttribute(from: decoder))
-            case .checkBox:
-                try FieldAttribute.checkBox(CheckBoxAttribute(from: decoder))
+            case .checkbox:
+                try FieldAttribute.checkbox(CheckboxAttribute(from: decoder))
             case .createdTime:
                 try FieldAttribute.createdTime(CreatedTimeAttribute(from: decoder))
             case .creator:

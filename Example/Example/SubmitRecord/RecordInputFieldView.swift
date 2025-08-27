@@ -97,12 +97,12 @@ struct RecordInputFieldView: View {
                 },
                 label: { Text(field.label) }
             )
-        case (.checkBox, let .checkBox(attribute), let .checkBox(value)):
+        case (.checkbox, let .checkbox(attribute), let .checkbox(value)):
             Checkboxes(
                 axis: .vertical,
                 selection: Binding<Set<String>>(
                     get: { .init(value) },
-                    set: { fieldValues[field.code] = .checkBox($0.map(\.self)) }
+                    set: { fieldValues[field.code] = .checkbox($0.map(\.self)) }
                 ),
                 content: {
                     ForEach(attribute.options) { option in

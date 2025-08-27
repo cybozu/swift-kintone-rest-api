@@ -7,7 +7,7 @@
 
 public enum FormFieldType: String, Decodable, Sendable {
     case calc = "CALC"
-    case checkBox = "CHECK_BOX"
+    case checkbox = "CHECK_BOX"
     case createdTime = "CREATED_TIME"
     case creator = "CREATOR"
     case date = "DATE"

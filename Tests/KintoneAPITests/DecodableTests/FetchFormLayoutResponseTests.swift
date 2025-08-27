@@ -19,7 +19,7 @@ struct FetchFormLayoutResponseTests {
 
     @Test(arguments: [
         FieldProperty(type: "CALC", expectedType: .calc),
-        FieldProperty(type: "CHECK_BOX", expectedType: .checkBox),
+        FieldProperty(type: "CHECK_BOX", expectedType: .checkbox),
         FieldProperty(type: "CREATED_TIME", expectedType: .createdTime),
         FieldProperty(type: "CREATOR", expectedType: .creator),
         FieldProperty(type: "DATE", expectedType: .date),

@@ -8,7 +8,7 @@
 public enum FieldAttribute: Sendable, Equatable {
     case calc(CalcAttribute)
     case category(CategoryAttribute)
-    case checkBox(CheckBoxAttribute)
+    case checkbox(CheckboxAttribute)
     case createdTime(CreatedTimeAttribute)
     case creator(CreatorAttribute)
     case date(DateAttribute)

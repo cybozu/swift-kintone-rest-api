@@ -76,7 +76,7 @@ struct FetchRecordResponseTests {
     }
 
     @Test
-    func response_checkBox() throws {
+    func response_checkbox() throws {
         let input = """
         {
           "record" : {
@@ -92,7 +92,7 @@ struct FetchRecordResponseTests {
         #expect(actual == .init(record: .init(
             identity: nil,
             fields: [
-                .init(code: "dummy", value: .checkBox(["dummy0", "dummy1"]))
+                .init(code: "dummy", value: .checkbox(["dummy0", "dummy1"]))
             ]
         )))
     }

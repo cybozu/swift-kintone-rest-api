@@ -1,5 +1,5 @@
 //
-//  CheckBoxes.swift
+//  Checkboxes.swift
 //  Example
 //
 //  Created by ky0me22 on 2024/12/19.
