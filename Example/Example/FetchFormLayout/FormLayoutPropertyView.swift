@@ -14,7 +14,7 @@ struct FormLayoutChunkView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Type: \(layoutChunk.type)")
+                Text("Type: \(layoutChunk.type.rawValue)")
                 Text("Code: \(String(optional: layoutChunk.code))")
                 switch layoutChunk.type {
                 case .row, .subtable:
@@ -31,7 +31,7 @@ struct FormLayoutChunkView: View {
                     ForEach(layoutChunk.fields.indices, id: \.self) { j in
                         let field = layoutChunk.fields[j]
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Type: \(field.type)")
+                            Text("Type: \(field.type.rawValue)")
                             Text("Code: \(String(optional: field.code))")
                             Text("Label: \(String(optional: field.label))")
                         }

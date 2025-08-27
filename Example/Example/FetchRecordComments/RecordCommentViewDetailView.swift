@@ -38,7 +38,7 @@ struct RecordCommentViewDetailView: View {
                         ForEach(comment.mentions) { entity in
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Code: \(entity.code)")
-                                Text("Type: \(entity.type)")
+                                Text("Type: \(entity.type.rawValue)")
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .cornerRadiusBorder()

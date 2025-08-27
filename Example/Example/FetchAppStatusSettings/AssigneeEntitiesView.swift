@@ -18,9 +18,9 @@ struct AssigneeEntitiesView: View {
             VStack(alignment: .leading, spacing: 4) {
                 ForEach(entities.indices, id: \.self) { i in
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Type: \(entities[i].type)")
+                        Text("Type: \(entities[i].type.rawValue)")
                         Text("Code: \(String(optional: entities[i].code))")
-                        Text("Include Subs: \(entities[i].includeSubs)")
+                        Text("Include Subs: \(entities[i].includeSubs.description)")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .cornerRadiusBorder()

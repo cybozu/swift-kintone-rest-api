@@ -14,7 +14,7 @@ struct FieldDetailView: View {
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Type: \(field.type)")
+                Text("Type: \(field.type.rawValue)")
                 Text("Code: \(field.code)")
                 Text("Label: \(field.label)")
             }

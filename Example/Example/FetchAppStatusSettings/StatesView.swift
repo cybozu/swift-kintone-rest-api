@@ -23,7 +23,7 @@ struct StatesView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Name: \(state.name)")
                             Text("Index: \(state.index)")
-                            Text("Assignee Type: \(state.assignee.type)")
+                            Text("Assignee Type: \(state.assignee.type.rawValue)")
                             AssigneeEntitiesView(entities: state.assignee.entities)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
