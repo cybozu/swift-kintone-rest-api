@@ -159,6 +159,7 @@ enum TabCategory {
                             .multilineTextAlignment(.trailing)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
+                            .textContentType(.URL)
                     } label: {
                         Text("Domain:")
                     }
@@ -167,12 +168,14 @@ enum TabCategory {
                             .multilineTextAlignment(.trailing)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
+                            .textContentType(.username)
                     } label: {
                         Text("Login Name:")
                     }
                     LabeledContent {
                         SecureField("password", text: $viewModel.password)
                             .multilineTextAlignment(.trailing)
+                            .textContentType(.password)
                     } label: {
                         Text("Password:")
                     }
@@ -185,12 +188,15 @@ enum TabCategory {
                 }
                 Section {
                     LabeledContent {
-                        Button {
-                            viewModel.onNext()
-                        } label: {
-                            Text("Next")
+                        HStack {
+                            Spacer()
+                            Button {
+                                viewModel.onNext()
+                            } label: {
+                                Text("Next")
+                            }
+                            .buttonStyle(.borderedProminent)
                         }
-                        .buttonStyle(.borderedProminent)
                     } label: {
                         EmptyView()
                     }
