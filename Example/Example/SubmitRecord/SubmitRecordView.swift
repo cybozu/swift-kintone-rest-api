@@ -80,40 +80,7 @@ struct SubmitRecordView: View {
         }
         .onAppear {
             fieldValues = fields.reduce(into: [String: RecordFieldValue.Write]()) {
-                $0[$1.code] = switch $1.attribute {
-                case let .checkbox(value):
-                    RecordFieldValue.Write.checkbox(value.defaultValue)
-                case let .date(value):
-                    RecordFieldValue.Write.date(value.defaultValue)
-                case let .dateTime(value):
-                    RecordFieldValue.Write.dateTime(value.defaultValue)
-                case let .dropDown(value):
-                    RecordFieldValue.Write.dropDown(value.defaultValue)
-                case let .groupSelection(value):
-                    RecordFieldValue.Write.groupSelection(value.defaultValue.map({ Entity.Write(type: $0.type, code: $0.code) }))
-                case let .link(value):
-                    RecordFieldValue.Write.link(value.defaultValue)
-                case let .multiLineText(value):
-                    RecordFieldValue.Write.multiLineText(value.defaultValue)
-                case let .multiSelection(value):
-                    RecordFieldValue.Write.multiSelection(value.defaultValue)
-                case let .number(value):
-                    RecordFieldValue.Write.number(value.defaultValue)
-                case let .organizationSelection(value):
-                    RecordFieldValue.Write.organizationSelection(value.defaultValue.map({ Entity.Write(type: $0.type, code: $0.code) }))
-                case let .radioButton(value):
-                    RecordFieldValue.Write.radioButton(value.defaultValue)
-                case let .richText(value):
-                    RecordFieldValue.Write.richText(value.defaultValue)
-                case let .singleLineText(value):
-                    RecordFieldValue.Write.singleLineText(value.defaultValue)
-                case let .time(value):
-                    RecordFieldValue.Write.time(value.defaultValue)
-                case let .userSelection(value):
-                    RecordFieldValue.Write.userSelection(value.defaultValue.map({ Entity.Write(type: $0.type, code: $0.code) }))
-                default:
-                    nil
-                }
+                $0[$1.code] = $1.attribute.recordFieldValue
             }
         }
     }

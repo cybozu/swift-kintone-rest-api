@@ -23,6 +23,7 @@ extension RecordFieldValue {
         case radioButton(String)
         case richText(String)
         case singleLineText(String)
+        case subtable([[RecordField.Write]])
         case time(Date?)
         case userSelection([Entity.Write])
 
@@ -63,6 +64,15 @@ extension RecordFieldValue {
                 try container.encode(string, forKey: .value)
             case let .singleLineText(string):
                 try container.encode(string, forKey: .value)
+            case let .subtable(rows):
+                var rowsContainer = container.nestedUnkeyedContainer(forKey: .value)
+                try rows.forEach { fields in
+                    var rowContainer = rowsContainer.nestedContainer(keyedBy: CodingKeys.self)
+                    var fieldsContainer = rowContainer.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .value)
+                    try fields.forEach { field in
+                        try fieldsContainer.encode(field.value, forKey: .init(stringValue: field.code)!)
+                    }
+                }
             case let .time(date):
                 let dateString = date.map { DateFormatter.kintoneTime.string(from: $0) }
                 try container.encode(dateString, forKey: .value)

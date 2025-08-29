@@ -208,6 +208,14 @@ struct RecordInputFieldView: View {
                 displayedComponents: .hourAndMinute,
                 label: { Text(field.label) }
             )
+        case (.subtable, let .subtable(attribute), let .subtable(value)):
+            SubtableView(
+                fields: attribute.fields,
+                values: Binding<[[RecordField.Write]]>(
+                    get: { value },
+                    set: { fieldValues[field.code] = .subtable($0) }
+                )
+            )
         default:
             EmptyView()
         }
