@@ -7,6 +7,6 @@
 
 extension String {
     init(optional instance: (some CustomStringConvertible)?) {
-        self.init(instance?.description ?? "nil")
+        self.init(String(describing: instance))
     }
 }

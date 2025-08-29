@@ -63,13 +63,14 @@ public struct KintoneAPI: Sendable {
         offset: Int? = nil,
         limit: Int? = nil
     ) async throws -> FetchAppsResponse {
-        var queryItems = [URLQueryItem]()
-        queryItems.appendQueryItems(name: "ids", values: appIDs?.compactMap(String.init))
-        queryItems.appendQueryItems(name: "codes", values: codes)
-        queryItems.appendQueryItem(name: "name", value: name)
-        queryItems.appendQueryItems(name: "spaceIds", values: spaceIDs?.compactMap(String.init))
-        queryItems.appendQueryItem(name: "offset", value: offset?.description)
-        queryItems.appendQueryItem(name: "limit", value: limit?.description)
+        let queryItems = [
+            appIDs?.compactMap { String(describing: $0) }.queryItems(name: "ids"),
+            codes.map { $0.queryItems(name: "codes") },
+            name.map { [URLQueryItem(name: "name", value: $0)] },
+            spaceIDs?.compactMap { String(describing: $0) }.queryItems(name: "spaceIds"),
+            offset.map { [URLQueryItem(name: "offset", value: String(describing: $0))] },
+            limit.map { [URLQueryItem(name: "limit", value: String(describing: $0))] },
+        ].compactMap(\.self).flatMap(\.self)
         let request = makeRequest(httpMethod: .get, endpoint: .apps, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
@@ -79,7 +80,7 @@ public struct KintoneAPI: Sendable {
     public func fetchFormLayout(
         appID: Int
     ) async throws -> FetchFormLayoutResponse {
-        let queryItems = [URLQueryItem(name: "app", value: appID.description)]
+        let queryItems = [URLQueryItem(name: "app", value: String(describing: appID))]
         let request = makeRequest(httpMethod: .get, endpoint: .formLayout, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
@@ -91,7 +92,7 @@ public struct KintoneAPI: Sendable {
         language: Language = .default
     ) async throws -> FetchFieldsResponse {
         let queryItems = [
-            URLQueryItem(name: "app", value: appID.description),
+            URLQueryItem(name: "app", value: String(describing: appID)),
             URLQueryItem(name: "lang", value: language.rawValue),
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .fields, queryItems: queryItems)
@@ -105,7 +106,7 @@ public struct KintoneAPI: Sendable {
         language: Language = .default
     ) async throws -> FetchAppSettingsResponse {
         let queryItems = [
-            URLQueryItem(name: "app", value: appID.description),
+            URLQueryItem(name: "app", value: String(describing: appID)),
             URLQueryItem(name: "lang", value: language.rawValue),
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .appSettings, queryItems: queryItems)
@@ -119,7 +120,7 @@ public struct KintoneAPI: Sendable {
         language: Language = .default
     ) async throws -> FetchAppStatusSettingsResponse {
         let queryItems = [
-            URLQueryItem(name: "app", value: appID.description),
+            URLQueryItem(name: "app", value: String(describing: appID)),
             URLQueryItem(name: "lang", value: language.rawValue),
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .appStatus, queryItems: queryItems)
@@ -133,7 +134,7 @@ public struct KintoneAPI: Sendable {
         language: Language = .default
     ) async throws -> FetchAppViewSettingsResponse {
         let queryItems = [
-            URLQueryItem(name: "app", value: appID.description),
+            URLQueryItem(name: "app", value: String(describing: appID)),
             URLQueryItem(name: "lang", value: language.rawValue),
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .appViews, queryItems: queryItems)
@@ -148,11 +149,12 @@ public struct KintoneAPI: Sendable {
         query: String? = nil,
         totalCount: Bool? = nil
     ) async throws -> FetchRecordsResponse {
-        var queryItems = [URLQueryItem]()
-        queryItems.appendQueryItem(name: "app", value: appID.description)
-        queryItems.appendQueryItems(name: "fields", values: fields)
-        queryItems.appendQueryItem(name: "query", value: query)
-        queryItems.appendQueryItem(name: "totalCount", value: totalCount?.description)
+        let queryItems = [
+            [URLQueryItem(name: "app", value: String(describing: appID))],
+            fields.map { $0.queryItems(name: "fields") },
+            query.map { [URLQueryItem(name: "query", value: $0)] },
+            totalCount.map { [URLQueryItem(name: "totalCount", value: String(describing: $0))] }
+        ].compactMap(\.self).flatMap(\.self)
         let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)
@@ -174,8 +176,8 @@ public struct KintoneAPI: Sendable {
         recordID: Int
     ) async throws -> FetchRecordResponse {
         let queryItems = [
-            URLQueryItem(name: "app", value: appID.description),
-            URLQueryItem(name: "id", value: recordID.description),
+            URLQueryItem(name: "app", value: String(describing: appID)),
+            URLQueryItem(name: "id", value: String(describing: recordID)),
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .record, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
@@ -215,12 +217,13 @@ public struct KintoneAPI: Sendable {
         offset: Int? = nil,
         limit: Int? = nil
     ) async throws -> FetchRecordCommentsResponse {
-        var queryItems = [URLQueryItem]()
-        queryItems.appendQueryItem(name: "app", value: appID.description)
-        queryItems.appendQueryItem(name: "record", value: recordID.description)
-        queryItems.appendQueryItem(name: "order", value: order?.rawValue)
-        queryItems.appendQueryItem(name: "offset", value: offset?.description)
-        queryItems.appendQueryItem(name: "limit", value: limit?.description)
+        let queryItems = [
+            URLQueryItem(name: "app", value: String(describing: appID)),
+            URLQueryItem(name: "record", value: String(describing: recordID)),
+            order.map { URLQueryItem(name: "order", value: $0.rawValue) },
+            offset.map { URLQueryItem(name: "offset", value: String(describing: $0)) },
+            limit.map { URLQueryItem(name: "limit", value: String(describing: $0)) },
+        ].compactMap(\.self)
         let request = makeRequest(httpMethod: .get, endpoint: .recordComments, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response)

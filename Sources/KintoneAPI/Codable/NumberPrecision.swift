@@ -27,8 +27,8 @@ extension NumberPrecision: Codable {
 
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(digits.description, forKey: .digits)
-        try container.encode(decimalPlaces.description, forKey: .decimalPlaces)
+        try container.encode(String(describing: digits), forKey: .digits)
+        try container.encode(String(describing: decimalPlaces), forKey: .decimalPlaces)
         try container.encode(roundingMode, forKey: .roundingMode)
     }
 }

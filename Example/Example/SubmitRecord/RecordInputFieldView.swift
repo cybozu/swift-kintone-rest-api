@@ -61,7 +61,7 @@ struct RecordInputFieldView: View {
                 TextField(
                     text: Binding<String>(
                         get: { value },
-                        set: { fieldValues[field.code] = .number($0.description) }
+                        set: { fieldValues[field.code] = .number(String(describing: $0)) }
                     ),
                     label: { Text(attribute.defaultValue) }
                 )

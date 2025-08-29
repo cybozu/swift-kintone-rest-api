@@ -20,7 +20,7 @@ struct AssigneeEntitiesView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Type: \(entities[i].type.rawValue)")
                         Text("Code: \(String(optional: entities[i].code))")
-                        Text("Include Subs: \(entities[i].includeSubs.description)")
+                        Text("Include Subs: \(String(describing: entities[i].includeSubs))")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .cornerRadiusBorder()
