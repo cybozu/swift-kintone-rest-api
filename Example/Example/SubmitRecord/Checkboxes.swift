@@ -43,30 +43,28 @@ struct Checkboxes<Label, SelectionValue, Content>: View where Label: View, Selec
     }
 
     var mainBody: some View {
-        content().variadic { children in
-            ForEach(children) { child in
-                let tag: SelectionValue? = child.tag()
-                Toggle(isOn: Binding<Bool>(
-                    get: {
-                        if let tag {
-                            selection.contains(tag)
-                        } else {
-                            false
-                        }
-                    },
-                    set: { value in
-                        guard let tag else { return }
-                        if value {
-                            selection.insert(tag)
-                        } else {
-                            selection.remove(tag)
-                        }
+        ForEach(subviews: content()) { subview in
+            let tag = subview.containerValues.tag(for: SelectionValue.self)
+            Toggle(isOn: Binding<Bool>(
+                get: {
+                    if let tag {
+                        selection.contains(tag)
+                    } else {
+                        false
                     }
-                )) {
-                    child.lineLimit(1).truncationMode(.tail)
+                },
+                set: { value in
+                    guard let tag else { return }
+                    if value {
+                        selection.insert(tag)
+                    } else {
+                        selection.remove(tag)
+                    }
                 }
-                .toggleStyle(CheckboxToggleStyle())
+            )) {
+                subview.lineLimit(1).truncationMode(.tail)
             }
+            .toggleStyle(CheckboxToggleStyle())
         }
     }
 }
