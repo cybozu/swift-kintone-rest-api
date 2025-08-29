@@ -140,46 +140,34 @@ struct RecordInputFieldView: View {
                 label: { Text(field.label) }
             )
         case (.userSelection, let .userSelection(attribute), let .userSelection(value)):
-            Checkboxes(
-                axis: .vertical,
+            SelectionView(
+                label: field.code,
+                entities: attribute.entities,
+                value: value,
                 selection: Binding<Set<String>>(
                     get: { .init(value.map(\.code)) },
                     set: { fieldValues[field.code] = .userSelection($0.map { Entity.Write(type: .user, code: $0) }) }
-                ),
-                content: {
-                    ForEach(attribute.entities) { entity in
-                        Text(entity.code).tag(entity.code)
-                    }
-                },
-                label: { Text(field.code) }
+                )
             )
         case (.organizationSelection, let .organizationSelection(attribute), let .organizationSelection(value)):
-            Checkboxes(
-                axis: .vertical,
+            SelectionView(
+                label: field.code,
+                entities: attribute.entities,
+                value: value,
                 selection: Binding<Set<String>>(
                     get: { .init(value.map(\.code)) },
                     set: { fieldValues[field.code] = .organizationSelection($0.map { Entity.Write(type: .organization, code: $0) }) }
-                ),
-                content: {
-                    ForEach(attribute.entities) { entity in
-                        Text(entity.code).tag(entity.code)
-                    }
-                },
-                label: { Text(field.code) }
+                )
             )
         case (.groupSelection, let .groupSelection(attribute), let .groupSelection(value)):
-            Checkboxes(
-                axis: .vertical,
+            SelectionView(
+                label: field.code,
+                entities: attribute.entities,
+                value: value,
                 selection: Binding<Set<String>>(
                     get: { .init(value.map(\.code)) },
                     set: { fieldValues[field.code] = .groupSelection($0.map { Entity.Write(type: .group, code: $0) }) }
-                ),
-                content: {
-                    ForEach(attribute.entities) { entity in
-                        Text(entity.code).tag(entity.code)
-                    }
-                },
-                label: { Text(field.code) }
+                )
             )
         case (.date, .date, let .date(value)):
             DatePicker(
@@ -218,6 +206,34 @@ struct RecordInputFieldView: View {
             )
         default:
             EmptyView()
+        }
+    }
+}
+
+private struct SelectionView: View {
+    var label: String
+    var entities: [Entity.Read]
+    var value: [Entity.Write]
+    @Binding var selection: Set<String>
+
+    var body: some View {
+        if entities.isEmpty {
+            LabeledContent {
+                Text(value.map(\.code).joined(separator: ","))
+            } label: {
+                Text(label)
+            }
+        } else {
+            Checkboxes(
+                axis: .vertical,
+                selection: $selection,
+                content: {
+                    ForEach(entities) { entity in
+                        Text(entity.code).tag(entity.code)
+                    }
+                },
+                label: { Text(label) }
+            )
         }
     }
 }
