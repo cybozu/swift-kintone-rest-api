@@ -43,14 +43,15 @@ public struct KintoneAPI: Sendable {
         return request
     }
 
-    private func check(response: URLResponse) throws {
+    private func check(response: URLResponse, data: Data) throws {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw KintoneAPIError.invalidResponse
         }
         guard httpResponse.statusCode == 200 else {
-            throw KintoneAPIError.requestFailed(ErrorDetail(
+            throw KintoneAPIError.requestFailed(.init(
                 statusCode: httpResponse.statusCode,
-                cybozuError: httpResponse.value(forHTTPHeaderField: "X-Cybozu-Error")
+                cybozuError: httpResponse.value(forHTTPHeaderField: "X-Cybozu-Error"),
+                detail: try? JSONDecoder().decode(KintoneAPIError.Reason.Detail.self, from: data)
             ))
         }
     }
@@ -73,7 +74,7 @@ public struct KintoneAPI: Sendable {
         ].compactMap(\.self).flatMap(\.self)
         let request = makeRequest(httpMethod: .get, endpoint: .apps, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(FetchAppsResponse.self, from: data)
     }
 
@@ -83,7 +84,7 @@ public struct KintoneAPI: Sendable {
         let queryItems = [URLQueryItem(name: "app", value: String(describing: appID))]
         let request = makeRequest(httpMethod: .get, endpoint: .formLayout, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
     }
 
@@ -97,7 +98,7 @@ public struct KintoneAPI: Sendable {
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .fields, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
     }
 
@@ -111,7 +112,7 @@ public struct KintoneAPI: Sendable {
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .appSettings, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(FetchAppSettingsResponse.self, from: data)
     }
 
@@ -125,7 +126,7 @@ public struct KintoneAPI: Sendable {
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .appStatus, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
     }
 
@@ -139,7 +140,7 @@ public struct KintoneAPI: Sendable {
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .appViews, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(FetchAppViewSettingsResponse.self, from: data)
     }
 
@@ -157,7 +158,7 @@ public struct KintoneAPI: Sendable {
         ].compactMap(\.self).flatMap(\.self)
         let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
     }
 
@@ -167,8 +168,8 @@ public struct KintoneAPI: Sendable {
     ) async throws {
         let httpBody = try JSONEncoder().encode(RemoveRecordsRequest(appID: appID, recordIdentities: recordIdentities))
         let request = makeRequest(httpMethod: .delete, endpoint: .records, httpBody: httpBody)
-        let (_, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response, data: data)
     }
 
     public func fetchRecord(
@@ -181,7 +182,7 @@ public struct KintoneAPI: Sendable {
         ]
         let request = makeRequest(httpMethod: .get, endpoint: .record, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(FetchRecordResponse.self, from: data)
     }
 
@@ -193,7 +194,7 @@ public struct KintoneAPI: Sendable {
         let httpBody = try JSONEncoder().encode(SubmitRecordRequest(appID: appID, record: record))
         let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
     }
 
@@ -206,7 +207,7 @@ public struct KintoneAPI: Sendable {
         let httpBody = try JSONEncoder().encode(UpdateRecordRequest(appID: appID, recordIdentity: recordIdentity, record: record))
         let request = makeRequest(httpMethod: .put, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
     }
 
@@ -226,7 +227,7 @@ public struct KintoneAPI: Sendable {
         ].compactMap(\.self)
         let request = makeRequest(httpMethod: .get, endpoint: .recordComments, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
     }
 
@@ -240,7 +241,7 @@ public struct KintoneAPI: Sendable {
         let httpBody = try JSONEncoder().encode(UpdateStatusRequest(appID: appID, recordIdentity: recordIdentity, actionName: actionName, assignee: assignee))
         let request = makeRequest(httpMethod: .put, endpoint: .recordStatus, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(UpdateStatusResponse.self, from: data)
     }
 
@@ -260,7 +261,7 @@ public struct KintoneAPI: Sendable {
         httpBody.append("--\(boundary)--\r\n".data(using: .utf8)!)
         let request = makeRequest(httpMethod: .post, endpoint: .file, httpBody: httpBody, contentType: .multipartFormData(boundary))
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return try JSONDecoder().decode(UploadFileResponse.self, from: data)
     }
 
@@ -270,7 +271,7 @@ public struct KintoneAPI: Sendable {
         let queryItems = [URLQueryItem(name: "fileKey", value: fileKey)]
         let request = makeRequest(httpMethod: .get, endpoint: .file, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
-        try check(response: response)
+        try check(response: response, data: data)
         return data
     }
 }
