@@ -111,9 +111,9 @@ enum TabCategory {
         }
     }
 
-    func onUpdateRecord(recordID: Int, fields: [String: RecordFieldValue.Write]) async -> UpdateRecordResponse? {
+    func onUpdateRecord(recordID: Int, revision: Int, fields: [String: RecordFieldValue.Write]) async -> UpdateRecordResponse? {
         do {
-            let recordIdentity = RecordIdentity.Write(id: recordID)
+            let recordIdentity = RecordIdentity.Write(id: recordID, revision: revision)
             let fields = fields.compactMap { RecordField.Write(code: $0.key, value: $0.value) }
             let record = Record.Write(fields: fields)
             return try await kintoneAPI.updateRecord(appID: appID, recordIdentity: recordIdentity, record: record)
@@ -259,8 +259,8 @@ enum TabCategory {
                         onSubmitRecordHandler: { fields in
                             await viewModel.onSubmitRecord(fields: fields)
                         },
-                        onUpdateRecordHandler: { recordID, fields in
-                            await viewModel.onUpdateRecord(recordID: recordID, fields: fields)
+                        onUpdateRecordHandler: { recordID, revision, fields in
+                            await viewModel.onUpdateRecord(recordID: recordID, revision: revision, fields: fields)
                         },
                         onRemoveRecordHandler: { recordID in
                             await viewModel.onRemoveRecord(recordID: recordID)

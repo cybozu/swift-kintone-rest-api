@@ -22,8 +22,8 @@ struct RecordDetailView: View {
                     recordField: recordField,
                     actions: actions,
                     updateStatusHandler: {
-                        if let id = record.identity?.id {
-                            await updateStatusHandler(RecordIdentity.Write(id: id), $0)
+                        if let id = record.identity?.id, let revision = record.identity?.revision {
+                            await updateStatusHandler(RecordIdentity.Write(id: id, revision: revision), $0)
                         }
                     },
                     downloadFileHandler: downloadFileHandler
