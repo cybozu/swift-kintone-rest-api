@@ -821,7 +821,7 @@ struct FetchRecordsResponseTests {
 
     @Test(arguments: [
         TimeProperty(value: "null", expectedValue: nil),
-        TimeProperty(value: "\"00:00\"", expectedValue: .distantReference),
+        TimeProperty(value: "\"00:00\"", expectedValue: .distantReferenceZero),
     ])
     func response_time(_ timeProperty: TimeProperty) throws {
         let input = """

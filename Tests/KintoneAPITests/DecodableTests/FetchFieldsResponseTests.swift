@@ -1109,7 +1109,7 @@ struct FetchFieldsResponseTests {
                         noLabel: true,
                         required: true,
                         defaultNowValue: false,
-                        defaultValue: .distantReference
+                        defaultValue: .distantReferenceZero
                     ))
                 )
             ],

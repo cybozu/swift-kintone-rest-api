@@ -61,7 +61,7 @@ struct UpdateRecordRequestTests {
         SingleValueFieldProperty(value: .radioButton("dummy"), expectedValue: "dummy"),
         SingleValueFieldProperty(value: .richText("<h1>dummy</h1>"), expectedValue: "<h1>dummy<\\/h1>"),
         SingleValueFieldProperty(value: .singleLineText("dummy"), expectedValue: "dummy"),
-        SingleValueFieldProperty(value: .time(.distantPast), expectedValue: "00:00"),
+        SingleValueFieldProperty(value: .time(.distantReferenceZero), expectedValue: "00:00"),
     ])
     func request_single_value(_ fieldProperty: SingleValueFieldProperty) throws {
         let sut = UpdateRecordRequest(

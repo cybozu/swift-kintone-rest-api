@@ -29,9 +29,8 @@ extension DateFormatter {
     static let kintoneTime: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = .current
+        formatter.defaultDate = Date(timeIntervalSinceReferenceDate: .zero)
         return formatter
     }()
 

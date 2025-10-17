@@ -1,8 +1,8 @@
 import Foundation
 
 extension Date {
-    static let distantReference: Date = {
+    static let distantReferenceZero: Date = {
         let referenceDate = Date(timeIntervalSinceReferenceDate: 0)
-        return Calendar(identifier: .iso8601).date(byAdding: .year, value: -1, to: referenceDate)!
+        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: referenceDate)!
     }()
 }
