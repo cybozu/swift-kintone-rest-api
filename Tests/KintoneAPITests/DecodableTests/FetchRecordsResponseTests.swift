@@ -233,7 +233,7 @@ struct FetchRecordsResponseTests {
 
     @Test(arguments: [
         DateProperty(value: "null", expectedValue: nil),
-        DateProperty(value: "\"0001-01-01\"", expectedValue: .distantPast),
+        DateProperty(value: "\"0001-01-01\"", expectedValue: .distantReferencePast),
     ])
     func response_date(_ dateProperty: DateProperty) throws {
         let input = """

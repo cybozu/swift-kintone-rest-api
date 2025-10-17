@@ -239,7 +239,7 @@ struct FetchFieldsResponseTests {
                         required: true,
                         unique: true,
                         defaultNowValue: false,
-                        defaultValue: .distantPast
+                        defaultValue: .distantReferencePast
                     ))
                 )
             ],
