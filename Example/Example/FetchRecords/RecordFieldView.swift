@@ -52,12 +52,13 @@ struct RecordFieldView: View {
 
             case let .createdTime(date),
                 let .updatedTime(date):
-                CornerRadiusText("Value: \(date)")
+                CornerRadiusText("Value: \(date.dateAndTimeFormatted)")
 
-            case let .date(date),
-                let .dateTime(date),
-                let .time(date):
-                CornerRadiusText("Value: \(String(optional: date))")
+            case let .date(date):
+                CornerRadiusText("Value: \(String(optional: date?.onlyDateFormatted))")
+
+            case let .dateTime(date):
+                CornerRadiusText("Value: \(String(optional: date?.dateAndTimeFormatted))")
 
             case let .creator(entity),
                 let .modifier(entity):
@@ -91,6 +92,9 @@ struct RecordFieldView: View {
                     }
                     .cornerRadiusBorder()
                 }
+
+            case let .time(date):
+                CornerRadiusText("Value: \(String(optional: date?.onlyTimeFormatted))")
             }
         }
         .cornerRadiusBorder()
