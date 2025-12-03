@@ -50,11 +50,9 @@ func fetchAllApps() async throws {
     let credentials = Credentials(loginName: "user", password: "*****")
     let kintoneAPI = KintoneAPI(
         authenticationMethod: .cybozuAuthorization(credentials),
+        baseURL: URL(string: "https://subdomain.cybozu.com")!,
         dataRequestHandler: { request in
-            guard let url = request.url else { throw URLError(.badURL) }
-            var request = request
-            request.url = URL(string: "https://subdomain.cybozu.com\(url.relativeString)")
-            return try await URLSession.shared.data(for: request)
+            try await URLSession.shared.data(for: request)
         }
     )
     let apps = try await kintoneAPI.fetchApps()
@@ -64,11 +62,9 @@ func submitRecord() async throws {
     let credentials = Credentials(loginName: "user", password: "*****")
     let kintoneAPI = KintoneAPI(
         authenticationMethod: .cybozuAuthorization(credentials),
+        baseURl: URL(string: "https://subdomain.cybozu.com")!,
         dataRequestHandler: { request in
-            guard let url = request.url else { throw URLError(.badURL) }
-            var request = request
-            request.url = URL(string: "https://subdomain.cybozu.com\(url.relativeString)")
-            return try await URLSession.shared.data(for: request)
+            try await URLSession.shared.data(for: request)
         }
     )
     let fields: [RecordField.Write] = [
