@@ -9,12 +9,12 @@ import Foundation
 
 public struct KintoneAPI: Sendable {
     var authenticationMethod: AuthenticationMethod
-    var baseURL: URL
+    var baseURL: @Sendable () async throws -> URL
     var dataRequestHandler: @Sendable (URLRequest) async throws -> (Data, URLResponse)
 
     public init(
         authenticationMethod: AuthenticationMethod,
-        baseURL: URL,
+        baseURL: @escaping @Sendable () async throws -> URL,
         dataRequestHandler: @escaping @Sendable (URLRequest) async throws -> (Data, URLResponse)
     ) {
         self.authenticationMethod = authenticationMethod
@@ -28,8 +28,8 @@ public struct KintoneAPI: Sendable {
         queryItems: [URLQueryItem] = [],
         httpBody: Data? = nil,
         contentType: ContentType = .applicationJSON
-    ) -> URLRequest {
-        var url = URL(string: "\(endpoint.rawValue)", relativeTo: baseURL)!
+    ) async throws -> URLRequest {
+        var url = try await URL(string: "\(endpoint.rawValue)", relativeTo: baseURL())!
         if !queryItems.isEmpty {
             url.append(queryItems: queryItems)
         }
@@ -75,7 +75,7 @@ public struct KintoneAPI: Sendable {
             offset.map { [URLQueryItem(name: "offset", value: String(describing: $0))] },
             limit.map { [URLQueryItem(name: "limit", value: String(describing: $0))] },
         ].compactMap(\.self).flatMap(\.self)
-        let request = makeRequest(httpMethod: .get, endpoint: .apps, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .apps, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(FetchAppsResponse.self, from: data)
@@ -85,7 +85,7 @@ public struct KintoneAPI: Sendable {
         appID: Int
     ) async throws -> FetchFormLayoutResponse {
         let queryItems = [URLQueryItem(name: "app", value: String(describing: appID))]
-        let request = makeRequest(httpMethod: .get, endpoint: .formLayout, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .formLayout, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(FetchFormLayoutResponse.self, from: data)
@@ -99,7 +99,7 @@ public struct KintoneAPI: Sendable {
             URLQueryItem(name: "app", value: String(describing: appID)),
             URLQueryItem(name: "lang", value: language.rawValue),
         ]
-        let request = makeRequest(httpMethod: .get, endpoint: .fields, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .fields, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(FetchFieldsResponse.self, from: data)
@@ -113,7 +113,7 @@ public struct KintoneAPI: Sendable {
             URLQueryItem(name: "app", value: String(describing: appID)),
             URLQueryItem(name: "lang", value: language.rawValue),
         ]
-        let request = makeRequest(httpMethod: .get, endpoint: .appSettings, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .appSettings, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(FetchAppSettingsResponse.self, from: data)
@@ -127,7 +127,7 @@ public struct KintoneAPI: Sendable {
             URLQueryItem(name: "app", value: String(describing: appID)),
             URLQueryItem(name: "lang", value: language.rawValue),
         ]
-        let request = makeRequest(httpMethod: .get, endpoint: .appStatus, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .appStatus, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(FetchAppStatusSettingsResponse.self, from: data)
@@ -141,7 +141,7 @@ public struct KintoneAPI: Sendable {
             URLQueryItem(name: "app", value: String(describing: appID)),
             URLQueryItem(name: "lang", value: language.rawValue),
         ]
-        let request = makeRequest(httpMethod: .get, endpoint: .appViews, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .appViews, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(FetchAppViewSettingsResponse.self, from: data)
@@ -159,7 +159,7 @@ public struct KintoneAPI: Sendable {
             query.map { [URLQueryItem(name: "query", value: $0)] },
             totalCount.map { [URLQueryItem(name: "totalCount", value: String(describing: $0))] }
         ].compactMap(\.self).flatMap(\.self)
-        let request = makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .records, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(FetchRecordsResponse.self, from: data)
@@ -170,7 +170,7 @@ public struct KintoneAPI: Sendable {
         recordIdentities: [RecordIdentity.Write]
     ) async throws {
         let httpBody = try JSONEncoder().encode(RemoveRecordsRequest(appID: appID, recordIdentities: recordIdentities))
-        let request = makeRequest(httpMethod: .delete, endpoint: .records, httpBody: httpBody)
+        let request = try await makeRequest(httpMethod: .delete, endpoint: .records, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
     }
@@ -183,7 +183,7 @@ public struct KintoneAPI: Sendable {
             URLQueryItem(name: "app", value: String(describing: appID)),
             URLQueryItem(name: "id", value: String(describing: recordID)),
         ]
-        let request = makeRequest(httpMethod: .get, endpoint: .record, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .record, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(FetchRecordResponse.self, from: data)
@@ -195,7 +195,7 @@ public struct KintoneAPI: Sendable {
         record: Record.Write
     ) async throws -> SubmitRecordResponse {
         let httpBody = try JSONEncoder().encode(SubmitRecordRequest(appID: appID, record: record))
-        let request = makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
+        let request = try await makeRequest(httpMethod: .post, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(SubmitRecordResponse.self, from: data)
@@ -208,7 +208,7 @@ public struct KintoneAPI: Sendable {
         record: Record.Write
     ) async throws -> UpdateRecordResponse {
         let httpBody = try JSONEncoder().encode(UpdateRecordRequest(appID: appID, recordIdentity: recordIdentity, record: record))
-        let request = makeRequest(httpMethod: .put, endpoint: .record, httpBody: httpBody)
+        let request = try await makeRequest(httpMethod: .put, endpoint: .record, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(UpdateRecordResponse.self, from: data)
@@ -228,7 +228,7 @@ public struct KintoneAPI: Sendable {
             offset.map { URLQueryItem(name: "offset", value: String(describing: $0)) },
             limit.map { URLQueryItem(name: "limit", value: String(describing: $0)) },
         ].compactMap(\.self)
-        let request = makeRequest(httpMethod: .get, endpoint: .recordComments, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .recordComments, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(FetchRecordCommentsResponse.self, from: data)
@@ -242,7 +242,7 @@ public struct KintoneAPI: Sendable {
         assignee: String?
     ) async throws -> UpdateStatusResponse {
         let httpBody = try JSONEncoder().encode(UpdateStatusRequest(appID: appID, recordIdentity: recordIdentity, actionName: actionName, assignee: assignee))
-        let request = makeRequest(httpMethod: .put, endpoint: .recordStatus, httpBody: httpBody)
+        let request = try await makeRequest(httpMethod: .put, endpoint: .recordStatus, httpBody: httpBody)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(UpdateStatusResponse.self, from: data)
@@ -262,7 +262,7 @@ public struct KintoneAPI: Sendable {
         httpBody.append(data)
         httpBody.append("\r\n".data(using: .utf8)!)
         httpBody.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        let request = makeRequest(httpMethod: .post, endpoint: .file, httpBody: httpBody, contentType: .multipartFormData(boundary))
+        let request = try await makeRequest(httpMethod: .post, endpoint: .file, httpBody: httpBody, contentType: .multipartFormData(boundary))
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return try JSONDecoder().decode(UploadFileResponse.self, from: data)
@@ -272,7 +272,7 @@ public struct KintoneAPI: Sendable {
         fileKey: String
     ) async throws -> Data {
         let queryItems = [URLQueryItem(name: "fileKey", value: fileKey)]
-        let request = makeRequest(httpMethod: .get, endpoint: .file, queryItems: queryItems)
+        let request = try await makeRequest(httpMethod: .get, endpoint: .file, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
         return data
