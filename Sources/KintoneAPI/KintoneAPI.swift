@@ -9,13 +9,16 @@ import Foundation
 
 public struct KintoneAPI: Sendable {
     var authenticationMethod: AuthenticationMethod
+    var baseURL: URL
     var dataRequestHandler: @Sendable (URLRequest) async throws -> (Data, URLResponse)
 
     public init(
         authenticationMethod: AuthenticationMethod,
+        baseURL: URL,
         dataRequestHandler: @escaping @Sendable (URLRequest) async throws -> (Data, URLResponse)
     ) {
         self.authenticationMethod = authenticationMethod
+        self.baseURL = baseURL
         self.dataRequestHandler = dataRequestHandler
     }
 
@@ -26,7 +29,7 @@ public struct KintoneAPI: Sendable {
         httpBody: Data? = nil,
         contentType: ContentType = .applicationJSON
     ) -> URLRequest {
-        var url = URL(string: "\(endpoint.rawValue)")!
+        var url = URL(string: "\(endpoint.rawValue)", relativeTo: baseURL)!
         if !queryItems.isEmpty {
             url.append(queryItems: queryItems)
         }
