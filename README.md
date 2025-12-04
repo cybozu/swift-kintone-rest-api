@@ -50,9 +50,7 @@ func fetchAllApps() async throws {
     let credentials = Credentials(loginName: "user", password: "*****")
     let kintoneAPI = KintoneAPI(
         authenticationMethod: .cybozuAuthorization(credentials),
-        baseURL: {
-            URL(string: "https://subdomain.cybozu.com")!
-        },
+        baseURL: URL(string: "https://subdomain.cybozu.com")!,
         dataRequestHandler: { request in
             try await URLSession.shared.data(for: request)
         }
@@ -64,9 +62,7 @@ func submitRecord() async throws {
     let credentials = Credentials(loginName: "user", password: "*****")
     let kintoneAPI = KintoneAPI(
         authenticationMethod: .cybozuAuthorization(credentials),
-        baseURL: {
-            URL(string: "https://subdomain.cybozu.com")!
-        },
+        baseURl: URL(string: "https://subdomain.cybozu.com")!,
         dataRequestHandler: { request in
             try await URLSession.shared.data(for: request)
         }
