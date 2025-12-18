@@ -202,6 +202,88 @@ struct UpdateRecordRequestTests {
         #expect(actual == expected)
     }
 
+    @Test
+    func request_subtable() throws {
+        let rows: [SubtableValue.Write] = [
+            .init(id: 0, value: [
+                .init(code: "SingleLineText", value: .singleLineText("dummy0")),
+                .init(code: "Number", value: .number("0")),
+            ]),
+            .init(id: 1, value: [
+                .init(code: "SingleLineText", value: .singleLineText("dummy1")),
+                .init(code: "Number", value: .number("1")),
+            ]),
+            .init(id: 2, value: [
+                .init(code: "SingleLineText", value: .singleLineText("dummy2")),
+                .init(code: "Number", value: .number("2")),
+            ]),
+        ]
+        let sut = UpdateRecordRequest(
+            appID: 0,
+            recordIdentity: .init(id: 0, revision: 0),
+            record: .init(fields: [
+                .init(code: "dummy", value: .subtable(rows))
+            ])
+        )
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let data = try encoder.encode(sut)
+        let actual = try #require(String(data: data, encoding: .utf8))
+        let expected = """
+        {
+          "app" : 0,
+          "id" : 0,
+          "record" : {
+            "dummy" : {
+              "value" : [
+                {
+                  "id" : "0",
+                  "value" : {
+                    "Number" : {
+                      "type" : "NUMBER",
+                      "value" : "0"
+                    },
+                    "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
+                      "value" : "dummy0"
+                    }
+                  }
+                },
+                {
+                  "id" : "1",
+                  "value" : {
+                    "Number" : {
+                      "type" : "NUMBER",
+                      "value" : "1"
+                    },
+                    "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
+                      "value" : "dummy1"
+                    }
+                  }
+                },
+                {
+                  "id" : "2",
+                  "value" : {
+                    "Number" : {
+                      "type" : "NUMBER",
+                      "value" : "2"
+                    },
+                    "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
+                      "value" : "dummy2"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "revision" : 0
+        }
+        """
+        #expect(actual == expected)
+    }
+
     struct SingleValueFieldProperty {
         var value: RecordFieldValue.Write
         var expectedValue: String

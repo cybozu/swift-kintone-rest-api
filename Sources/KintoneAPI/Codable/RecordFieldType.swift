@@ -5,7 +5,7 @@
 //  Created by ky0me22 on 2024/12/04.
 //
 
-public enum RecordFieldType: String, Decodable, Sendable {
+public enum RecordFieldType: String, Codable, Sendable {
     case calc = "CALC"
     case category = "CATEGORY"
     case checkbox = "CHECK_BOX"

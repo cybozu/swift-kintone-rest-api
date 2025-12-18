@@ -21,4 +21,6 @@ public enum RecordFieldValue {}
 
 public enum SubtableValue {}
 
+public enum SubtableFieldValue {}
+
 public enum RecordComment {}

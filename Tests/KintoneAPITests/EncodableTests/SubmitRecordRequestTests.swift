@@ -166,19 +166,19 @@ struct SubmitRecordRequestTests {
 
     @Test
     func request_subtable() throws {
-        let rows: [[RecordField.Write]] = [
-            [
+        let rows: [SubtableValue.Write] = [
+            .init(value: [
                 .init(code: "SingleLineText", value: .singleLineText("dummy0")),
                 .init(code: "Number", value: .number("0")),
-            ],
-            [
+            ]),
+            .init(value: [
                 .init(code: "SingleLineText", value: .singleLineText("dummy1")),
                 .init(code: "Number", value: .number("1")),
-            ],
-            [
+            ]),
+            .init(value: [
                 .init(code: "SingleLineText", value: .singleLineText("dummy2")),
                 .init(code: "Number", value: .number("2")),
-            ],
+            ]),
         ]
         let sut = SubmitRecordRequest(
             appID: 0,
@@ -199,9 +199,11 @@ struct SubmitRecordRequestTests {
                 {
                   "value" : {
                     "Number" : {
+                      "type" : "NUMBER",
                       "value" : "0"
                     },
                     "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
                       "value" : "dummy0"
                     }
                   }
@@ -209,9 +211,11 @@ struct SubmitRecordRequestTests {
                 {
                   "value" : {
                     "Number" : {
+                      "type" : "NUMBER",
                       "value" : "1"
                     },
                     "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
                       "value" : "dummy1"
                     }
                   }
@@ -219,9 +223,11 @@ struct SubmitRecordRequestTests {
                 {
                   "value" : {
                     "Number" : {
+                      "type" : "NUMBER",
                       "value" : "2"
                     },
                     "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
                       "value" : "dummy2"
                     }
                   }
