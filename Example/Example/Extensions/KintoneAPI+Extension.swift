@@ -80,7 +80,7 @@ extension FieldAttribute {
                 guard let value = field.attribute.recordFieldValue else { return nil }
                 return RecordField.Write(code: field.code, value: value)
             }
-            return .subtable([recordFields])
+            return .subtable([SubtableValue.Write(value: recordFields)])
         case let .time(value):
             return .time(value.defaultValue)
         case let .userSelection(value):
