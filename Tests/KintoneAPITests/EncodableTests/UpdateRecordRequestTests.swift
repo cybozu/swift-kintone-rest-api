@@ -207,15 +207,18 @@ struct UpdateRecordRequestTests {
         let rows: [SubtableValue.Write] = [
             .init(id: 0, value: [
                 .init(code: "SingleLineText", value: .singleLineText("dummy0")),
-                .init(code: "Number", value: .number("0")),
+                .init(code: "Checkbox", value: .checkbox([])),
+                .init(code: "File", value: .file([.init(fileKey: "fileKey0")])),
             ]),
             .init(id: 1, value: [
                 .init(code: "SingleLineText", value: .singleLineText("dummy1")),
-                .init(code: "Number", value: .number("1")),
+                .init(code: "Checkbox", value: .checkbox(["optionA"])),
+                .init(code: "File", value: .file([.init(fileKey: "fileKey1")])),
             ]),
             .init(id: 2, value: [
                 .init(code: "SingleLineText", value: .singleLineText("dummy2")),
-                .init(code: "Number", value: .number("2")),
+                .init(code: "Checkbox", value: .checkbox(["optionA", "optionB"])),
+                .init(code: "File", value: .file([.init(fileKey: "fileKey2")])),
             ]),
         ]
         let sut = UpdateRecordRequest(
@@ -239,9 +242,19 @@ struct UpdateRecordRequestTests {
                 {
                   "id" : "0",
                   "value" : {
-                    "Number" : {
-                      "type" : "NUMBER",
-                      "value" : "0"
+                    "Checkbox" : {
+                      "type" : "CHECK_BOX",
+                      "value" : [
+
+                      ]
+                    },
+                    "File" : {
+                      "type" : "FILE",
+                      "value" : [
+                        {
+                          "fileKey" : "fileKey0"
+                        }
+                      ]
                     },
                     "SingleLineText" : {
                       "type" : "SINGLE_LINE_TEXT",
@@ -252,9 +265,19 @@ struct UpdateRecordRequestTests {
                 {
                   "id" : "1",
                   "value" : {
-                    "Number" : {
-                      "type" : "NUMBER",
-                      "value" : "1"
+                    "Checkbox" : {
+                      "type" : "CHECK_BOX",
+                      "value" : [
+                        "optionA"
+                      ]
+                    },
+                    "File" : {
+                      "type" : "FILE",
+                      "value" : [
+                        {
+                          "fileKey" : "fileKey1"
+                        }
+                      ]
                     },
                     "SingleLineText" : {
                       "type" : "SINGLE_LINE_TEXT",
@@ -265,9 +288,20 @@ struct UpdateRecordRequestTests {
                 {
                   "id" : "2",
                   "value" : {
-                    "Number" : {
-                      "type" : "NUMBER",
-                      "value" : "2"
+                    "Checkbox" : {
+                      "type" : "CHECK_BOX",
+                      "value" : [
+                        "optionA",
+                        "optionB"
+                      ]
+                    },
+                    "File" : {
+                      "type" : "FILE",
+                      "value" : [
+                        {
+                          "fileKey" : "fileKey2"
+                        }
+                      ]
                     },
                     "SingleLineText" : {
                       "type" : "SINGLE_LINE_TEXT",
