@@ -202,6 +202,122 @@ struct UpdateRecordRequestTests {
         #expect(actual == expected)
     }
 
+    @Test
+    func request_subtable() throws {
+        let rows: [SubtableValue.Write] = [
+            .init(id: 0, value: [
+                .init(code: "SingleLineText", value: .singleLineText("dummy0")),
+                .init(code: "Checkbox", value: .checkbox([])),
+                .init(code: "File", value: .file([.init(fileKey: "fileKey0")])),
+            ]),
+            .init(id: 1, value: [
+                .init(code: "SingleLineText", value: .singleLineText("dummy1")),
+                .init(code: "Checkbox", value: .checkbox(["optionA"])),
+                .init(code: "File", value: .file([.init(fileKey: "fileKey1")])),
+            ]),
+            .init(id: 2, value: [
+                .init(code: "SingleLineText", value: .singleLineText("dummy2")),
+                .init(code: "Checkbox", value: .checkbox(["optionA", "optionB"])),
+                .init(code: "File", value: .file([.init(fileKey: "fileKey2")])),
+            ]),
+        ]
+        let sut = UpdateRecordRequest(
+            appID: 0,
+            recordIdentity: .init(id: 0, revision: 0),
+            record: .init(fields: [
+                .init(code: "dummy", value: .subtable(rows))
+            ])
+        )
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let data = try encoder.encode(sut)
+        let actual = try #require(String(data: data, encoding: .utf8))
+        let expected = """
+        {
+          "app" : 0,
+          "id" : 0,
+          "record" : {
+            "dummy" : {
+              "value" : [
+                {
+                  "id" : "0",
+                  "value" : {
+                    "Checkbox" : {
+                      "type" : "CHECK_BOX",
+                      "value" : [
+
+                      ]
+                    },
+                    "File" : {
+                      "type" : "FILE",
+                      "value" : [
+                        {
+                          "fileKey" : "fileKey0"
+                        }
+                      ]
+                    },
+                    "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
+                      "value" : "dummy0"
+                    }
+                  }
+                },
+                {
+                  "id" : "1",
+                  "value" : {
+                    "Checkbox" : {
+                      "type" : "CHECK_BOX",
+                      "value" : [
+                        "optionA"
+                      ]
+                    },
+                    "File" : {
+                      "type" : "FILE",
+                      "value" : [
+                        {
+                          "fileKey" : "fileKey1"
+                        }
+                      ]
+                    },
+                    "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
+                      "value" : "dummy1"
+                    }
+                  }
+                },
+                {
+                  "id" : "2",
+                  "value" : {
+                    "Checkbox" : {
+                      "type" : "CHECK_BOX",
+                      "value" : [
+                        "optionA",
+                        "optionB"
+                      ]
+                    },
+                    "File" : {
+                      "type" : "FILE",
+                      "value" : [
+                        {
+                          "fileKey" : "fileKey2"
+                        }
+                      ]
+                    },
+                    "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
+                      "value" : "dummy2"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "revision" : 0
+        }
+        """
+        #expect(actual == expected)
+    }
+
     struct SingleValueFieldProperty {
         var value: RecordFieldValue.Write
         var expectedValue: String

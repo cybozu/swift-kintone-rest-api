@@ -199,7 +199,7 @@ struct RecordInputFieldView: View {
         case (.subtable, let .subtable(attribute), let .subtable(value)):
             SubtableView(
                 fields: attribute.fields,
-                values: Binding<[[RecordField.Write]]>(
+                values: Binding<[SubtableValue.Write]>(
                     get: { value },
                     set: { fieldValues[field.code] = .subtable($0) }
                 )

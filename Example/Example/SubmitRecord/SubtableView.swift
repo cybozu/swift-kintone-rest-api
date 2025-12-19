@@ -10,14 +10,14 @@ import SwiftUI
 
 struct SubtableView: View {
     var fields: [Field]
-    @Binding var values: [[RecordField.Write]]
+    @Binding var values: [SubtableValue.Write]
 
     var body: some View {
         VStack {
             ForEach(values.indices, id: \.self) { index in
                 SubtableRowView(
                     fields: fields,
-                    recordFields: $values[index],
+                    value: $values[index],
                     removeDisabled: index == 0,
                     removeButtonTapped: {
                         values.remove(at: index)
@@ -31,7 +31,7 @@ struct SubtableView: View {
                         guard let value = field.attribute.recordFieldValue else { return nil }
                         return RecordField.Write(code: field.code, value: value)
                     }
-                    values.append(array)
+                    values.append(SubtableValue.Write(value: array))
                 } label: {
                     Label {
                         Text("Add Row")
@@ -49,18 +49,19 @@ struct SubtableView: View {
 
 private struct SubtableRowView: View {
     var fields: [Field]
-    @Binding var recordFields: [RecordField.Write]
+    @Binding var value: SubtableValue.Write
     var removeDisabled: Bool
     var removeButtonTapped: () -> Void
 
     var body: some View {
         HStack {
+            Text("ID: \(String(optional: value.id))")
             ForEach(fields) { field in
                 RecordInputFieldView(
                     field: field,
                     fieldValues: Binding<[String: RecordFieldValue.Write]>(
-                        get: { Dictionary(uniqueKeysWithValues: zip(recordFields.map(\.code), recordFields.map(\.value))) },
-                        set: { newValue in recordFields = newValue.map { RecordField.Write(code: $0, value: $1) } }
+                        get: { Dictionary(uniqueKeysWithValues: zip(value.value.map(\.code), value.value.map(\.value))) },
+                        set: { newValue in value = SubtableValue.Write(value: newValue.map { RecordField.Write(code: $0, value: $1) }) }
                     )
                 )
             }

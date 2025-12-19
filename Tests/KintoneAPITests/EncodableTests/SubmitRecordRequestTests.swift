@@ -166,19 +166,22 @@ struct SubmitRecordRequestTests {
 
     @Test
     func request_subtable() throws {
-        let rows: [[RecordField.Write]] = [
-            [
+        let rows: [SubtableValue.Write] = [
+            .init(value: [
                 .init(code: "SingleLineText", value: .singleLineText("dummy0")),
-                .init(code: "Number", value: .number("0")),
-            ],
-            [
+                .init(code: "Checkbox", value: .checkbox([])),
+                .init(code: "File", value: .file([.init(fileKey: "fileKey0")])),
+            ]),
+            .init(value: [
                 .init(code: "SingleLineText", value: .singleLineText("dummy1")),
-                .init(code: "Number", value: .number("1")),
-            ],
-            [
+                .init(code: "Checkbox", value: .checkbox(["optionA"])),
+                .init(code: "File", value: .file([.init(fileKey: "fileKey1")])),
+            ]),
+            .init(value: [
                 .init(code: "SingleLineText", value: .singleLineText("dummy2")),
-                .init(code: "Number", value: .number("2")),
-            ],
+                .init(code: "Checkbox", value: .checkbox(["optionA", "optionB"])),
+                .init(code: "File", value: .file([.init(fileKey: "fileKey2")])),
+            ]),
         ]
         let sut = SubmitRecordRequest(
             appID: 0,
@@ -198,30 +201,67 @@ struct SubmitRecordRequestTests {
               "value" : [
                 {
                   "value" : {
-                    "Number" : {
-                      "value" : "0"
+                    "Checkbox" : {
+                      "type" : "CHECK_BOX",
+                      "value" : [
+
+                      ]
+                    },
+                    "File" : {
+                      "type" : "FILE",
+                      "value" : [
+                        {
+                          "fileKey" : "fileKey0"
+                        }
+                      ]
                     },
                     "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
                       "value" : "dummy0"
                     }
                   }
                 },
                 {
                   "value" : {
-                    "Number" : {
-                      "value" : "1"
+                    "Checkbox" : {
+                      "type" : "CHECK_BOX",
+                      "value" : [
+                        "optionA"
+                      ]
+                    },
+                    "File" : {
+                      "type" : "FILE",
+                      "value" : [
+                        {
+                          "fileKey" : "fileKey1"
+                        }
+                      ]
                     },
                     "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
                       "value" : "dummy1"
                     }
                   }
                 },
                 {
                   "value" : {
-                    "Number" : {
-                      "value" : "2"
+                    "Checkbox" : {
+                      "type" : "CHECK_BOX",
+                      "value" : [
+                        "optionA",
+                        "optionB"
+                      ]
+                    },
+                    "File" : {
+                      "type" : "FILE",
+                      "value" : [
+                        {
+                          "fileKey" : "fileKey2"
+                        }
+                      ]
                     },
                     "SingleLineText" : {
+                      "type" : "SINGLE_LINE_TEXT",
                       "value" : "dummy2"
                     }
                   }
