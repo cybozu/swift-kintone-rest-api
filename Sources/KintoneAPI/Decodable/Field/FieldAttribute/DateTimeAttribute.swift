@@ -12,7 +12,7 @@ public struct DateTimeAttribute: Sendable, Equatable {
     public var required: Bool
     public var unique: Bool
     public var defaultNowValue: Bool
-    public var defaultValue: Date
+    public var defaultValue: Date?
 }
 
 extension DateTimeAttribute: Decodable {
@@ -31,6 +31,6 @@ extension DateTimeAttribute: Decodable {
         unique = try container.decode(Bool.self, forKey: .unique)
         defaultNowValue = try container.decode(Bool.self, forKey: .defaultNowValue)
         let _defaultValue = try container.decode(String.self, forKey: .defaultValue)
-        defaultValue = DateFormatter.kintoneDateTime.date(from: _defaultValue.normalizedDateTime) ?? Date.now
+        defaultValue = DateFormatter.kintoneDateTime.date(from: _defaultValue.normalizedDateTime)
     }
 }
