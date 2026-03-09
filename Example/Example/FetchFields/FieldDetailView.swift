@@ -189,7 +189,7 @@ struct FieldDetailView: View {
                     CornerRadiusText("No Label: \(attribute.noLabel)")
                     CornerRadiusText("Required: \(attribute.required)")
                     CornerRadiusText("Default Now Value: \(attribute.defaultNowValue)")
-                    CornerRadiusText("Default Value: \(attribute.defaultValue)")
+                    CornerRadiusText("Default Value: \(String(optional: attribute.defaultValue))")
 
                 case let .updatedTime(attribute):
                     CornerRadiusText("No Label: \(attribute.noLabel)")
