@@ -207,8 +207,11 @@ struct FetchFieldsResponseTests {
         ))
     }
 
-    @Test
-    func response_date() throws {
+    @Test(arguments: [
+        DateProperty(defaultValue: "", expectedDefaultValue: nil),
+        DateProperty(defaultValue: "0001-01-01", expectedDefaultValue: .distantReferencePast),
+    ])
+    func response_date(_ dateProperty: DateProperty) throws {
         let input = """
         {
           "properties" : {
@@ -220,7 +223,7 @@ struct FetchFieldsResponseTests {
               "required" : true,
               "unique" : true,
               "defaultNowValue" : false,
-              "defaultValue" : "0001-01-01"
+              "defaultValue" : "\(dateProperty.defaultValue)"
             }
           },
           "revision" : "1"
@@ -239,7 +242,7 @@ struct FetchFieldsResponseTests {
                         required: true,
                         unique: true,
                         defaultNowValue: false,
-                        defaultValue: .distantReferencePast
+                        defaultValue: dateProperty.expectedDefaultValue
                     ))
                 )
             ],
@@ -247,8 +250,11 @@ struct FetchFieldsResponseTests {
         ))
     }
 
-    @Test
-    func response_dateTime() throws {
+    @Test(arguments: [
+        DateTimeProperty(defaultValue: "", expectedDefaultValue: nil),
+        DateTimeProperty(defaultValue: "0001-01-01T00:00", expectedDefaultValue: .distantPast),
+    ])
+    func response_dateTime(_ dateTimeProperty: DateTimeProperty) throws {
         let input = """
         {
           "properties" : {
@@ -260,7 +266,7 @@ struct FetchFieldsResponseTests {
               "required" : true,
               "unique" : true,
               "defaultNowValue" : false,
-              "defaultValue" : "0001-01-01T00:00"
+              "defaultValue" : "\(dateTimeProperty.defaultValue)"
             }
           },
           "revision" : "1"
@@ -279,7 +285,7 @@ struct FetchFieldsResponseTests {
                         required: true,
                         unique: true,
                         defaultNowValue: false,
-                        defaultValue: .distantPast
+                        defaultValue: dateTimeProperty.expectedDefaultValue
                     ))
                 )
             ],
@@ -1078,8 +1084,11 @@ struct FetchFieldsResponseTests {
         ))
     }
 
-    @Test
-    func response_time() throws {
+    @Test(arguments: [
+        TimeProperty(defaultValue: "", expectedDefaultValue: nil),
+        TimeProperty(defaultValue: "00:00:00.000", expectedDefaultValue: .distantReferenceZero),
+    ])
+    func response_time(_ timeProperty: TimeProperty) throws {
         let input = """
         {
           "properties" : {
@@ -1091,7 +1100,7 @@ struct FetchFieldsResponseTests {
               "required" : true,
               "unique" : true,
               "defaultNowValue" : false,
-              "defaultValue" : "00:00:00.000"
+              "defaultValue" : "\(timeProperty.defaultValue)"
             }
           },
           "revision" : "1"
@@ -1109,7 +1118,7 @@ struct FetchFieldsResponseTests {
                         noLabel: true,
                         required: true,
                         defaultNowValue: false,
-                        defaultValue: .distantReferenceZero
+                        defaultValue: timeProperty.expectedDefaultValue
                     ))
                 )
             ],
@@ -1211,6 +1220,16 @@ struct FetchFieldsResponseTests {
         var expectedAlignment: FieldOptionAlignment
     }
 
+    struct DateProperty {
+        var defaultValue: String
+        var expectedDefaultValue: Date?
+    }
+
+    struct DateTimeProperty {
+        var defaultValue: String
+        var expectedDefaultValue: Date?
+    }
+
     struct LinkProperty {
         var `protocol`: String
         var expectedLinkProtocol: LinkProtocol
@@ -1230,5 +1249,10 @@ struct FetchFieldsResponseTests {
     struct RadioButtonProperty {
         var alignment: String
         var expectedAlignment: FieldOptionAlignment
+    }
+
+    struct TimeProperty {
+        var defaultValue: String
+        var expectedDefaultValue: Date?
     }
 }
