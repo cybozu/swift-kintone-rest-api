@@ -14,19 +14,22 @@ struct FetchRecordsView: View {
     private var updateStatusHandler: (RecordIdentity.Write, StatusAction) async -> Void
     private var downloadFileHandler: (String) async -> Data?
     private var fetchRecordCommentsHandler: (Int) async -> FetchRecordCommentsResponse?
+    private var evaluateRecordPermissionsHandler: ([Int]) async -> EvaluateRecordPermissionsResponse?
 
     init(
         recordsResponse: FetchRecordsResponse?,
         appStatusSettingsResponse: FetchAppStatusSettingsResponse?,
         updateStatusHandler: @escaping (RecordIdentity.Write, StatusAction) async -> Void,
         downloadFileHandler: @escaping (String) async -> Data?,
-        fetchRecordCommentsHandler: @escaping (Int) async -> FetchRecordCommentsResponse?
+        fetchRecordCommentsHandler: @escaping (Int) async -> FetchRecordCommentsResponse?,
+        evaluateRecordPermissionsHandler: @escaping ([Int]) async -> EvaluateRecordPermissionsResponse?
     ) {
         records = recordsResponse?.records ?? []
         actions = appStatusSettingsResponse?.actions ?? []
         self.updateStatusHandler = updateStatusHandler
         self.downloadFileHandler = downloadFileHandler
         self.fetchRecordCommentsHandler = fetchRecordCommentsHandler
+        self.evaluateRecordPermissionsHandler = evaluateRecordPermissionsHandler
     }
 
     var body: some View {
@@ -40,6 +43,10 @@ struct FetchRecordsView: View {
                         downloadFileHandler: downloadFileHandler,
                         fetchRecordCommentsHandler: fetchRecordCommentsHandler
                     )
+                }
+                EvaluateRecordPermissionsView {
+                    let ids = records.compactMap(\.identity?.id)
+                    return await evaluateRecordPermissionsHandler(ids)
                 }
             }
             .padding()
