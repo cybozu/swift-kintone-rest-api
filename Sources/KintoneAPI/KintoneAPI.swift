@@ -248,6 +248,20 @@ public struct KintoneAPI: Sendable {
         return try JSONDecoder().decode(UpdateStatusResponse.self, from: data)
     }
 
+    public func evaluateRecordPermissions(
+        appID: Int,
+        recordIDs: [Int]
+    ) async throws -> EvaluateRecordPermissionsResponse {
+        let queryItems = [
+            [URLQueryItem(name: "app", value: String(describing: appID))],
+            recordIDs.map(String.init(describing:)).queryItems(name: "ids")
+        ].compactMap(\.self).flatMap(\.self)
+        let request = makeRequest(httpMethod: .get, endpoint: .evaluateRecordPermissions, queryItems: queryItems)
+        let (data, response) = try await dataRequestHandler(request)
+        try check(response: response, data: data)
+        return try JSONDecoder().decode(EvaluateRecordPermissionsResponse.self, from: data)
+    }
+
     public func uploadFile(
         fileName: String,
         mimeType: String,
