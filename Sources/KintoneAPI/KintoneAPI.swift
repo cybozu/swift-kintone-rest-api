@@ -68,10 +68,10 @@ public struct KintoneAPI: Sendable {
         limit: Int? = nil
     ) async throws -> FetchAppsResponse {
         let queryItems = [
-            appIDs?.compactMap { String(describing: $0) }.queryItems(name: "ids"),
+            appIDs?.compactMap(String.init(describing:)).queryItems(name: "ids"),
             codes.map { $0.queryItems(name: "codes") },
             name.map { [URLQueryItem(name: "name", value: $0)] },
-            spaceIDs?.compactMap { String(describing: $0) }.queryItems(name: "spaceIds"),
+            spaceIDs?.compactMap(String.init(describing:)).queryItems(name: "spaceIds"),
             offset.map { [URLQueryItem(name: "offset", value: String(describing: $0))] },
             limit.map { [URLQueryItem(name: "limit", value: String(describing: $0))] },
         ].compactMap(\.self).flatMap(\.self)
