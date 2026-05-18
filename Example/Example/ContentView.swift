@@ -70,6 +70,15 @@ enum TabCategory {
         }
     }
 
+    func evaluateRecordPermissions(recordIDs: [Int]) async -> EvaluateRecordPermissionsResponse? {
+        do {
+            return try await kintoneAPI.evaluateRecordPermissions(appID: appID, recordIDs: recordIDs)
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+
     func fetchRecordComments(recordID: Int) async -> FetchRecordCommentsResponse? {
         do {
             return try await kintoneAPI.fetchRecordComments(appID: appID, recordID: recordID)
@@ -246,6 +255,9 @@ enum TabCategory {
                         },
                         fetchRecordCommentsHandler: { recordID in
                             await viewModel.fetchRecordComments(recordID: recordID)
+                        },
+                        evaluateRecordPermissionsHandler: { recordIDs in
+                            await viewModel.evaluateRecordPermissions(recordIDs: recordIDs)
                         }
                     )
                     .tabItem {

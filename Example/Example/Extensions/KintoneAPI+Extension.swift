@@ -45,6 +45,13 @@ extension StatusAction: @retroactive Identifiable {
 
 extension RecordComment.Read: @retroactive Identifiable {}
 
+extension RecordPermissionChunk: @retroactive Identifiable {
+    public var id: Int { recordPermission.id }
+}
+
+extension FieldPermission: @retroactive Identifiable {
+    public var id: String { code }
+}
 
 extension FieldAttribute {
     var recordFieldValue: RecordFieldValue.Write? {
