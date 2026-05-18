@@ -252,10 +252,7 @@ public struct KintoneAPI: Sendable {
         appID: Int,
         recordIDs: [Int]
     ) async throws -> EvaluateRecordPermissionsResponse {
-        let queryItems = [
-            [URLQueryItem(name: "app", value: String(describing: appID))],
-            recordIDs.map(String.init(describing:)).queryItems(name: "ids")
-        ].compactMap(\.self).flatMap(\.self)
+        let queryItems = [URLQueryItem(name: "app", value: String(describing: appID))] + recordIDs.map(String.init(describing:)).queryItems(name: "ids")
         let request = makeRequest(httpMethod: .get, endpoint: .evaluateRecordPermissions, queryItems: queryItems)
         let (data, response) = try await dataRequestHandler(request)
         try check(response: response, data: data)
