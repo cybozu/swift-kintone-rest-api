@@ -22,14 +22,14 @@ extension RecordPermissionChunk: Decodable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let id = try container.customDecode(String.self, forKey: .id) { Int($0) }
-        let record = try container.decode(Record.self, forKey: .record)
+        let record = try container.decode(RecordPayload.self, forKey: .record)
         recordPermission = .init(
             id: id,
             viewable: record.viewable,
             editable: record.editable,
             deletable: record.deletable
         )
-        let fieldsDictionary = try container.decode([String: Field].self, forKey: .fields)
+        let fieldsDictionary = try container.decode([String: FieldPayload].self, forKey: .fields)
         fieldPermissions = fieldsDictionary.map { code, field in
             FieldPermission(
                 code: code,
@@ -40,13 +40,13 @@ extension RecordPermissionChunk: Decodable {
         .sorted(using: KeyPathComparator(\.code))
     }
 
-    private struct Record: Decodable {
+    private struct RecordPayload: Decodable {
         public var viewable: Bool
         public var editable: Bool
         public var deletable: Bool
     }
 
-    private struct Field: Decodable {
+    private struct FieldPayload: Decodable {
         public var viewable: Bool
         public var editable: Bool
     }
