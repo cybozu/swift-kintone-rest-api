@@ -29,17 +29,15 @@ extension RecordPermissionChunk: Decodable {
             editable: record.editable,
             deletable: record.deletable
         )
-        let fieldsContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .fields)
-        fieldPermissions = try fieldsContainer.allKeys
-            .map { key in
-                let field = try fieldsContainer.decode(Field.self, forKey: .init(stringValue: key.stringValue)!)
-                return FieldPermission(
-                    code: key.stringValue,
-                    viewable: field.viewable,
-                    editable: field.editable
-                )
-            }
-            .sorted(using: KeyPathComparator(\.code))
+        let fieldsDictionary = try container.decode([String: Field].self, forKey: .fields)
+        fieldPermissions = fieldsDictionary.map { code, field in
+            FieldPermission(
+                code: code,
+                viewable: field.viewable,
+                editable: field.editable
+            )
+        }
+        .sorted(using: KeyPathComparator(\.code))
     }
 
     private struct Record: Decodable {

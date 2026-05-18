@@ -29,9 +29,13 @@ struct EvaluateRecordPermissionsResponseTests {
                 "deletable" : false
               },
               "fields": {
-                "dummy": {
+                "dummy1": {
                   "viewable": true,
                   "editable": false
+                },
+                "dummy2": {
+                  "viewable": false,
+                  "editable": true
                 }
               }
             }
@@ -50,9 +54,14 @@ struct EvaluateRecordPermissionsResponseTests {
                 ),
                 fieldPermissions: [
                     .init(
-                        code: "dummy",
+                        code: "dummy1",
                         viewable: true,
                         editable: false
+                    ),
+                    .init(
+                        code: "dummy2",
+                        viewable: false,
+                        editable: true
                     )
                 ]
             )
