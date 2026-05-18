@@ -13,7 +13,7 @@ public struct RecordPermissionChunk: Sendable, Equatable {
 }
 
 extension RecordPermissionChunk: Decodable {
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: CodingKey {
         case id
         case record
         case fields
