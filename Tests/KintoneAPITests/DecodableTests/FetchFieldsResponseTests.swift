@@ -498,6 +498,7 @@ struct FetchFieldsResponseTests {
     }
 
     @Test(arguments: [
+        LookupProperty(type: "LINK", expectedType: .link),
         LookupProperty(type: "NUMBER", expectedType: .number),
         LookupProperty(type: "SINGLE_LINE_TEXT", expectedType: .singleLineText),
     ])
