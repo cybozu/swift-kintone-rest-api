@@ -28,6 +28,6 @@ extension TimeAttribute: Decodable {
         required = try container.decode(Bool.self, forKey: .required)
         defaultNowValue = try container.decode(Bool.self, forKey: .defaultNowValue)
         let _defaultValue = try container.decode(String.self, forKey: .defaultValue)
-        defaultValue = DateFormatter.kintoneTime.date(from: _defaultValue.normalizedTime)
+        defaultValue = try? Date.FormatStyle.kintoneTime.parse(_defaultValue.normalizedTime)
     }
 }

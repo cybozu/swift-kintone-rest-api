@@ -39,11 +39,11 @@ extension SubtableFieldValue {
                 try container.encode(stringArray, forKey: .value)
             case let .date(date):
                 try container.encode(RecordFieldType.date, forKey: .type)
-                let dateString = date.map { DateFormatter.kintoneDate.string(from: $0) }
+                let dateString = date.map { $0.formatted(Date.FormatStyle.kintoneDate) }
                 try container.encode(dateString, forKey: .value)
             case let .dateTime(date):
                 try container.encode(RecordFieldType.dateTime, forKey: .type)
-                let dateString = date.map { DateFormatter.kintoneDateTime.string(from: $0) }
+                let dateString = date.map { $0.formatted(Date.FormatStyle.kintoneDateTime) }
                 try container.encode(dateString, forKey: .value)
             case let .dropDown(string):
                 try container.encode(RecordFieldType.dropDown, forKey: .type)
@@ -80,7 +80,7 @@ extension SubtableFieldValue {
                 try container.encode(string, forKey: .value)
             case let .time(date):
                 try container.encode(RecordFieldType.time, forKey: .type)
-                let dateString = date.map { DateFormatter.kintoneTime.string(from: $0) }
+                let dateString = date.map { $0.formatted(Date.FormatStyle.kintoneTime) }
                 try container.encode(dateString, forKey: .value)
             case let .userSelection(entityArray):
                 try container.encode(RecordFieldType.userSelection, forKey: .type)
