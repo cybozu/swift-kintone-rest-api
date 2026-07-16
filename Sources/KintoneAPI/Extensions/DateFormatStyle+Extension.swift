@@ -14,11 +14,17 @@ extension Date.FormatStyle {
 }
 
 struct KintoneDateFormatStyle: ParseableFormatStyle, ParseStrategy {
-    private var verbatimStyle: Date.VerbatimFormatStyle {
-        Date.VerbatimFormatStyle(
+    private let calendar: Calendar
+    private let verbatimStyle: Date.VerbatimFormatStyle
+
+    init() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .autoupdatingCurrent
+        self.calendar = calendar
+        self.verbatimStyle = Date.VerbatimFormatStyle(
             format: "\(year: .padded(4))-\(month: .twoDigits)-\(day: .twoDigits)",
-            timeZone: .current,
-            calendar: Calendar(identifier: .gregorian)
+            timeZone: .autoupdatingCurrent,
+            calendar: calendar
         )
     }
 
@@ -30,7 +36,6 @@ struct KintoneDateFormatStyle: ParseableFormatStyle, ParseStrategy {
 
     func parse(_ value: String) throws -> Date {
         let parsed = try verbatimStyle.parseStrategy.parse(value)
-        let calendar = Calendar.current
         let time = calendar.dateComponents([.hour, .minute, .second], from: Date(timeIntervalSinceReferenceDate: .zero))
         guard let hour = time.hour,
               let minute = time.minute,
@@ -44,11 +49,17 @@ struct KintoneDateFormatStyle: ParseableFormatStyle, ParseStrategy {
 }
 
 struct KintoneTimeFormatStyle: ParseableFormatStyle, ParseStrategy {
-    private var verbatimStyle: Date.VerbatimFormatStyle {
-        Date.VerbatimFormatStyle(
+    private let calendar: Calendar
+    private let verbatimStyle: Date.VerbatimFormatStyle
+
+    init() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .autoupdatingCurrent
+        self.calendar = calendar
+        self.verbatimStyle = Date.VerbatimFormatStyle(
             format: "\(hour: .twoDigits(clock: .twentyFourHour, hourCycle: .zeroBased)):\(minute: .twoDigits)",
-            timeZone: .current,
-            calendar: Calendar(identifier: .gregorian)
+            timeZone: .autoupdatingCurrent,
+            calendar: calendar
         )
     }
 
@@ -60,7 +71,6 @@ struct KintoneTimeFormatStyle: ParseableFormatStyle, ParseStrategy {
 
     func parse(_ value: String) throws -> Date {
         let parsed = try verbatimStyle.parseStrategy.parse(value)
-        let calendar = Calendar.current
         let time = calendar.dateComponents([.hour, .minute], from: parsed)
         guard let hour = time.hour,
               let minute = time.minute,
