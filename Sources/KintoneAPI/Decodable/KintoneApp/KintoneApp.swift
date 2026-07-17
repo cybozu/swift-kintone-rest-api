@@ -43,13 +43,13 @@ extension KintoneApp: Decodable {
         spaceID = try container.customDecodeIfPresent(String.self, forKey: .spaceID) { Int($0) }
         threadID = try container.customDecodeIfPresent(String.self, forKey: .threadID) { Int($0) }
         createdAt = try container.customDecode(String.self, forKey: .createdAt) {
-            DateFormatter.kintoneDateTime.date(from: $0.normalizedDateTime)
+            try? Date.FormatStyle.kintoneDateTime.parse($0.normalizedDateTime)
         }
         creator = try container.customDecode(EntityValue.self, forKey: .creator) {
             Entity.Read(type: .user, code: $0.code, name: $0.name)
         }
         modifiedAt = try container.customDecode(String.self, forKey: .modifiedAt) {
-            DateFormatter.kintoneDateTime.date(from: $0.normalizedDateTime)
+            try? Date.FormatStyle.kintoneDateTime.parse($0.normalizedDateTime)
         }
         modifier = try container.customDecode(EntityValue.self, forKey: .modifier) {
             Entity.Read(type: .user, code: $0.code, name: $0.name)

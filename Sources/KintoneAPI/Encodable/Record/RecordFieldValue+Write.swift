@@ -37,10 +37,10 @@ extension RecordFieldValue {
             case let .checkbox(stringArray):
                 try container.encode(stringArray, forKey: .value)
             case let .date(date):
-                let dateString = date.map { DateFormatter.kintoneDate.string(from: $0) }
+                let dateString = date.map { $0.formatted(Date.FormatStyle.kintoneDate) }
                 try container.encode(dateString, forKey: .value)
             case let .dateTime(date):
-                let dateString = date.map { DateFormatter.kintoneDateTime.string(from: $0) }
+                let dateString = date.map { $0.formatted(Date.FormatStyle.kintoneDateTime) }
                 try container.encode(dateString, forKey: .value)
             case let .dropDown(string):
                 try container.encode(string, forKey: .value)
@@ -67,7 +67,7 @@ extension RecordFieldValue {
             case let .subtable(rows):
                 try container.encode(rows, forKey: .value)
             case let .time(date):
-                let dateString = date.map { DateFormatter.kintoneTime.string(from: $0) }
+                let dateString = date.map { $0.formatted(Date.FormatStyle.kintoneTime) }
                 try container.encode(dateString, forKey: .value)
             case let .userSelection(entityArray):
                 try container.encode(entityArray, forKey: .value)

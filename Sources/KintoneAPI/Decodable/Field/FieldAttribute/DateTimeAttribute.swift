@@ -31,6 +31,6 @@ extension DateTimeAttribute: Decodable {
         unique = try container.decode(Bool.self, forKey: .unique)
         defaultNowValue = try container.decode(Bool.self, forKey: .defaultNowValue)
         let _defaultValue = try container.decode(String.self, forKey: .defaultValue)
-        defaultValue = DateFormatter.kintoneDateTime.date(from: _defaultValue.normalizedDateTime)
+        defaultValue = try? Date.FormatStyle.kintoneDateTime.parse(_defaultValue.normalizedDateTime)
     }
 }

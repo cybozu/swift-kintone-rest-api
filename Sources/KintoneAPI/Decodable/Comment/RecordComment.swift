@@ -31,7 +31,7 @@ extension RecordComment.Read: Decodable {
         id = try container.customDecode(String.self, forKey: .id) { Int($0) }
         text = try container.decode(String.self, forKey: .text)
         createdAt = try container.customDecode(String.self, forKey: .createdAt) {
-            DateFormatter.kintoneDateTime.date(from: $0.normalizedDateTime)
+            try? Date.FormatStyle.kintoneDateTime.parse($0.normalizedDateTime)
         }
         creator = try container.customDecode(EntityValue.self, forKey: .creator) {
             Entity.Read(type: .user, code: $0.code, name: $0.name)

@@ -58,7 +58,7 @@ extension RecordFieldValue.Read: Decodable {
             self = .checkbox(try container.decode([String].self, forKey: .value))
         case .createdTime:
             let dateString = try container.decode(String.self, forKey: .value)
-            self = .createdTime(DateFormatter.kintoneDateTime.date(from: dateString)!)
+            self = .createdTime(try! Date.FormatStyle.kintoneDateTime.parse(dateString))
         case .creator:
             let entities = try container.customDecode(EntityValue.self, forKey: .value) {
                 Entity.Read(type: .user, code: $0.code, name: $0.name)
@@ -66,10 +66,10 @@ extension RecordFieldValue.Read: Decodable {
             self = .creator(entities)
         case .date:
             let dateString = try container.decode(String?.self, forKey: .value)
-            self = .date(DateFormatter.kintoneDate.date(fromOptional: dateString))
+            self = .date(dateString.flatMap { try? Date.FormatStyle.kintoneDate.parse($0) })
         case .dateTime:
             let dateString = try container.decode(String?.self, forKey: .value)
-            self = .dateTime(DateFormatter.kintoneDateTime.date(fromOptional: dateString))
+            self = .dateTime(dateString.flatMap { try? Date.FormatStyle.kintoneDateTime.parse($0) })
         case .dropDown:
             self = .dropDown(try container.decode(String?.self, forKey: .value))
         case .file:
@@ -120,10 +120,10 @@ extension RecordFieldValue.Read: Decodable {
             self = .subtable(try container.decode([SubtableValue.Read].self, forKey: .value))
         case .time:
             let dateString = try container.decode(String?.self, forKey: .value)
-            self = .time(DateFormatter.kintoneTime.date(fromOptional: dateString))
+            self = .time(dateString.flatMap { try? Date.FormatStyle.kintoneTime.parse($0) })
         case .updatedTime:
             let dateString = try container.decode(String.self, forKey: .value)
-            self = .updatedTime(DateFormatter.kintoneDateTime.date(from: dateString)!)
+            self = .updatedTime(try! Date.FormatStyle.kintoneDateTime.parse(dateString))
         case .userSelection:
             let entities = try container.customDecode([EntityValue].self, forKey: .value) {
                 $0.map { Entity.Read(type: .user, code: $0.code, name: $0.name) }
